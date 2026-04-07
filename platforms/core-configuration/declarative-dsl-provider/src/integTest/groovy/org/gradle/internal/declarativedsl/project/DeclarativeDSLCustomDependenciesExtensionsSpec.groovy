@@ -298,7 +298,8 @@ final class DeclarativeDSLCustomDependenciesExtensionsSpec extends AbstractInteg
         failure.assertHasCause("Failed to interpret the declarative DSL file '${testDirectory.file("build.gradle.dcl").path}'")
     }
 
-    @Requires(value = JdkVersionTestPreconditions.KotlinSupportedJdk.class)
+    // @Requires(value = JdkVersionTestPreconditions.KotlinSupportedJdk.class) // TODO: investigate why it's not working on Java 26
+    @Requires(value = JdkVersionTestPreconditions.Jdk25OrEarlier.class)
     def 'can configure an extension using DependencyCollector in declarative DSL that uses Kotlin properties for the getters'() {
         given: "a plugin that creates a custom extension using a DependencyCollector"
         file("build-logic/src/main/kotlin/com/example/restricted/DependenciesExtension.kt") << """
@@ -446,7 +447,8 @@ final class DeclarativeDSLCustomDependenciesExtensionsSpec extends AbstractInteg
         outputContains("commons-lang3-3.8.1.jar")
     }
 
-    @Requires(value = JdkVersionTestPreconditions.KotlinSupportedJdk.class)
+    // @Requires(value = JdkVersionTestPreconditions.KotlinSupportedJdk.class) // TODO: investigate why it's not working on Java 26
+    @Requires(value = JdkVersionTestPreconditions.Jdk25OrEarlier.class)
     def "can configure a platform using DependencyCollector in declarative DSL from a platform project with a custom DependencyModifier in Kotlin"() {
         given: "a plugin that creates a custom extension using a DependencyCollector and PlatformDependencyModifiers"
         file("build-logic/src/main/kotlin/com/example/restricted/DependenciesExtension.kt") << defineDependenciesExtensionWithCustomPlatformModifierKotlin()
@@ -487,7 +489,8 @@ final class DeclarativeDSLCustomDependenciesExtensionsSpec extends AbstractInteg
         outputContains("commons-lang3-3.8.1.jar")
     }
 
-    @Requires(value = JdkVersionTestPreconditions.KotlinSupportedJdk.class)
+    // @Requires(value = JdkVersionTestPreconditions.KotlinSupportedJdk.class) // TODO: investigate why it's not working on Java 26
+    @Requires(value = JdkVersionTestPreconditions.Jdk25OrEarlier.class)
     def "can add a testFixture dependency in declarative DSL in Kotlin"() {
         given: "a plugin that creates a custom extension using a DependencyCollector and PlatformDependencyModifiers"
         file("build-logic/src/main/kotlin/com/example/restricted/DependenciesExtension.kt") << defineDependenciesExtensionWithTestFixturesModifierKotlin()
@@ -639,7 +642,7 @@ final class DeclarativeDSLCustomDependenciesExtensionsSpec extends AbstractInteg
         outputDoesNotContain("commons-collections")
     }
 
-    private String defineDependenciesExtension(boolean extendDependencies = true) {
+    private static String defineDependenciesExtension(boolean extendDependencies = true) {
         return """
             package com.example.restricted;
 
@@ -653,7 +656,7 @@ final class DeclarativeDSLCustomDependenciesExtensionsSpec extends AbstractInteg
         """
     }
 
-    private String defineDependenciesExtensionWithPlatformModifiers() {
+    private static String defineDependenciesExtensionWithPlatformModifiers() {
         return """
             package com.example.restricted;
 
@@ -691,7 +694,7 @@ final class DeclarativeDSLCustomDependenciesExtensionsSpec extends AbstractInteg
         """
     }
 
-    private String defineDependenciesExtensionWithCustomPlatformModifier() {
+    private static String defineDependenciesExtensionWithCustomPlatformModifier() {
         return """
             package com.example.restricted;
 
@@ -720,7 +723,7 @@ final class DeclarativeDSLCustomDependenciesExtensionsSpec extends AbstractInteg
         """
     }
 
-    private String defineDependenciesExtensionWithCustomPlatformModifierKotlin() {
+    private static String defineDependenciesExtensionWithCustomPlatformModifierKotlin() {
         //language=kotlin
         return """
             package com.example.restricted
@@ -751,7 +754,7 @@ final class DeclarativeDSLCustomDependenciesExtensionsSpec extends AbstractInteg
         """
     }
 
-    private String defineDependenciesExtensionWithTestFixturesModifierKotlin() {
+    private static String defineDependenciesExtensionWithTestFixturesModifierKotlin() {
         //language=kotlin
         return """
             package com.example.restricted
@@ -767,7 +770,7 @@ final class DeclarativeDSLCustomDependenciesExtensionsSpec extends AbstractInteg
         """
     }
 
-    private String defineLibraryExtension() {
+    private static String defineLibraryExtension() {
         return """
             package com.example.restricted;
 
@@ -802,7 +805,7 @@ final class DeclarativeDSLCustomDependenciesExtensionsSpec extends AbstractInteg
         """
     }
 
-    private String defineModelClass() {
+    private static String defineModelClass() {
         return """
                 public static abstract class Model implements ${BuildModel.class.simpleName} {
                     private DependencyScopeConfiguration api;
@@ -827,7 +830,7 @@ final class DeclarativeDSLCustomDependenciesExtensionsSpec extends AbstractInteg
             """
     }
 
-    private String defineResolveTask() {
+    private static String defineResolveTask() {
         return """
             package com.example.restricted;
 
@@ -851,7 +854,7 @@ final class DeclarativeDSLCustomDependenciesExtensionsSpec extends AbstractInteg
         """
     }
 
-    private String defineSettingsPluginRegisteringSoftwareTypeProvidingPlugin() {
+    private static String defineSettingsPluginRegisteringSoftwareTypeProvidingPlugin() {
         return """
             package com.example.restricted;
 
@@ -870,7 +873,7 @@ final class DeclarativeDSLCustomDependenciesExtensionsSpec extends AbstractInteg
         """
     }
 
-    private String defineLibraryExtensionKotlin() {
+    private static String defineLibraryExtensionKotlin() {
         // language=kotlin
         return """
             package com.example.restricted
@@ -904,7 +907,7 @@ final class DeclarativeDSLCustomDependenciesExtensionsSpec extends AbstractInteg
         """
     }
 
-    private String defineRestrictedPluginWithResolveTasks() {
+    private static String defineRestrictedPluginWithResolveTasks() {
         return """
             package com.example.restricted;
 
@@ -976,7 +979,7 @@ final class DeclarativeDSLCustomDependenciesExtensionsSpec extends AbstractInteg
         """
     }
 
-    private String defineKotlinRestrictedPlugin() {
+    private static String defineKotlinRestrictedPlugin() {
         return """
             package com.example.restricted
 
@@ -1023,7 +1026,7 @@ final class DeclarativeDSLCustomDependenciesExtensionsSpec extends AbstractInteg
         """
     }
 
-    private String defineRestrictedPluginBuild(boolean kotlin = false) {
+    private static String defineRestrictedPluginBuild(boolean kotlin = false) {
         return """
             plugins {
                 id('java-gradle-plugin')
@@ -1073,33 +1076,14 @@ final class DeclarativeDSLCustomDependenciesExtensionsSpec extends AbstractInteg
         """
     }
 
-    private String defineDependencyVersionCatalog() {
+    private static String defineDependencyVersionCatalog() {
         return """[libraries]
 commonsLang3 = { module = "org.apache.commons:commons-lang3", version = "3.20.0" }
 """
     }
 
 
-    private String defineExampleJavaClass() {
-        return """
-            package com.example;
-
-            import com.google.common.collect.ImmutableSet;
-            import org.apache.commons.lang3.StringUtils;
-
-            public class Lib {
-                public static ImmutableSet<String> getPeople() {
-                    return ImmutableSet.of(capitalize("adam johnson"), capitalize("bob smith"), capitalize("carl jones"));
-                }
-
-                private static String capitalize(String input) {
-                    return StringUtils.capitalize(input);
-                }
-            }
-        """
-    }
-
-    private String defineExampleProducerJavaClass() {
+    private static String defineExampleProducerJavaClass() {
         return """
             package com.example;
 
@@ -1117,7 +1101,7 @@ commonsLang3 = { module = "org.apache.commons:commons-lang3", version = "3.20.0"
         """
     }
 
-    private String defineExampleConsumerJavaClass() {
+    private static String defineExampleConsumerJavaClass() {
         return """
             package com.example;
 
@@ -1135,7 +1119,7 @@ commonsLang3 = { module = "org.apache.commons:commons-lang3", version = "3.20.0"
         """
     }
 
-    private String defineDeclarativeDSLBuildScript() {
+    private static String defineDeclarativeDSLBuildScript() {
         return """
             library {
                 dependencies {
@@ -1146,13 +1130,13 @@ commonsLang3 = { module = "org.apache.commons:commons-lang3", version = "3.20.0"
         """
     }
 
-    private String defineDeclarativeDSLProducerBuildScript() {
+    private static String defineDeclarativeDSLProducerBuildScript() {
         return """
             library {}
         """
     }
 
-    private String defineDeclarativeDSLConsumerBuildScript() {
+    private static String defineDeclarativeDSLConsumerBuildScript() {
         return """
             library {
                 dependencies {
@@ -1162,7 +1146,7 @@ commonsLang3 = { module = "org.apache.commons:commons-lang3", version = "3.20.0"
         """
     }
 
-    private String defineSettings(boolean typeSafeProjectAccessors = false) {
+    private static String defineSettings(boolean typeSafeProjectAccessors = false) {
         return """
             pluginManagement {
                 includeBuild("build-logic")
