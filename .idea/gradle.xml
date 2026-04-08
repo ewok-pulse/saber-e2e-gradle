@@ -112,6 +112,7 @@
             <option value="$PROJECT_DIR$/platforms/core-configuration/declarative-dsl-tooling-builders" />
             <option value="$PROJECT_DIR$/platforms/core-configuration/declarative-dsl-tooling-models" />
             <option value="$PROJECT_DIR$/platforms/core-configuration/dependency-management-serialization-codecs" />
+            <option value="$PROJECT_DIR$/platforms/core-configuration/domain-object-collections" />
             <option value="$PROJECT_DIR$/platforms/core-configuration/encryption-services" />
             <option value="$PROJECT_DIR$/platforms/core-configuration/file-collections" />
             <option value="$PROJECT_DIR$/platforms/core-configuration/file-operations" />
