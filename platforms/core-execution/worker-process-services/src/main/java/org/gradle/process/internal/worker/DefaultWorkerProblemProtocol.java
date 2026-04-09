@@ -33,6 +33,10 @@ public class DefaultWorkerProblemProtocol implements WorkerProblemProtocol {
 
     private @Nullable InternalProblems problems;
 
+    /**
+     * Binds the problems service to use for reporting problems received from the worker.
+     * If {@code null}, problems will be silently dropped.
+     */
     public void bindProblems(@Nullable InternalProblems problems) {
         this.problems = problems;
     }

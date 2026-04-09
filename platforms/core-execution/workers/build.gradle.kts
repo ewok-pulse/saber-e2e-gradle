@@ -28,6 +28,7 @@ dependencies {
     api(libs.inject)
     api(libs.jspecify)
 
+    implementation(projects.problemsApi)
     implementation(projects.hashing)
     implementation(projects.processServicesApi)
     implementation(projects.requestHandlerWorker)

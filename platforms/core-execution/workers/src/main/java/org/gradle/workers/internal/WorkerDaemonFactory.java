@@ -59,6 +59,7 @@ public class WorkerDaemonFactory implements WorkerFactory {
                 // wrap in build operation for logging startup failures
                 final WorkerDaemonClient client = CurrentBuildOperationRef.instance().with(parentBuildOperation, this::reserveClient);
                 try {
+                    // Lazily resolve the build-tree scoped InternalProblems service for this job.
                     InternalProblems problems = (InternalProblems) serviceRegistry.find(InternalProblems.class);
                     client.bindProblems(problems);
                     return executeWrappedInBuildOperation(spec, parentBuildOperation, client::execute);
