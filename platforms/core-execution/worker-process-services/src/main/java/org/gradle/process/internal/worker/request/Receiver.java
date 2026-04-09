@@ -17,6 +17,7 @@
 package org.gradle.process.internal.worker.request;
 
 import org.gradle.api.problems.Problem;
+import org.gradle.api.problems.internal.InternalProblems;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.dispatch.StreamCompletion;
 import org.gradle.internal.logging.events.LogEvent;
@@ -28,7 +29,6 @@ import org.gradle.process.internal.worker.DefaultWorkerLoggingProtocol;
 import org.gradle.process.internal.worker.DefaultWorkerProblemProtocol;
 import org.gradle.process.internal.worker.WorkerProcessException;
 import org.gradle.process.internal.worker.child.WorkerLoggingProtocol;
-import org.gradle.process.internal.worker.problem.WorkerProblemProtocol;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
@@ -50,12 +50,16 @@ public class Receiver implements ResponseProtocol, StreamCompletion, StreamFailu
 
     // Sub-handlers for the different protocols implemented by ResponseProtocol
     private final WorkerLoggingProtocol loggingProtocol;
-    private final WorkerProblemProtocol problemProtocol;
+    private final DefaultWorkerProblemProtocol problemProtocol;
 
     public Receiver(String baseName, OutputEventListener outputEventListener) {
         this.loggingProtocol = new DefaultWorkerLoggingProtocol(outputEventListener);
         this.problemProtocol = new DefaultWorkerProblemProtocol();
         this.baseName = baseName;
+    }
+
+    public void bindProblems(@Nullable InternalProblems problems) {
+        problemProtocol.bindProblems(problems);
     }
 
     public boolean awaitNextResult() {

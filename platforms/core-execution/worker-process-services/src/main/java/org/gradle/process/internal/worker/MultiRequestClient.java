@@ -16,5 +16,14 @@
 
 package org.gradle.process.internal.worker;
 
+import org.gradle.api.problems.internal.InternalProblems;
+import org.jspecify.annotations.Nullable;
+
 public interface MultiRequestClient<IN, OUT> extends RequestHandler<IN, OUT>, WorkerControl {
+
+    /**
+     * Binds the given problems service for the next job executed by this client.
+     * If {@code null}, any problems reported by the worker will be silently dropped.
+     */
+    void bindProblems(@Nullable InternalProblems problems);
 }

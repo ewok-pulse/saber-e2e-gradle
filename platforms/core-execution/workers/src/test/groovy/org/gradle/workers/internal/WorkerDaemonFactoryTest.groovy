@@ -19,6 +19,7 @@ package org.gradle.workers.internal
 import org.gradle.internal.operations.BuildOperationContext
 import org.gradle.internal.operations.BuildOperationRef
 import org.gradle.internal.operations.BuildOperationRunner
+import org.gradle.internal.service.ServiceRegistry
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -29,8 +30,9 @@ class WorkerDaemonFactoryTest extends Specification {
     def buildOperationRunner = Mock(BuildOperationRunner)
     def buildOperation = Mock(BuildOperationRef)
     def workerDaemonClientCancellationHandler = Mock(WorkerDaemonClientCancellationHandler)
+    def serviceRegistry = Mock(ServiceRegistry)
 
-    @Subject factory = new WorkerDaemonFactory(clientsManager, buildOperationRunner, workerDaemonClientCancellationHandler)
+    @Subject factory = new WorkerDaemonFactory(clientsManager, buildOperationRunner, workerDaemonClientCancellationHandler, serviceRegistry)
 
     def workingDir = new File("some-dir")
     def projectCacheDir = new File("some-cache-dir")

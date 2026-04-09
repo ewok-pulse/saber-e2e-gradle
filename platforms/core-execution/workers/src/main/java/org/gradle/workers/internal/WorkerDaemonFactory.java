@@ -16,9 +16,11 @@
 
 package org.gradle.workers.internal;
 
+import org.gradle.api.problems.internal.InternalProblems;
 import org.gradle.internal.operations.BuildOperationRef;
 import org.gradle.internal.operations.BuildOperationRunner;
 import org.gradle.internal.operations.CurrentBuildOperationRef;
+import org.gradle.internal.service.ServiceRegistry;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
 
@@ -33,11 +35,13 @@ public class WorkerDaemonFactory implements WorkerFactory {
     private final WorkerDaemonClientsManager clientsManager;
     private final BuildOperationRunner buildOperationRunner;
     private final WorkerDaemonClientCancellationHandler workerDaemonClientCancellationHandler;
+    private final ServiceRegistry serviceRegistry;
 
-    public WorkerDaemonFactory(WorkerDaemonClientsManager clientsManager, BuildOperationRunner buildOperationRunner, WorkerDaemonClientCancellationHandler workerDaemonClientCancellationHandler) {
+    public WorkerDaemonFactory(WorkerDaemonClientsManager clientsManager, BuildOperationRunner buildOperationRunner, WorkerDaemonClientCancellationHandler workerDaemonClientCancellationHandler, ServiceRegistry serviceRegistry) {
         this.clientsManager = clientsManager;
         this.buildOperationRunner = buildOperationRunner;
         this.workerDaemonClientCancellationHandler = workerDaemonClientCancellationHandler;
+        this.serviceRegistry = serviceRegistry;
     }
 
     @Override
@@ -55,6 +59,8 @@ public class WorkerDaemonFactory implements WorkerFactory {
                 // wrap in build operation for logging startup failures
                 final WorkerDaemonClient client = CurrentBuildOperationRef.instance().with(parentBuildOperation, this::reserveClient);
                 try {
+                    InternalProblems problems = (InternalProblems) serviceRegistry.find(InternalProblems.class);
+                    client.bindProblems(problems);
                     return executeWrappedInBuildOperation(spec, parentBuildOperation, client::execute);
                 } finally {
                     clientsManager.release(client);

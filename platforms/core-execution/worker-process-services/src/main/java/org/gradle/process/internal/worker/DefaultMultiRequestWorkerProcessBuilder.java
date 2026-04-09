@@ -17,6 +17,7 @@
 package org.gradle.process.internal.worker;
 
 import org.gradle.api.logging.LogLevel;
+import org.gradle.api.problems.internal.InternalProblems;
 import org.gradle.internal.Cast;
 import org.gradle.internal.classloader.ClasspathUtil;
 import org.gradle.internal.classpath.ClassPath;
@@ -32,6 +33,8 @@ import org.gradle.process.internal.worker.request.RequestProtocol;
 import org.gradle.process.internal.worker.request.RequestSerializerRegistry;
 import org.gradle.process.internal.worker.request.ResponseProtocol;
 import org.gradle.process.internal.worker.request.WorkerAction;
+
+import org.jspecify.annotations.Nullable;
 
 import java.io.File;
 import java.util.Collections;
@@ -147,6 +150,11 @@ class DefaultMultiRequestWorkerProcessBuilder<IN, OUT> implements MultiRequestWo
         return new MultiRequestClient<IN, OUT>() {
             private Receiver receiver = new Receiver(getBaseName(), outputEventListener);
             private RequestProtocol requestProtocol;
+
+            @Override
+            public void bindProblems(@Nullable InternalProblems problems) {
+                receiver.bindProblems(problems);
+            }
 
             @Override
             public WorkerProcess start() {

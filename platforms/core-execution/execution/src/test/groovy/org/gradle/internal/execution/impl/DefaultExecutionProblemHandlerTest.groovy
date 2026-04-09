@@ -20,7 +20,6 @@ import org.gradle.api.problems.Problem
 import org.gradle.api.problems.ProblemId
 import org.gradle.api.problems.internal.GradleCoreProblemGroup
 import org.gradle.api.problems.internal.InternalProblem
-import org.gradle.api.problems.internal.ProblemsProgressEventEmitterHolder
 import org.gradle.internal.execution.Identity
 import org.gradle.internal.execution.UnitOfWork
 import org.gradle.internal.execution.WorkValidationContext
@@ -49,7 +48,6 @@ class DefaultExecutionProblemHandlerTest extends Specification implements Valida
     def handler = new DefaultExecutionProblemHandler(warningReporter, virtualFileSystem)
 
     def setup() {
-        ProblemsProgressEventEmitterHolder.init(TestUtil.problemsService())
         work.displayName >> "job ':test'"
     }
 
