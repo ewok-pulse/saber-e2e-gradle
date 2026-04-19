@@ -22,19 +22,19 @@ import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ProjectDependency;
 import org.gradle.api.internal.artifacts.dependencies.ProjectDependencyInternal;
 import org.gradle.api.internal.project.ProjectInternal;
-import org.gradle.api.internal.tasks.TaskDependencyContainerInternal;
 import org.gradle.api.internal.tasks.TaskDependencyFactory;
+import org.gradle.api.internal.tasks.TaskDependencyInternal;
 import org.gradle.api.internal.tasks.TaskDependencyResolveContext;
 import org.gradle.util.Path;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Set;
 
-class TasksFromDependentProjects implements TaskDependencyContainerInternal {
+class TasksFromDependentProjects implements TaskDependencyInternal {
 
     private final String taskName;
     private final String configurationName;
-    private final TaskDependencyContainerInternal taskDependencyDelegate;
+    private final TaskDependencyInternal taskDependencyDelegate;
 
     public TasksFromDependentProjects(String taskName, String configurationName, TaskDependencyFactory taskDependencyFactory) {
         this(taskName, configurationName, new TaskDependencyChecker(), taskDependencyFactory);
@@ -67,10 +67,6 @@ class TasksFromDependentProjects implements TaskDependencyContainerInternal {
         return taskDependencyDelegate.getDependencies(task);
     }
 
-    @Override
-    public Set<? extends Task> getDependenciesForInternalUse(@Nullable Task task) {
-        return taskDependencyDelegate.getDependenciesForInternalUse(task);
-    }
 
     static class TaskDependencyChecker {
         //checks if candidate project is dependent of the origin project with given configuration
@@ -103,4 +99,5 @@ class TasksFromDependentProjects implements TaskDependencyContainerInternal {
     public String getConfigurationName() {
         return configurationName;
     }
+
 }
