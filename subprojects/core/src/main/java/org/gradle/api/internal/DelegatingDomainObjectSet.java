@@ -111,6 +111,11 @@ public class DelegatingDomainObjectSet<T> implements DomainObjectSet<T>, DomainO
     }
 
     @Override
+    public Provider<? extends Collection<T>> getElements() {
+        return delegate.getElements();
+    }
+
+    @Override
     public boolean add(T o) {
         return delegate.add(o);
     }

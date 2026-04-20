@@ -55,6 +55,17 @@ public interface DomainObjectCollection<T> extends Collection<T> {
     void addAllLater(Provider<? extends Iterable<T>> provider);
 
     /**
+     * Return a provider containing all elements added to this collection.
+     * <p>
+     * The returned provider retains all build dependencies of all providers
+     * added by {@link #addLater(Provider)} or {@link #addAllLater(Provider)}.
+     *
+     * @since 9.6.0
+     */
+    @Incubating
+    Provider<? extends Collection<T>> getElements();
+
+    /**
      * Returns a collection containing the objects in this collection of the given type.  The returned collection is
      * live, so that when matching objects are later added to this collection, they are also visible in the filtered
      * collection.
