@@ -460,7 +460,11 @@ class ArtifactTransformValuesInjectionIntegrationTest extends AbstractDependency
         settingsFile << """
             include 'a', 'b', 'c'
         """
-        setupBuildWithColorTransform()
+        setupBuildWithColorTransform {
+            params("""
+                println("Configure closure parameters: " + it)
+            """)
+        }
         buildFile << """
             project(':a') {
                 dependencies {
@@ -478,6 +482,7 @@ class ArtifactTransformValuesInjectionIntegrationTest extends AbstractDependency
 
         expect:
         succeeds(":a:resolve")
+        outputContains("Configure closure parameters: org.gradle.api.artifacts.transform.TransformParameters\$None@")
         outputContains("Parameters: org.gradle.api.artifacts.transform.TransformParameters\$None@")
     }
 
