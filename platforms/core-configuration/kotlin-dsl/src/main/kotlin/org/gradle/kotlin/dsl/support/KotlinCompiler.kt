@@ -22,6 +22,7 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.SupportsKotlinAssignmentOverloading
 import org.gradle.api.internal.ClassPathProvider
 import org.gradle.api.internal.classpath.ModuleRegistry
+import org.gradle.internal.SystemProperties
 import org.gradle.internal.classloader.ClassLoaderFactory
 import org.gradle.internal.classloader.FilteringClassLoader
 import org.gradle.internal.classloader.VisitableURLClassLoader
@@ -66,6 +67,7 @@ import org.jetbrains.kotlin.buildtools.api.arguments.enums.SamConversionsMode
 import org.jetbrains.kotlin.buildtools.api.daemonExecutionPolicy
 import org.jetbrains.kotlin.buildtools.api.jvm.JvmPlatformToolchain.Companion.jvm
 import org.jetbrains.kotlin.buildtools.api.jvm.operations.JvmCompilationOperation.CompilerArgumentsLogLevel
+import org.jetbrains.kotlin.cli.common.CompilerSystemProperties.KOTLIN_COMPILER_ENVIRONMENT_KEEPALIVE_PROPERTY
 import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.JvmTarget.JVM_1_8
 import org.jetbrains.kotlin.name.NameUtils
@@ -468,11 +470,22 @@ private class BTACompiler(val moduleRegistry: ModuleRegistry, classLoader: Class
         private const val MODULE_NAME = "buildscript"
     }
 
+    private lateinit var toolchains: KotlinToolchains
+    private lateinit var buildSession: KotlinToolchains.BuildSession
+
+    init {
+        SystemProperties.getInstance().withSystemProperty(
+            KOTLIN_COMPILER_ENVIRONMENT_KEEPALIVE_PROPERTY.property,
+            "true"
+        ) {
+            toolchains = KotlinToolchains.loadImplementation(classLoader)
+            buildSession = toolchains.createBuildSession()
+        }
+    }
+
     private val plugins: List<CompilerPlugin> = createPlugins()
 
-    private val toolchains = KotlinToolchains.loadImplementation(classLoader)
 
-    private val buildSession = toolchains.createBuildSession()
 
     @OptIn(ExperimentalCompilerArgument::class)
     fun compile(
@@ -484,26 +497,31 @@ private class BTACompiler(val moduleRegistry: ModuleRegistry, classLoader: Class
         implicitImports: List<String>,
         messageRenderer: LoggingMessageRenderer
     ) {
-        val operationBuilder = toolchains.jvm.jvmCompilationOperationBuilder(sources, destinationDirectory)
+        SystemProperties.getInstance().withSystemProperty(
+            KOTLIN_COMPILER_ENVIRONMENT_KEEPALIVE_PROPERTY.property,
+            "true"
+        ) {
+            val operationBuilder = toolchains.jvm.jvmCompilationOperationBuilder(sources, destinationDirectory)
 
-        // compilation operation config
-        operationBuilder[BaseCompilationOperation.COMPILER_ARGUMENTS_LOG_LEVEL] = CompilerArgumentsLogLevel.DEBUG
-        // TODO: incremental compilation should make explicit fingerprint checking obsolete
+            // compilation operation config
+            operationBuilder[BaseCompilationOperation.COMPILER_ARGUMENTS_LOG_LEVEL] = CompilerArgumentsLogLevel.DEBUG
+            // TODO: incremental compilation should make explicit fingerprint checking obsolete
 
-        operationBuilder.compilerArguments.let {
-            it.configureScriptEnvironment(classPath, template, implicitImports)
-            it.configureLanguageVersion(compilerOptions)
-            it.configureMisc()
+            operationBuilder.compilerArguments.let {
+                it.configureScriptEnvironment(classPath, template, implicitImports)
+                it.configureLanguageVersion(compilerOptions)
+                it.configureMisc()
+            }
+
+            operationBuilder[COMPILER_MESSAGE_RENDERER] = messageRenderer
+
+            val executionPolicy = createExecutionPolicy()
+
+            // TODO: what JDK does the Daemon run on? KotlinBuildScriptIntegrationTest has failing tests when running on the console, which points to this area
+
+            val operation = operationBuilder.build()
+            buildSession.executeOperation(operation, executionPolicy)
         }
-
-        operationBuilder[COMPILER_MESSAGE_RENDERER] = messageRenderer
-
-        val executionPolicy = createExecutionPolicy()
-
-        // TODO: what JDK does the Daemon run on? KotlinBuildScriptIntegrationTest has failing tests when running on the console, which points to this area
-
-        val operation = operationBuilder.build()
-        buildSession.executeOperation(operation, executionPolicy)
     }
 
     fun clean() {
