@@ -89,7 +89,8 @@ import kotlin.script.experimental.api.ScriptCompilationConfiguration
 import kotlin.script.experimental.api.implicitReceivers
 import kotlin.script.experimental.util.PropertiesCollection
 
-private const val DAEMON_MODE = false // TODO: which mode to use in the end?
+private const val DAEMON_MODE = true // TODO: which mode to use in the end?
+private const val KEEPALIVE_FLAG = false // TODO: which mode to use in the end?
 
 private val classloaderInstances: MutableMap<ClassPath, URLClassLoader> = mutableMapOf() // necessary because some Kotlin code is retaining them and we can't clean it up properly
 private val compilerInstances: MutableMap<Pair<ModuleRegistry, ClassLoaderFactory>, KotlinCompiler> = mutableMapOf()
@@ -474,12 +475,14 @@ private class BTACompiler(val moduleRegistry: ModuleRegistry, classLoader: Class
     private lateinit var buildSession: KotlinToolchains.BuildSession
 
     init {
-        SystemProperties.getInstance().withSystemProperty(
-            KOTLIN_COMPILER_ENVIRONMENT_KEEPALIVE_PROPERTY.property,
-            "true"
-        ) {
+        val work: () -> Unit = {
             toolchains = KotlinToolchains.loadImplementation(classLoader)
             buildSession = toolchains.createBuildSession()
+        }
+        if (KEEPALIVE_FLAG) {
+            SystemProperties.getInstance().withSystemProperty(KOTLIN_COMPILER_ENVIRONMENT_KEEPALIVE_PROPERTY.property, "true", work)
+        } else {
+            work()
         }
     }
 
@@ -497,10 +500,7 @@ private class BTACompiler(val moduleRegistry: ModuleRegistry, classLoader: Class
         implicitImports: List<String>,
         messageRenderer: LoggingMessageRenderer
     ) {
-        SystemProperties.getInstance().withSystemProperty(
-            KOTLIN_COMPILER_ENVIRONMENT_KEEPALIVE_PROPERTY.property,
-            "true"
-        ) {
+        val work: () -> Unit = {
             val operationBuilder = toolchains.jvm.jvmCompilationOperationBuilder(sources, destinationDirectory)
 
             // compilation operation config
@@ -521,6 +521,11 @@ private class BTACompiler(val moduleRegistry: ModuleRegistry, classLoader: Class
 
             val operation = operationBuilder.build()
             buildSession.executeOperation(operation, executionPolicy)
+        }
+        if (KEEPALIVE_FLAG) {
+            SystemProperties.getInstance().withSystemProperty(KOTLIN_COMPILER_ENVIRONMENT_KEEPALIVE_PROPERTY.property, "true", work)
+        } else {
+            work()
         }
     }
 
@@ -607,6 +612,9 @@ private class BTACompiler(val moduleRegistry: ModuleRegistry, classLoader: Class
             toolchains.daemonExecutionPolicy {
                 @OptIn(DelicateBuildToolsApi::class)
                 // this[ExecutionPolicy.WithDaemon.DAEMON_RUN_DIR_PATH] = daemonRunPath // TODO: examine how KGP configures its daemon
+                if (KEEPALIVE_FLAG) {
+                    this[ExecutionPolicy.WithDaemon.JVM_ARGUMENTS] = listOf("D${KOTLIN_COMPILER_ENVIRONMENT_KEEPALIVE_PROPERTY.property}=true") // TODO: just "D"?!? stupid, but this is how it works
+                }
                 this[ExecutionPolicy.WithDaemon.SHUTDOWN_DELAY_MILLIS] = 10_000
             }
         } else {
