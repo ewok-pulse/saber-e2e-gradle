@@ -107,6 +107,7 @@ dependencies {
     }
     smokeIdeTestImplementation(projects.internalIntegTesting)
     smokeIdeTestImplementation(testLibs.gradleIdeStarterScenarios)
+    smokeIdeTestImplementation(testLibs.gradleProfiler)
     smokeIdeTestImplementation(testFixtures(projects.core))
 }
 
