@@ -482,8 +482,8 @@ class ArtifactTransformValuesInjectionIntegrationTest extends AbstractDependency
 
         expect:
         succeeds(":a:resolve")
-        outputContains("Configure closure parameters: org.gradle.api.artifacts.transform.TransformParameters\$None@")
-        outputContains("Parameters: org.gradle.api.artifacts.transform.TransformParameters\$None@")
+        outputContains("Configure closure parameters: TransformParameters.None")
+        outputContains("Parameters: TransformParameters.None")
     }
 
     def "transform parameters type cannot use caching annotations"() {
