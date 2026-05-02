@@ -129,6 +129,7 @@ dependencies {
     testImplementation(projects.buildInit)
     testImplementation(projects.platformJvm)
     testImplementation(projects.platformNative)
+    testImplementation(projects.pluginsModelNative)
     testImplementation(projects.io)
     testImplementation(projects.testingBase)
     testImplementation(libs.jsoup)

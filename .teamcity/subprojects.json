@@ -1241,8 +1241,8 @@
   {
     "name": "plugins-model-native",
     "path": "platforms/native/plugins-model-native",
-    "unitTests": false,
-    "functionalTests": false,
+    "unitTests": true,
+    "functionalTests": true,
     "crossVersionTests": false
   },
   {
