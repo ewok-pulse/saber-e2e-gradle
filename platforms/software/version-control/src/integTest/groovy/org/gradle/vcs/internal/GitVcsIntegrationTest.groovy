@@ -17,6 +17,7 @@
 package org.gradle.vcs.internal
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
+import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
 import org.gradle.integtests.fixtures.build.BuildTestFile
 import org.gradle.test.fixtures.plugin.PluginBuilder
 import org.gradle.test.fixtures.server.http.BlockingHttpServer
@@ -102,6 +103,7 @@ class GitVcsIntegrationTest extends AbstractIntegrationSpec implements SourceDep
         result.assertTaskScheduled(":compileJava")
     }
 
+    @ToBeFixedForConfigurationCache(because = "Submodule checkout reset depends on resolution running each invocation; CC reuses cached graph and skips it")
     def 'can define and use source repositories with submodules'() {
         given:
         // Populate submodule origin
@@ -402,6 +404,7 @@ The following types/formats are supported:
         server.stop()
     }
 
+    @ToBeFixedForConfigurationCache(because = "Working dir reset depends on resolution running each invocation; CC reuses cached graph and skips it")
     def "external modifications to source dependency directories are reset"() {
         given:
         repo.file('foo').text = "bar"
@@ -435,6 +438,7 @@ The following types/formats are supported:
         gitCheckout.file('foo').text == "bar"
     }
 
+    @ToBeFixedForConfigurationCache(because = "Submodule reset depends on resolution running each invocation; CC reuses cached graph and skips it")
     def "external modifications to source dependency submodule directories are reset"() {
         given:
         // Populate submodule origin
