@@ -36,6 +36,7 @@ import org.gradle.internal.execution.OutputChangeListener;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.xml.XmlTransformer;
 import org.gradle.plugins.ear.descriptor.DeploymentDescriptor;
 import org.gradle.plugins.ear.descriptor.EarModule;
@@ -58,6 +59,7 @@ import static org.gradle.api.internal.lambdas.SerializableLambdas.action;
 import static org.gradle.api.internal.lambdas.SerializableLambdas.callable;
 import static org.gradle.plugins.ear.EarPlugin.DEFAULT_LIB_DIR_NAME;
 import static org.gradle.plugins.ear.descriptor.internal.DeploymentDescriptorXmlWriter.writeDeploymentDescriptor;
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Assembles an EAR archive.
@@ -238,7 +240,7 @@ public abstract class Ear extends Jar {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getLibDirName"))
     public abstract Property<String> getLibDirName();
 
     /** Eager forwarder; see {@link #getLibDirName()}. */

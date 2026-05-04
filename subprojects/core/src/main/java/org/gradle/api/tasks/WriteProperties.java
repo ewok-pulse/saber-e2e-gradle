@@ -28,6 +28,7 @@ import org.gradle.internal.IoActions;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.util.PropertiesUtils;
 import org.gradle.util.internal.DeferredUtil;
 
@@ -42,6 +43,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
+
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Writes a {@link java.util.Properties} in a way that the results can be expected to be reproducible.
@@ -141,7 +144,7 @@ public abstract class WriteProperties extends DefaultTask {
      * Defaults to {@literal `\n`}.
      */
     @Input
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getLineSeparator"))
     public abstract Property<String> getLineSeparator();
 
     /**
@@ -157,7 +160,7 @@ public abstract class WriteProperties extends DefaultTask {
      */
     @Input
     @Optional
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getComment"))
     public abstract Property<String> getComment();
 
     /**
@@ -173,7 +176,7 @@ public abstract class WriteProperties extends DefaultTask {
      * If set to anything different, unicode escaping is turned off.
      */
     @Input
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getEncoding"))
     public abstract Property<String> getEncoding();
 
     /**

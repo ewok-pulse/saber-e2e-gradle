@@ -19,10 +19,13 @@ import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Specifies options for launching a child process.
@@ -33,7 +36,7 @@ public interface BaseExecSpec extends ProcessForkOptions {
      *
      * @return whether a non-zero exit value is ignored, or an exception thrown
      */
-    @ReplacesEagerProperty(originalType = boolean.class, fluentSetter = true)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getIgnoreExitValue", originalType = boolean.class))
     Property<Boolean> getIgnoreExitValue();
 
     /**
@@ -61,7 +64,7 @@ public interface BaseExecSpec extends ProcessForkOptions {
      *
      * @return The standard input stream.
      */
-    @ReplacesEagerProperty(fluentSetter = true)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getStandardInput"))
     Property<InputStream> getStandardInput();
 
     /**
@@ -83,7 +86,7 @@ public interface BaseExecSpec extends ProcessForkOptions {
      *
      * @return The output stream
      */
-    @ReplacesEagerProperty(fluentSetter = true)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getStandardOutput"))
     Property<OutputStream> getStandardOutput();
 
     /**
@@ -105,7 +108,7 @@ public interface BaseExecSpec extends ProcessForkOptions {
      *
      * @return The error output stream.
      */
-    @ReplacesEagerProperty(fluentSetter = true)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getErrorOutput"))
     Property<OutputStream> getErrorOutput();
 
     /**
@@ -126,6 +129,6 @@ public interface BaseExecSpec extends ProcessForkOptions {
      *
      * @return The full command line, including the executable plus its arguments
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getCommandLine"))
     Provider<List<String>> getCommandLine();
 }

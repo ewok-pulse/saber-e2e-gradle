@@ -56,6 +56,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * <p>Displays a list of tasks in the project. An instance of this type is used when you execute the {@code tasks} task
@@ -115,7 +116,7 @@ public abstract class TaskReportTask extends ConventionReportTask {
      */
     @Console
     @Option(option = "group", description = "Show tasks for a specific group.")
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDisplayGroup"))
     public abstract Property<String> getDisplayGroup();
 
     /**

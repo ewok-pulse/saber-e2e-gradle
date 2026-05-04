@@ -20,9 +20,12 @@ import org.gradle.api.provider.Property;
 import org.gradle.api.resources.TextResource;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 
 import java.io.File;
+
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Configuration options for the CodeNarc plugin.
@@ -79,7 +82,7 @@ public abstract class CodeNarcExtension extends CodeQualityExtension {
     /**
      * The maximum number of priority 1 violations allowed before failing the build.
      */
-    @ReplacesEagerProperty(originalType = int.class)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getMaxPriority1Violations", originalType = int.class))
     public abstract Property<Integer> getMaxPriority1Violations();
 
     /**
@@ -93,7 +96,7 @@ public abstract class CodeNarcExtension extends CodeQualityExtension {
     /**
      * The maximum number of priority 2 violations allowed before failing the build.
      */
-    @ReplacesEagerProperty(originalType = int.class)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getMaxPriority2Violations", originalType = int.class))
     public abstract Property<Integer> getMaxPriority2Violations();
 
     /**
@@ -107,7 +110,7 @@ public abstract class CodeNarcExtension extends CodeQualityExtension {
     /**
      * The maximum number of priority 3 violations allowed before failing the build.
      */
-    @ReplacesEagerProperty(originalType = int.class)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getMaxPriority3Violations", originalType = int.class))
     public abstract Property<Integer> getMaxPriority3Violations();
 
     /**
@@ -121,7 +124,7 @@ public abstract class CodeNarcExtension extends CodeQualityExtension {
     /**
      * The format type of the CodeNarc report. One of <code>html</code>, <code>xml</code>, <code>text</code>, <code>console</code>.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getReportFormat"))
     public abstract Property<String> getReportFormat();
 
     /**

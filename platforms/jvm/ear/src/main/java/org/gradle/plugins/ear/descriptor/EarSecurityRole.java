@@ -18,6 +18,9 @@ package org.gradle.plugins.ear.descriptor;
 import org.gradle.api.provider.Property;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * A security-role element in a deployment descriptor like application.xml.
@@ -27,7 +30,7 @@ public interface EarSecurityRole {
     /**
      * A description of the security role. Optional.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDescription"))
     Property<String> getDescription();
 
     /** Eager forwarder; see {@link #getDescription()}. */
@@ -39,7 +42,7 @@ public interface EarSecurityRole {
     /**
      * The name of the security role. Required.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getRoleName"))
     Property<String> getRoleName();
 
     /** Eager forwarder; see {@link #getRoleName()}. */

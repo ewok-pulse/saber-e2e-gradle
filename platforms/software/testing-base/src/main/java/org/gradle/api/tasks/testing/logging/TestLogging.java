@@ -28,6 +28,8 @@ import org.gradle.util.internal.GUtil;
 import java.util.EnumSet;
 import java.util.Set;
 
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
+
 /**
  * Options that determine which test events get logged, and at which detail.
  */
@@ -85,7 +87,7 @@ public interface TestLogging {
      * @return the minimum granularity of the events to be logged
      */
     @Internal
-    @ReplacesEagerProperty(originalType = int.class)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getMinGranularity", originalType = int.class))
     Property<Integer> getMinGranularity();
 
     /**
@@ -114,7 +116,7 @@ public interface TestLogging {
      * @return the maximum granularity of the events to be logged
      */
     @Internal
-    @ReplacesEagerProperty(originalType = int.class)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getMaxGranularity", originalType = int.class))
     Property<Integer> getMaxGranularity();
 
     /**
@@ -141,7 +143,7 @@ public interface TestLogging {
      * @return the display granularity of the events to be logged
      */
     @Internal
-    @ReplacesEagerProperty(originalType = int.class)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDisplayGranularity", originalType = int.class))
     Property<Integer> getDisplayGranularity();
 
     /**

@@ -31,6 +31,7 @@ import org.gradle.api.tasks.diagnostics.internal.ReportRenderer;
 import org.gradle.initialization.BuildClientMetaData;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.logging.ConsoleRenderer;
 import org.gradle.internal.logging.text.StyledTextOutputFactory;
 import org.gradle.internal.serialization.Transient;
@@ -42,6 +43,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static java.util.Collections.singleton;
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * The base class for all project based report tasks with custom task actions.
@@ -82,7 +84,7 @@ public abstract class ConventionReportTask extends ConventionTask {
      */
     @Optional
     @OutputFile
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getOutputFile"))
     public abstract RegularFileProperty getOutputFile();
 
     /**
@@ -102,7 +104,7 @@ public abstract class ConventionReportTask extends ConventionTask {
      * @return The set of files.
      */
     @Internal
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getProjects"))
     public SetProperty<Project> getProjects() {
         return Objects.requireNonNull(projects.get());
     }

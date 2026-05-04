@@ -20,8 +20,11 @@ package org.gradle.api.artifacts.repositories;
 import org.gradle.api.provider.Property;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
 import java.net.URI;
+
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * A repository that supports resolving artifacts from a URL.
@@ -33,7 +36,7 @@ public interface UrlArtifactRepository {
     /**
      * The base URL of this repository.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getUrl"))
     Property<URI> getUrl();
 
     /**
@@ -68,7 +71,7 @@ public interface UrlArtifactRepository {
      * See also:
      * <a href="https://medium.com/bugbountywriteup/want-to-take-over-the-java-ecosystem-all-you-need-is-a-mitm-1fc329d898fb">Want to take over the Java ecosystem? All you need is a MITM!</a>
      */
-    @ReplacesEagerProperty(originalType = boolean.class)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getAllowInsecureProtocol", originalType = boolean.class))
     Property<Boolean> getAllowInsecureProtocol();
 
     /**

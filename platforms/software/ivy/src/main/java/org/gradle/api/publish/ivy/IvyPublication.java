@@ -25,6 +25,9 @@ import org.gradle.api.tasks.Nested;
 import org.gradle.internal.HasInternalProtocol;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * An {@code IvyPublication} is the representation/configuration of how Gradle should publish something in Ivy format, to an Ivy repository.
@@ -321,7 +324,7 @@ public interface IvyPublication extends Publication {
     /**
      * The organisation for this publication.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getOrganisation"))
     Property<String> getOrganisation();
 
     /**
@@ -335,7 +338,7 @@ public interface IvyPublication extends Publication {
     /**
      * The module for this publication.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getModule"))
     Property<String> getModule();
 
     /**
@@ -349,7 +352,7 @@ public interface IvyPublication extends Publication {
     /**
      * The revision for this publication.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getRevision"))
     Property<String> getRevision();
 
     /**

@@ -24,12 +24,15 @@ import org.gradle.api.provider.Property;
 import org.gradle.api.provider.SetProperty;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 
 import java.io.Reader;
 import java.io.Writer;
 import java.util.Map;
 import java.util.Set;
+
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * A deployment descriptor such as application.xml.
@@ -47,7 +50,7 @@ public interface DeploymentDescriptor {
     /**
      * The version of application.xml. Required. Valid versions are "1.3", "1.4", "5", "6", "7", "8", "9", "10" and "11". Defaults to "6".
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getVersion"))
     Property<String> getVersion();
 
     /** Eager forwarder; see {@link #getVersion()}. */
@@ -59,7 +62,7 @@ public interface DeploymentDescriptor {
     /**
      * The application name. Optional. Only valid with version 6.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getApplicationName"))
     Property<String> getApplicationName();
 
     /** Eager forwarder; see {@link #getApplicationName()}. */
@@ -72,7 +75,7 @@ public interface DeploymentDescriptor {
      * Whether to initialize modules in the order they appear in the descriptor, with the exception of client modules.
      * Optional. Only valid with version 6.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getInitializeInOrder"))
     Property<Boolean> getInitializeInOrder();
 
     /** Eager forwarder; see {@link #getInitializeInOrder()}. */
@@ -84,7 +87,7 @@ public interface DeploymentDescriptor {
     /**
      * The application description. Optional.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDescription"))
     Property<String> getDescription();
 
     /** Eager forwarder; see {@link #getDescription()}. */
@@ -96,7 +99,7 @@ public interface DeploymentDescriptor {
     /**
      * The application display name. Optional.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDisplayName"))
     Property<String> getDisplayName();
 
     /** Eager forwarder; see {@link #getDisplayName()}. */
@@ -108,7 +111,7 @@ public interface DeploymentDescriptor {
     /**
      * The name of the directory to look for libraries in. Optional. If not specified, {@link org.gradle.plugins.ear.Ear#getLibDirName()} is used.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getLibraryDirectory"))
     Property<String> getLibraryDirectory();
 
     /** Eager forwarder; see {@link #getLibraryDirectory()}. */
@@ -121,7 +124,7 @@ public interface DeploymentDescriptor {
      * List of module descriptors. Must not be empty. Non-null and order-maintaining by default. Must maintain order if
      * initializeInOrder is <code>true</code>.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getModules"))
     SetProperty<EarModule> getModules();
 
     /** Eager forwarder; see {@link #getModules()}. */
@@ -166,7 +169,7 @@ public interface DeploymentDescriptor {
     /**
      * List of security roles. Optional. Non-null and order-maintaining by default.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getSecurityRoles"))
     SetProperty<EarSecurityRole> getSecurityRoles();
 
     /** Eager forwarder; see {@link #getSecurityRoles()}. */
@@ -205,7 +208,7 @@ public interface DeploymentDescriptor {
      * Mapping of module paths to module types. Non-null by default. For example, to specify that a module is a java
      * module, set <code>moduleTypeMappings["myJavaModule.jar"] = "java"</code>.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getModuleTypeMappings"))
     MapProperty<String, String> getModuleTypeMappings();
 
     /** Eager forwarder; see {@link #getModuleTypeMappings()}. */

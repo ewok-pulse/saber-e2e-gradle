@@ -21,6 +21,9 @@ import org.gradle.api.initialization.definition.InjectedPluginDependencies;
 import org.gradle.api.provider.Property;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Represents the details about a particular VCS repository that contains a build that produces zero or more components that can be used during dependency resolution.
@@ -44,7 +47,7 @@ public interface VersionControlRepository {
      *
      * @return the root directory of the build, relative to the root of this repository.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getRootDir"))
     Property<String> getRootDir();
 
     /**

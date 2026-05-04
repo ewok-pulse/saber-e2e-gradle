@@ -166,7 +166,7 @@ public abstract class CreateStartScripts extends ConventionTask {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getOptsEnvironmentVar"))
     public Property<String> getOptsEnvironmentVar() {
         return optsEnvironmentVar;
     }
@@ -247,7 +247,7 @@ public abstract class CreateStartScripts extends ConventionTask {
      * The directory to write the scripts into.
      */
     @OutputDirectory
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getOutputDir"))
     public DirectoryProperty getOutputDir() {
         return outputDir;
     }
@@ -264,7 +264,7 @@ public abstract class CreateStartScripts extends ConventionTask {
      * @since 4.5
      */
     @Input
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getExecutableDir"))
     public Property<String> getExecutableDir() {
         return executableDir;
     }
@@ -302,7 +302,7 @@ public abstract class CreateStartScripts extends ConventionTask {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(originalType = Iterable.class)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDefaultJvmOpts", originalType = Iterable.class))
     public abstract ListProperty<String> getDefaultJvmOpts();
 
     /** Eager forwarder; see {@link #getDefaultJvmOpts()}. */
@@ -316,7 +316,7 @@ public abstract class CreateStartScripts extends ConventionTask {
      */
     @Input
     @Optional
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getApplicationName"))
     public Property<String> getApplicationName() {
         return applicationName;
     }
@@ -351,7 +351,7 @@ public abstract class CreateStartScripts extends ConventionTask {
      */
     @Classpath
     @Optional
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getClasspath"))
     public abstract ConfigurableFileCollection getClasspath();
 
     /** Eager forwarder; see {@link #getClasspath()}. */

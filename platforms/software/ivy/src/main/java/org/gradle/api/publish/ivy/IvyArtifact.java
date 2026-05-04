@@ -21,6 +21,9 @@ import org.gradle.api.publish.PublicationArtifact;
 import org.gradle.api.tasks.Optional;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * An artifact published as part of a {@link IvyPublication}.
@@ -30,7 +33,7 @@ public interface IvyArtifact extends PublicationArtifact {
      * The name used to publish the artifact file.
      * Defaults to the name of the module that this artifact belongs to.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getName"))
     Property<String> getName();
 
     /**
@@ -45,7 +48,7 @@ public interface IvyArtifact extends PublicationArtifact {
     /**
      * The type used to publish the artifact file.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getType"))
     Property<String> getType();
 
     /**
@@ -61,7 +64,7 @@ public interface IvyArtifact extends PublicationArtifact {
      * The extension used to publish the artifact file.
      * For an artifact without an extension, this value will be an empty String.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getExtension"))
     Property<String> getExtension();
 
     /**
@@ -78,7 +81,7 @@ public interface IvyArtifact extends PublicationArtifact {
      * An absent value (the default) indicates that this artifact will be published without a classifier.
      */
     @Optional
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getClassifier"))
     Property<String> getClassifier();
 
     /**
@@ -96,7 +99,7 @@ public interface IvyArtifact extends PublicationArtifact {
      * An optional value (the default) indicates that this artifact will be published without a conf attribute.
      */
     @Optional
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getConf"))
     Property<String> getConf();
 
     /**

@@ -37,12 +37,15 @@ import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.Describables;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.util.internal.ClosureBackedAction;
 import org.gradle.workers.WorkQueue;
 
 import java.io.File;
 import java.util.stream.Collectors;
+
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Runs CodeNarc against some source files.
@@ -134,7 +137,7 @@ public abstract class CodeNarc extends AbstractCodeQualityTask implements Report
      * The class path containing the CodeNarc library to be used.
      */
     @Classpath
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getCodenarcClasspath"))
     public abstract ConfigurableFileCollection getCodenarcClasspath();
 
     /**
@@ -151,7 +154,7 @@ public abstract class CodeNarc extends AbstractCodeQualityTask implements Report
      * @since 4.2
      */
     @Classpath
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getCompilationClasspath"))
     public abstract ConfigurableFileCollection getCompilationClasspath();
 
     /**
@@ -187,7 +190,7 @@ public abstract class CodeNarc extends AbstractCodeQualityTask implements Report
      * The maximum number of priority 1 violations allowed before failing the build.
      */
     @Input
-    @ReplacesEagerProperty(originalType = int.class)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getMaxPriority1Violations", originalType = int.class))
     public abstract Property<Integer> getMaxPriority1Violations();
 
     /**
@@ -202,7 +205,7 @@ public abstract class CodeNarc extends AbstractCodeQualityTask implements Report
      * The maximum number of priority 2 violations allowed before failing the build.
      */
     @Input
-    @ReplacesEagerProperty(originalType = int.class)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getMaxPriority2Violations", originalType = int.class))
     public abstract Property<Integer> getMaxPriority2Violations();
 
     /**
@@ -217,7 +220,7 @@ public abstract class CodeNarc extends AbstractCodeQualityTask implements Report
      * The maximum number of priority 3 violations allowed before failing the build.
      */
     @Input
-    @ReplacesEagerProperty(originalType = int.class)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getMaxPriority3Violations", originalType = int.class))
     public abstract Property<Integer> getMaxPriority3Violations();
 
     /**

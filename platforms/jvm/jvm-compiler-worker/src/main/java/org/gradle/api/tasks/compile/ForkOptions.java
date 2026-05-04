@@ -22,10 +22,13 @@ import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.jspecify.annotations.Nullable;
 
 import java.io.File;
+
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Fork options for Java compilation. Only take effect if {@code CompileOptions.fork} is {@code true}.
@@ -44,7 +47,7 @@ public abstract class ForkOptions extends ProviderAwareCompilerDaemonForkOptions
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getExecutable"))
     public abstract Property<String> getExecutable();
 
     /**
@@ -90,7 +93,7 @@ public abstract class ForkOptions extends ProviderAwareCompilerDaemonForkOptions
      * in which case the directory will be chosen automatically.
      */
     @Internal
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getTempDir"))
     public abstract Property<String> getTempDir();
 
     /**

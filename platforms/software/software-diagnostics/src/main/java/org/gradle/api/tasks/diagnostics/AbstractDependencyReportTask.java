@@ -34,6 +34,7 @@ import org.gradle.api.tasks.diagnostics.internal.dependencies.AsciiDependencyRep
 import org.gradle.api.tasks.options.Option;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.serialization.Transient;
 import org.gradle.work.DisableCachingByDefault;
 
@@ -44,6 +45,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Displays the dependency tree for a configuration.
@@ -112,7 +115,7 @@ public abstract class AbstractDependencyReportTask extends AbstractProjectBasedR
      * @return the configurations.
      */
     @Internal
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getConfigurations"))
     public SetProperty<Configuration> getConfigurations() {
         return Objects.requireNonNull(configurations.get());
     }

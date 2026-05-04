@@ -24,6 +24,9 @@ import org.gradle.api.tasks.Optional;
 import org.gradle.internal.HasInternalProtocol;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * The descriptor of any Ivy publication.
@@ -80,7 +83,7 @@ public interface IvyModuleDescriptorSpec {
      * The status for this publication.
      */
     @Optional
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getStatus"))
     Property<String> getStatus();
 
     /**
@@ -95,7 +98,7 @@ public interface IvyModuleDescriptorSpec {
      * The branch for this publication
      */
     @Optional
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getBranch"))
     Property<String> getBranch();
 
     /**

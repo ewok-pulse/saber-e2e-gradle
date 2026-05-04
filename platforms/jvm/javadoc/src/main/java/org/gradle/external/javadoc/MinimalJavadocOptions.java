@@ -32,11 +32,14 @@ import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.process.ExecSpec;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Provides the core Javadoc options.
@@ -44,7 +47,7 @@ import java.util.List;
 public interface MinimalJavadocOptions {
     @Input
     @Optional
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getOverview"))
     Property<String> getOverview();
 
     /** Eager forwarder; see {@link #getOverview()}. */
@@ -57,7 +60,7 @@ public interface MinimalJavadocOptions {
 
     @Input
     @Optional
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getMemberLevel"))
     Property<JavadocMemberLevel> getMemberLevel();
 
     /** Eager forwarder; see {@link #getMemberLevel()}. */
@@ -78,7 +81,7 @@ public interface MinimalJavadocOptions {
 
     @Input
     @Optional
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDoclet"))
     Property<String> getDoclet();
 
     /** Eager forwarder; see {@link #getDoclet()}. */
@@ -103,7 +106,7 @@ public interface MinimalJavadocOptions {
 
     @Input
     @Optional
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getSource"))
     Property<String> getSource();
 
     /** Eager forwarder; see {@link #getSource()}. */
@@ -182,7 +185,7 @@ public interface MinimalJavadocOptions {
     MinimalJavadocOptions extDirs(File... extDirs);
 
     @Console
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getOutputLevel"))
     Property<JavadocOutputLevel> getOutputLevel();
 
     /** Eager forwarder; see {@link #getOutputLevel()}. */
@@ -194,7 +197,7 @@ public interface MinimalJavadocOptions {
     MinimalJavadocOptions verbose();
 
     @Internal
-    @ReplacesEagerProperty(originalType = boolean.class)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getVerbose", originalType = boolean.class))
     Provider<Boolean> getVerbose();
 
     /**
@@ -206,7 +209,7 @@ public interface MinimalJavadocOptions {
     MinimalJavadocOptions quiet();
 
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getBreakIterator", originalType = boolean.class))
     Property<Boolean> getBreakIterator();
 
     /** Eager forwarder; see {@link #getBreakIterator()}. */
@@ -227,7 +230,7 @@ public interface MinimalJavadocOptions {
 
     @Input
     @Optional
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getLocale"))
     Property<String> getLocale();
 
     /** Eager forwarder; see {@link #getLocale()}. */
@@ -240,7 +243,7 @@ public interface MinimalJavadocOptions {
 
     @Input
     @Optional
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getEncoding"))
     Property<String> getEncoding();
 
     /** Eager forwarder; see {@link #getEncoding()}. */
@@ -253,7 +256,7 @@ public interface MinimalJavadocOptions {
 
     @Input
     @Optional
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getJFlags"))
     ListProperty<String> getJFlags();
 
     /** Eager forwarder; see {@link #getJFlags()}. */
@@ -279,7 +282,7 @@ public interface MinimalJavadocOptions {
     MinimalJavadocOptions optionFiles(File... argumentFiles);
 
     @Internal
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDestinationDirectory"))
     DirectoryProperty getDestinationDirectory();
 
     /** Eager forwarder; see {@link #getDestinationDirectory()}. */
@@ -292,7 +295,7 @@ public interface MinimalJavadocOptions {
 
     @Input
     @Optional
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getWindowTitle"))
     Property<String> getWindowTitle();
 
     /** Eager forwarder; see {@link #getWindowTitle()}. */
@@ -305,7 +308,7 @@ public interface MinimalJavadocOptions {
 
     @Input
     @Optional
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getHeader"))
     Property<String> getHeader();
 
     /** Eager forwarder; see {@link #getHeader()}. */
@@ -319,7 +322,7 @@ public interface MinimalJavadocOptions {
     void write(File outputFile) throws IOException;
 
     @Internal
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getSourceNames"))
     ListProperty<String> getSourceNames();
 
     /** Eager forwarder; see {@link #getSourceNames()}. */

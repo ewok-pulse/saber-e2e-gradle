@@ -38,6 +38,8 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
+
 /**
  * <p>Specifies the options to use to fork a Java process.</p>
  */
@@ -50,7 +52,7 @@ public interface JavaForkOptions extends ProcessForkOptions {
      * @return The system properties. Returns an empty map when there are no system properties.
      */
     @Input
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getSystemProperties"))
     MapProperty<String, Object> getSystemProperties();
 
     /**
@@ -87,7 +89,7 @@ public interface JavaForkOptions extends ProcessForkOptions {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDefaultCharacterEncoding"))
     Property<String> getDefaultCharacterEncoding();
 
     /**
@@ -112,7 +114,7 @@ public interface JavaForkOptions extends ProcessForkOptions {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getMinHeapSize"))
     Property<String> getMinHeapSize();
 
     /**
@@ -134,7 +136,7 @@ public interface JavaForkOptions extends ProcessForkOptions {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getMaxHeapSize"))
     Property<String> getMaxHeapSize();
 
     /**
@@ -219,7 +221,7 @@ public interface JavaForkOptions extends ProcessForkOptions {
      * @return The bootstrap classpath. Never returns null.
      */
     @Classpath
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getBootstrapClasspath"))
     ConfigurableFileCollection getBootstrapClasspath();
 
     /**

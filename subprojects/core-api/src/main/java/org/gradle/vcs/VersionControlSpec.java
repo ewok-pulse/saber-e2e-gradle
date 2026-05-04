@@ -22,6 +22,9 @@ import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Captures user-provided information about a version control repository.
@@ -33,13 +36,13 @@ public interface VersionControlSpec extends Describable {
      * Returns a {@link String} identifier which will be unique to this version
      * control specification among other version control specifications.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getUniqueId"))
     Provider<String> getUniqueId();
 
     /**
      * Returns the name of the repository.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getRepoName"))
     Provider<String> getRepoName();
 
     /**
@@ -50,7 +53,7 @@ public interface VersionControlSpec extends Describable {
      * @return the root directory of the build, relative to the root of this repository.
      * @since 4.5
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getRootDir"))
     Property<String> getRootDir();
 
     /**

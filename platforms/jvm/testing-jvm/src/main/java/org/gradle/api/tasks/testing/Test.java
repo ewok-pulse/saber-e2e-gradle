@@ -78,6 +78,7 @@ import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.internal.jvm.DefaultModularitySpec;
 import org.gradle.internal.jvm.JavaModuleDetector;
@@ -114,6 +115,7 @@ import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 import static org.gradle.util.internal.ConfigureUtil.configureUsing;
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Executes JUnit (3.8.x, 4.x or 5.x) or TestNG tests. Test are always run in (one or more) separate JVMs.
@@ -244,7 +246,7 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      * @since 3.3
      */
     @Input
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getJavaVersion"))
     public Provider<JavaVersion> getJavaVersion() {
         return getJavaLauncher().map(launcher -> JavaVersion.toVersion(launcher.getMetadata().getLanguageVersion().asInt()));
     }
@@ -775,7 +777,7 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      * @since 4.0
      */
     @Internal
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getTestClassesDirs"))
     public abstract ConfigurableFileCollection getTestClassesDirs();
 
     /**
@@ -1068,7 +1070,7 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      * Returns the classpath to use to execute the tests.
      */
     @Internal("captured by stableClasspath")
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getClasspath"))
     public abstract ConfigurableFileCollection getClasspath();
 
     /** Eager forwarder; see {@link #getClasspath()}. */
@@ -1082,7 +1084,7 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      * {@code false} the classes which match the include and exclude patterns are executed.
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getScanForTestClasses", originalType = boolean.class))
     public abstract Property<Boolean> getScanForTestClasses();
 
     /** Eager forwarder; see {@link #getScanForTestClasses()}. */

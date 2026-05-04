@@ -20,6 +20,9 @@ import org.gradle.api.Buildable;
 import org.gradle.api.file.RegularFile;
 import org.gradle.api.provider.Provider;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * An artifact published as part of a {@link Publication}.
@@ -30,7 +33,7 @@ public interface PublicationArtifact extends Buildable {
     /**
      * The actual file contents to publish.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getFile"))
     Provider<RegularFile> getFile();
 
     /**

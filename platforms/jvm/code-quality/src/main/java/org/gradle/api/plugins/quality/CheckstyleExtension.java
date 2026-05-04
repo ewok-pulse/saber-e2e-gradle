@@ -25,10 +25,13 @@ import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Optional;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 
 import java.io.File;
 import java.util.Map;
+
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Configuration options for the Checkstyle plugin.
@@ -86,7 +89,7 @@ public abstract class CheckstyleExtension extends CodeQualityExtension {
     /**
      * The properties available for use in the configuration file. These are substituted into the configuration file.
      */
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getConfigProperties"))
     public abstract MapProperty<String, Object> getConfigProperties();
 
     /**
@@ -117,7 +120,7 @@ public abstract class CheckstyleExtension extends CodeQualityExtension {
      * @return the maximum number of errors allowed
      * @since 3.4
      */
-    @ReplacesEagerProperty(originalType = int.class)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getMaxErrors", originalType = int.class))
     public abstract Property<Integer> getMaxErrors();
 
     /**
@@ -140,7 +143,7 @@ public abstract class CheckstyleExtension extends CodeQualityExtension {
      * @return the maximum number of warnings allowed
      * @since 3.4
      */
-    @ReplacesEagerProperty(originalType = int.class)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getMaxWarnings", originalType = int.class))
     public abstract Property<Integer> getMaxWarnings();
 
     /**
@@ -159,7 +162,7 @@ public abstract class CheckstyleExtension extends CodeQualityExtension {
      *
      * Example: showViolations = false
      */
-    @ReplacesEagerProperty(originalType = boolean.class)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getShowViolations", originalType = boolean.class))
     public abstract Property<Boolean> getShowViolations();
 
     /**

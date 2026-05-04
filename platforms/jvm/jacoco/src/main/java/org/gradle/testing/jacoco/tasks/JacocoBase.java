@@ -21,7 +21,10 @@ import org.gradle.api.file.FileCollection;
 import org.gradle.api.tasks.Classpath;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.work.DisableCachingByDefault;
+
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Base class for Jacoco tasks.
@@ -33,7 +36,7 @@ public abstract class JacocoBase extends DefaultTask {
      * Classpath containing Jacoco classes for use by the task.
      */
     @Classpath
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getJacocoClasspath"))
     public abstract ConfigurableFileCollection getJacocoClasspath();
 
     /** Eager forwarder; see {@link #getJacocoClasspath()}. */

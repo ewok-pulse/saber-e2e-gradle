@@ -37,6 +37,7 @@ import org.gradle.api.tasks.bundling.Zip;
 import org.gradle.internal.execution.OutputChangeListener;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.internal.serialization.Cached;
 import org.gradle.util.internal.ConfigureUtil;
@@ -47,6 +48,7 @@ import javax.inject.Inject;
 import java.nio.charset.Charset;
 
 import static org.gradle.api.internal.lambdas.SerializableLambdas.action;
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Assembles a JAR archive.
@@ -133,7 +135,7 @@ public abstract class Jar extends Zip {
      * @since 2.14
      */
     @Input
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getManifestContentCharset"))
     public abstract Property<String> getManifestContentCharset();
 
     /**

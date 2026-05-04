@@ -34,6 +34,8 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
+
 /**
  * Specifies the options for executing a Java application.
  */
@@ -158,7 +160,7 @@ public interface JavaExecSpec extends JavaForkOptions, BaseExecSpec {
      * Returns the classpath for executing the main class.
      */
     @Classpath
-    @ReplacesEagerProperty(fluentSetter = true)
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getClasspath"))
     ConfigurableFileCollection getClasspath();
 
     /**

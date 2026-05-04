@@ -53,7 +53,7 @@ public abstract class AbstractCompile extends SourceTask {
      * @return The classpath.
      */
     @Classpath
-    @ReplacesEagerProperty
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getClasspath"))
     public abstract ConfigurableFileCollection getClasspath();
 
     /**
