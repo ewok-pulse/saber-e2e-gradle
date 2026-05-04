@@ -70,7 +70,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Tells whether the compilation task should fail if compile errors occurred. Defaults to {@code true}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getFailOnError", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isFailOnError", originalType = boolean.class))
     public abstract Property<Boolean> getFailOnError();
 
     /**
@@ -90,7 +90,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Tells whether to turn on verbose output. Defaults to {@code false}.
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getVerbose", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isVerbose", originalType = boolean.class))
     public abstract Property<Boolean> getVerbose();
 
     /**
@@ -110,7 +110,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Tells whether to print which source files are to be compiled. Defaults to {@code false}.
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getListFiles", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isListFiles", originalType = boolean.class))
     public abstract Property<Boolean> getListFiles();
 
     /**
@@ -145,7 +145,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Tells whether to run the Groovy compiler in a separate process. Defaults to {@code true}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getFork", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isFork", originalType = boolean.class))
     public abstract Property<Boolean> getFork();
 
     /**
@@ -228,7 +228,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * No annotation processing will be performed regardless, on Java or Groovy source.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getJavaAnnotationProcessing", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isJavaAnnotationProcessing", originalType = boolean.class))
     public abstract Property<Boolean> getJavaAnnotationProcessing();
 
     /**
@@ -252,7 +252,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * @since 6.1
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getParameters", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isParameters", originalType = boolean.class))
     public abstract Property<Boolean> getParameters();
 
     /**
@@ -366,7 +366,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Defaults to {@code false}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getKeepStubs", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isKeepStubs", originalType = boolean.class))
     public abstract Property<Boolean> getKeepStubs();
 
     /**

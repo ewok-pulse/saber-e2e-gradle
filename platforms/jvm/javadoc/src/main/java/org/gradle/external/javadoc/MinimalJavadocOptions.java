@@ -197,7 +197,7 @@ public interface MinimalJavadocOptions {
     MinimalJavadocOptions verbose();
 
     @Internal
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getVerbose", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isVerbose", originalType = boolean.class))
     Provider<Boolean> getVerbose();
 
     /**
@@ -209,7 +209,7 @@ public interface MinimalJavadocOptions {
     MinimalJavadocOptions quiet();
 
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getBreakIterator", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isBreakIterator", originalType = boolean.class))
     Property<Boolean> getBreakIterator();
 
     /** Eager forwarder; see {@link #getBreakIterator()}. */

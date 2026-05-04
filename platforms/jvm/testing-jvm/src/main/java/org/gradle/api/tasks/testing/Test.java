@@ -1084,7 +1084,7 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      * {@code false} the classes which match the include and exclude patterns are executed.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getScanForTestClasses", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isScanForTestClasses", originalType = boolean.class))
     public abstract Property<Boolean> getScanForTestClasses();
 
     /** Eager forwarder; see {@link #getScanForTestClasses()}. */

@@ -46,7 +46,7 @@ public abstract class ScalaDocOptions implements Serializable {
      * Tells whether to generate deprecation information.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDeprecation", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isDeprecation", originalType = boolean.class))
     public abstract Property<Boolean> getDeprecation();
 
     /**
@@ -66,7 +66,7 @@ public abstract class ScalaDocOptions implements Serializable {
      * Tells whether to generate unchecked information.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getUnchecked", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isUnchecked", originalType = boolean.class))
     public abstract Property<Boolean> getUnchecked();
 
     /**

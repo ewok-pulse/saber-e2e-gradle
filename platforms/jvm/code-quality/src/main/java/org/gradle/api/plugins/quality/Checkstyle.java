@@ -329,7 +329,7 @@ public abstract class Checkstyle extends AbstractCodeQualityTask implements Repo
      * @return true if violations should be displayed on console
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getShowViolations", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isShowViolations", originalType = boolean.class))
     public abstract Property<Boolean> getShowViolations();
 
     /**

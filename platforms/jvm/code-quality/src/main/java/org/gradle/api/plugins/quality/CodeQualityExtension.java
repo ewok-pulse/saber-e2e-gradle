@@ -70,7 +70,7 @@ public abstract class CodeQualityExtension {
      *
      * Example: ignoreFailures = true
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getIgnoreFailures", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isIgnoreFailures", originalType = boolean.class))
     public abstract Property<Boolean> getIgnoreFailures();
 
     /**

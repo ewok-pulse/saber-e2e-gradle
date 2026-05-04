@@ -109,7 +109,7 @@ public abstract class Zip extends AbstractArchiveTask {
      * This means you should not enable this property if you are building JARs to be used with Java 6 and earlier runtimes.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getZip64", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isZip64", originalType = boolean.class))
     public abstract Property<Boolean> getZip64();
 
     /**

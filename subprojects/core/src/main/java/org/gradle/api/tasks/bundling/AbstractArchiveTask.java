@@ -250,7 +250,7 @@ public abstract class AbstractArchiveTask extends AbstractCopyTask {
      * @since 3.4
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getPreserveFileTimestamps", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isPreserveFileTimestamps", originalType = boolean.class))
     public abstract Property<Boolean> getPreserveFileTimestamps();
 
     /**
@@ -287,7 +287,7 @@ public abstract class AbstractArchiveTask extends AbstractCopyTask {
      * @since 3.4
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getReproducibleFileOrder", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isReproducibleFileOrder", originalType = boolean.class))
     public abstract Property<Boolean> getReproducibleFileOrder();
 
     /**

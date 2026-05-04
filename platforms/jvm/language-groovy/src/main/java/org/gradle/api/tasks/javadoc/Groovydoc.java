@@ -202,7 +202,7 @@ public abstract class Groovydoc extends SourceTask {
      * Returns whether to create class and package usage pages.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getUse", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isUse", originalType = boolean.class))
     public abstract Property<Boolean> getUse();
 
     /**
@@ -222,7 +222,7 @@ public abstract class Groovydoc extends SourceTask {
      * Returns whether to include timestamp within hidden comment in generated HTML (Groovy &gt;= 2.4.6).
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getNoTimestamp", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isNoTimestamp", originalType = boolean.class))
     public abstract Property<Boolean> getNoTimestamp();
 
     /**
@@ -242,7 +242,7 @@ public abstract class Groovydoc extends SourceTask {
      * Returns whether to include version stamp within hidden comment in generated HTML (Groovy &gt;= 2.4.6).
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getNoVersionStamp", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isNoVersionStamp", originalType = boolean.class))
     public abstract Property<Boolean> getNoVersionStamp();
 
     /**

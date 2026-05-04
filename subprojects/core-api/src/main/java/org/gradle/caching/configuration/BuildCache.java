@@ -36,7 +36,7 @@ public interface BuildCache {
      *
      * Added for Kotlin source compatibility.
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getEnabled", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isEnabled", originalType = boolean.class))
     Property<Boolean> getEnabled();
 
     /**
@@ -58,7 +58,7 @@ public interface BuildCache {
     /**
      * Controls whether a given build can store outputs in the build cache.
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getPush", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isPush", originalType = boolean.class))
     Property<Boolean> getPush();
 
     /**

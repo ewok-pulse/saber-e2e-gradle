@@ -38,7 +38,7 @@ public interface JUnitXmlReport extends DirectoryReport {
      * Should the output be associated with individual test cases instead of at the suite level.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getOutputPerTestCase", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isOutputPerTestCase", originalType = boolean.class))
     Property<Boolean> getOutputPerTestCase();
 
     /**

@@ -131,7 +131,7 @@ public abstract class HttpBuildCache extends AbstractBuildCache {
      *
      * @since 4.2
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getAllowUntrustedServer", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isAllowUntrustedServer", originalType = boolean.class))
     public abstract Property<Boolean> getAllowUntrustedServer();
 
     /**
@@ -169,7 +169,7 @@ public abstract class HttpBuildCache extends AbstractBuildCache {
      *
      * @since 6.0
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getAllowInsecureProtocol", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isAllowInsecureProtocol", originalType = boolean.class))
     public abstract Property<Boolean> getAllowInsecureProtocol();
 
     /**
@@ -205,7 +205,7 @@ public abstract class HttpBuildCache extends AbstractBuildCache {
      *
      * @since 7.2
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getUseExpectContinue", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isUseExpectContinue", originalType = boolean.class))
     public abstract Property<Boolean> getUseExpectContinue();
 
     /**

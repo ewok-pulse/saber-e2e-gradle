@@ -210,7 +210,7 @@ public abstract class PmdExtension extends CodeQualityExtension {
     /**
      * Whether or not to write PMD results to {@code System.out}.
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getConsoleOutput", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isConsoleOutput", originalType = boolean.class))
     public abstract Property<Boolean> getConsoleOutput();
 
     /**

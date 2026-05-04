@@ -67,7 +67,7 @@ public abstract class BaseScalaCompileOptions implements Serializable {
      * Fail the build on compilation errors.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getFailOnError", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isFailOnError", originalType = boolean.class))
     public abstract Property<Boolean> getFailOnError();
 
     /** Eager forwarder; see {@link #getFailOnError()}. */
@@ -85,7 +85,7 @@ public abstract class BaseScalaCompileOptions implements Serializable {
      * Generate deprecation information.
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDeprecation", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isDeprecation", originalType = boolean.class))
     public abstract Property<Boolean> getDeprecation();
 
     /** Eager forwarder; see {@link #getDeprecation()}. */
@@ -103,7 +103,7 @@ public abstract class BaseScalaCompileOptions implements Serializable {
      * Generate unchecked information.
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getUnchecked", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isUnchecked", originalType = boolean.class))
     public abstract Property<Boolean> getUnchecked();
 
     /** Eager forwarder; see {@link #getUnchecked()}. */
@@ -136,7 +136,7 @@ public abstract class BaseScalaCompileOptions implements Serializable {
      * Run optimizations.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getOptimize", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isOptimize", originalType = boolean.class))
     public abstract Property<Boolean> getOptimize();
 
     /** Eager forwarder; see {@link #getOptimize()}. */
@@ -171,7 +171,7 @@ public abstract class BaseScalaCompileOptions implements Serializable {
      * - true (always recompile all files)
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getForce", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isForce", originalType = boolean.class))
     public abstract Property<Boolean> getForce();
 
     /** Eager forwarder; see {@link #getForce()}. */
@@ -212,7 +212,7 @@ public abstract class BaseScalaCompileOptions implements Serializable {
      * List files to be compiled.
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getListFiles", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isListFiles", originalType = boolean.class))
     public abstract Property<Boolean> getListFiles();
 
     /** Eager forwarder; see {@link #getListFiles()}. */

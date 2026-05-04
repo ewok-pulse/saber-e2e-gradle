@@ -330,7 +330,7 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
      * @since 2.1
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getConsoleOutput", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isConsoleOutput", originalType = boolean.class))
     public abstract Property<Boolean> getConsoleOutput();
 
     /**

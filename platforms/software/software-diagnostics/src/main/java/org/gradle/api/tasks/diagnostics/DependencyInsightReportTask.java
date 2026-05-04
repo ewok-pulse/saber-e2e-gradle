@@ -281,7 +281,7 @@ public abstract class DependencyInsightReportTask extends DefaultTask {
      */
     @Internal
     @Option(option = "single-path", description = "Show at most one path to each dependency")
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getShowSinglePathToDependency", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isShowSinglePathToDependency", originalType = boolean.class))
     public abstract Property<Boolean> getShowSinglePathToDependency();
 
     /**

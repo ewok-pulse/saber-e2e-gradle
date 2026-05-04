@@ -173,7 +173,7 @@ public interface TestFilter {
      * The default is true.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getFailOnNoMatchingTests", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isFailOnNoMatchingTests", originalType = boolean.class))
     Property<Boolean> getFailOnNoMatchingTests();
 
     /**

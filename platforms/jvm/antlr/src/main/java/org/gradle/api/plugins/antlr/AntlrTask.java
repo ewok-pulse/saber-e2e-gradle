@@ -90,7 +90,7 @@ public abstract class AntlrTask extends SourceTask {
      * Specifies that all rules call {@code traceIn}/{@code traceOut}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getTrace", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isTrace", originalType = boolean.class))
     public abstract Property<Boolean> getTrace();
 
     /** Eager forwarder; see {@link #getTrace()}. */
@@ -108,7 +108,7 @@ public abstract class AntlrTask extends SourceTask {
      * Specifies that all lexer rules call {@code traceIn}/{@code traceOut}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getTraceLexer", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isTraceLexer", originalType = boolean.class))
     public abstract Property<Boolean> getTraceLexer();
 
     /** Eager forwarder; see {@link #getTraceLexer()}. */
@@ -126,7 +126,7 @@ public abstract class AntlrTask extends SourceTask {
      * Specifies that all parser rules call {@code traceIn}/{@code traceOut}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getTraceParser", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isTraceParser", originalType = boolean.class))
     public abstract Property<Boolean> getTraceParser();
 
     /** Eager forwarder; see {@link #getTraceParser()}. */
@@ -144,7 +144,7 @@ public abstract class AntlrTask extends SourceTask {
      * Specifies that all tree walker rules call {@code traceIn}/{@code traceOut}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getTraceTreeWalker", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isTraceTreeWalker", originalType = boolean.class))
     public abstract Property<Boolean> getTraceTreeWalker();
 
     /** Eager forwarder; see {@link #getTraceTreeWalker()}. */

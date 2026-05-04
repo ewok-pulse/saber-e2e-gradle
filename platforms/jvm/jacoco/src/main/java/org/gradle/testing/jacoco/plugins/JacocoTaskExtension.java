@@ -96,7 +96,7 @@ public abstract class JacocoTaskExtension {
      * Whether or not the task should generate execution data. Defaults to {@code true}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getEnabled", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isEnabled", originalType = boolean.class))
     public abstract Property<Boolean> getEnabled();
 
     /** Eager forwarder; see {@link #getEnabled()}. */
@@ -204,7 +204,7 @@ public abstract class JacocoTaskExtension {
      * This property is only taken into account if the used JaCoCo version supports this option (JaCoCo version &gt;= 0.7.6)
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getIncludeNoLocationClasses", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isIncludeNoLocationClasses", originalType = boolean.class))
     public abstract Property<Boolean> getIncludeNoLocationClasses();
 
     /** Eager forwarder; see {@link #getIncludeNoLocationClasses()}. */
@@ -236,7 +236,7 @@ public abstract class JacocoTaskExtension {
      * Whether or not to dump the coverage data at VM shutdown. Defaults to {@code true}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDumpOnExit", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isDumpOnExit", originalType = boolean.class))
     public abstract Property<Boolean> getDumpOnExit();
 
     /** Eager forwarder; see {@link #getDumpOnExit()}. */
@@ -316,7 +316,7 @@ public abstract class JacocoTaskExtension {
      * The configuration of the jmx property is only taken into account if the used JaCoCo version supports this option (JaCoCo version &gt;= 0.6.2)
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getJmx", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isJmx", originalType = boolean.class))
     public abstract Property<Boolean> getJmx();
 
     /** Eager forwarder; see {@link #getJmx()}. */

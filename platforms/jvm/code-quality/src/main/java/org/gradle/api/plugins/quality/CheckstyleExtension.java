@@ -162,7 +162,7 @@ public abstract class CheckstyleExtension extends CodeQualityExtension {
      *
      * Example: showViolations = false
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getShowViolations", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isShowViolations", originalType = boolean.class))
     public abstract Property<Boolean> getShowViolations();
 
     /**

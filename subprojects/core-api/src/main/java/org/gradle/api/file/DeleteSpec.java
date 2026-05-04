@@ -23,10 +23,7 @@ import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Optional;
 import org.gradle.internal.HasInternalProtocol;
 import org.jspecify.annotations.Nullable;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.SETTER;
 
 /**
  * A specification for deleting files from the filesystem.

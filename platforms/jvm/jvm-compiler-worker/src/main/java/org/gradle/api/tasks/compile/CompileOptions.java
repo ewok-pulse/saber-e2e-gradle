@@ -76,7 +76,7 @@ public abstract class CompileOptions implements Serializable {
      * Sets whether to fail the build when compilation fails. Defaults to {@code true}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getFailOnError", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isFailOnError", originalType = boolean.class))
     public abstract Property<Boolean> getFailOnError();
 
     /**
@@ -96,7 +96,7 @@ public abstract class CompileOptions implements Serializable {
      * Tells whether to produce verbose output. Defaults to {@code false}.
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getVerbose", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isVerbose", originalType = boolean.class))
     public abstract Property<Boolean> getVerbose();
 
     /**
@@ -116,7 +116,7 @@ public abstract class CompileOptions implements Serializable {
      * Tells whether to log the files to be compiled. Defaults to {@code false}.
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getListFiles", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isListFiles", originalType = boolean.class))
     public abstract Property<Boolean> getListFiles();
 
     /**
@@ -136,7 +136,7 @@ public abstract class CompileOptions implements Serializable {
      * Tells whether to log details of usage of deprecated members or classes. Defaults to {@code false}.
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDeprecation", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isDeprecation", originalType = boolean.class))
     public abstract Property<Boolean> getDeprecation();
 
     /**
@@ -159,7 +159,7 @@ public abstract class CompileOptions implements Serializable {
      * Tells whether to log warning messages. The default is {@code true}.
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getWarnings", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isWarnings", originalType = boolean.class))
     public abstract Property<Boolean> getWarnings();
 
     /**
@@ -201,7 +201,7 @@ public abstract class CompileOptions implements Serializable {
      * to {@code true}. See {@link DebugOptions#getDebugLevel()} for which debugging information will be generated.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDebug", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isDebug", originalType = boolean.class))
     public abstract Property<Boolean> getDebug();
 
     /**
@@ -243,7 +243,7 @@ public abstract class CompileOptions implements Serializable {
      * Defaults to {@code false}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getFork", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isFork", originalType = boolean.class))
     public abstract Property<Boolean> getFork();
 
     /**
@@ -380,7 +380,7 @@ public abstract class CompileOptions implements Serializable {
      *
      */
     @Internal
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getIncremental", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isIncremental", originalType = boolean.class))
     public abstract Property<Boolean> getIncremental();
 
     /**

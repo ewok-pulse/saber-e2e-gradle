@@ -22,7 +22,6 @@ import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.MapProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
-import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.process.CommandLineArgumentProvider;
@@ -340,19 +339,6 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
      * No need to upgrade getter since it's already upgraded via ExecSpec
      */
     static class ArgsAdapter {
-        @BytecodeUpgrade
-        @SuppressWarnings("rawtypes")
-        static AbstractExecTask setArgs(AbstractExecTask self, List<String> args) {
-            return setArgs(self, (Iterable<?>) args);
-        }
-
-        @BytecodeUpgrade
-        @SuppressWarnings({"rawtypes", "unchecked"})
-        static AbstractExecTask setArgs(AbstractExecTask self, Iterable<?> args) {
-            self.getArgs().empty();
-            self.args(args);
-            return self;
-        }
     }
 
     /**

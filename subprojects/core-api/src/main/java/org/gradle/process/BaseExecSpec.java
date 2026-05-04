@@ -36,7 +36,7 @@ public interface BaseExecSpec extends ProcessForkOptions {
      *
      * @return whether a non-zero exit value is ignored, or an exception thrown
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getIgnoreExitValue", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isIgnoreExitValue", originalType = boolean.class))
     Property<Boolean> getIgnoreExitValue();
 
     /**
