@@ -308,10 +308,17 @@ public abstract class Wrapper extends DefaultTask {
      * <p>The resulting distribution url is validated before it is written to the gradle-wrapper.properties file.
      */
     @Input
-    @ReplacesEagerProperty
     @Option(option = "gradle-version", description = "The version of the Gradle distribution required by the wrapper. " +
         "The following labels are allowed: latest, release-candidate, release-milestone, release-nightly, and nightly.")
     public abstract Property<String> getGradleVersion();
+
+    /**
+     * Sets the version of the gradle distribution required by the wrapper.
+     */
+    @EagerSetter
+    public void setGradleVersion(String gradleVersion) {
+        getGradleVersion().set(gradleVersion);
+    }
 
     /**
      * Returns the type of the Gradle distribution to be used by the wrapper. By default, this is {@link DistributionType#BIN},
@@ -362,9 +369,16 @@ public abstract class Wrapper extends DefaultTask {
      * <p>The distribution url is validated before it is written to the gradle-wrapper.properties file.
      */
     @Input
-    @ReplacesEagerProperty
     @Option(option = "gradle-distribution-url", description = "The URL to download the Gradle distribution from.")
     public abstract Property<String> getDistributionUrl();
+
+    /**
+     * Sets the URL to download the gradle distribution from.
+     */
+    @EagerSetter
+    public void setDistributionUrl(String url) {
+        getDistributionUrl().set(url);
+    }
 
     /**
      * The SHA-256 hash sum of the gradle distribution.

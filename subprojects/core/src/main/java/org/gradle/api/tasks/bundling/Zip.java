@@ -134,6 +134,13 @@ public abstract class Zip extends AbstractArchiveTask {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     public abstract Property<String> getMetadataCharset();
+
+    /**
+     * Sets the character set used to encode ZIP metadata like file names.
+     */
+    @EagerSetter
+    public void setMetadataCharset(String metadataCharset) {
+        getMetadataCharset().set(metadataCharset);
+    }
 }

@@ -25,6 +25,7 @@ import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.tasks.IgnoreEmptyDirectories;
 import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.Internal;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
@@ -82,14 +83,18 @@ public abstract class TestReport extends DefaultTask {
      * @since 7.4
      */
     @OutputDirectory
-    @ReplacesEagerProperty(
-        replacedAccessors = {
-            @ReplacedAccessor(value = GETTER, name = "getDestinationDir"),
-            @ReplacedAccessor(value = SETTER, name = "setDestinationDir")
-        },
-        deprecation = @ReplacedDeprecation(removedIn = RemovedIn.GRADLE9)
-    )
     public abstract DirectoryProperty getDestinationDirectory();
+
+    /**
+     * Sets the directory to write the HTML report to.
+     *
+     * @deprecated Use {@link #getDestinationDirectory()} instead.
+     */
+    @Deprecated
+    @EagerSetter
+    public void setDestinationDir(File destinationDir) {
+        getDestinationDirectory().set(destinationDir);
+    }
 
     /**
      * Returns the set of binary test results to include in the report.

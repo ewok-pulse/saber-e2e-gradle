@@ -41,8 +41,6 @@ import org.gradle.api.tasks.diagnostics.internal.TaskReportModel;
 import org.gradle.api.tasks.diagnostics.internal.TaskReportRenderer;
 import org.gradle.api.tasks.options.Option;
 import org.gradle.internal.Try;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.serialization.Cached;
 import org.gradle.util.Path;
 import org.gradle.work.DisableCachingByDefault;
@@ -91,11 +89,15 @@ public abstract class TaskReportTask extends ConventionReportTask {
      */
     @Input
     @Option(option = "all", description = "Show additional tasks and detail.")
-    @ReplacesEagerProperty(replacedAccessors = {
-        @ReplacedAccessor(value = ReplacedAccessor.AccessorType.GETTER, name = "isDetail", originalType = boolean.class),
-        @ReplacedAccessor(value = ReplacedAccessor.AccessorType.SETTER, name = "setShowDetail", originalType = boolean.class)
-    })
     public abstract Property<Boolean> getShowDetail();
+
+    /**
+     * Sets whether to show "invisible" tasks without a group or dependent tasks.
+     */
+    @EagerSetter
+    public void setShowDetail(boolean detail) {
+        getShowDetail().set(detail);
+    }
 
     // kotlin source compatibility
     @Internal

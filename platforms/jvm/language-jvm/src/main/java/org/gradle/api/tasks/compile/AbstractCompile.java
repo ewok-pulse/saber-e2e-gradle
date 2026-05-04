@@ -30,6 +30,8 @@ import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.work.DisableCachingByDefault;
 
+import java.io.File;
+
 import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.SETTER;
 
@@ -71,15 +73,19 @@ public abstract class AbstractCompile extends SourceTask {
      * @since 6.1
      */
     @OutputDirectory
-    @ReplacesEagerProperty(
-        replacedAccessors = {
-            @ReplacedAccessor(value = GETTER, name = "getDestinationDir"),
-            @ReplacedAccessor(value = SETTER, name = "setDestinationDir")
-        },
-        deprecation = @ReplacedDeprecation(removedIn = RemovedIn.GRADLE9, withUpgradeGuideMajorVersion = 7, withUpgradeGuideSection = "compile_task_wiring")
-    )
     public DirectoryProperty getDestinationDirectory() {
         return destinationDirectory;
+    }
+
+    /**
+     * Sets the directory to generate the {@code .class} files into.
+     *
+     * @deprecated Use {@link #getDestinationDirectory()} instead.
+     */
+    @Deprecated
+    @EagerSetter
+    public void setDestinationDir(File destinationDir) {
+        getDestinationDirectory().set(destinationDir);
     }
 
     /**

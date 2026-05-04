@@ -31,6 +31,7 @@ import org.gradle.api.java.archives.internal.CustomManifestInternalWrapper;
 import org.gradle.api.java.archives.internal.DefaultManifest;
 import org.gradle.api.java.archives.internal.ManifestInternal;
 import org.gradle.api.provider.Property;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.bundling.Zip;
@@ -132,8 +133,15 @@ public abstract class Jar extends Zip {
      * @since 2.14
      */
     @Input
-    @ReplacesEagerProperty
     public abstract Property<String> getManifestContentCharset();
+
+    /**
+     * Sets the character set used to encode JAR metadata fields such as long file names.
+     */
+    @EagerSetter
+    public void setManifestContentCharset(String manifestContentCharset) {
+        getManifestContentCharset().set(manifestContentCharset);
+    }
 
     /**
      * Returns the manifest for this JAR archive.

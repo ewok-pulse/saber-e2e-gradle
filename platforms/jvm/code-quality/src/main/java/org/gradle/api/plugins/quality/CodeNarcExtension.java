@@ -118,6 +118,13 @@ public abstract class CodeNarcExtension extends CodeQualityExtension {
     /**
      * The format type of the CodeNarc report. One of <code>html</code>, <code>xml</code>, <code>text</code>, <code>console</code>.
      */
-    @ReplacesEagerProperty
     public abstract Property<String> getReportFormat();
+
+    /**
+     * Sets the format type of the CodeNarc report.
+     */
+    @EagerSetter
+    public void setReportFormat(String reportFormat) {
+        getReportFormat().set(reportFormat);
+    }
 }

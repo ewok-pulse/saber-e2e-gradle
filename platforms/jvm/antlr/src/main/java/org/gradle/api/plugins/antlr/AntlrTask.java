@@ -32,6 +32,7 @@ import org.gradle.api.plugins.antlr.internal.AntlrSpec;
 import org.gradle.api.plugins.antlr.internal.AntlrSpecFactory;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
+import org.jspecify.annotations.Nullable;
 import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.IgnoreEmptyDirectories;
@@ -43,6 +44,7 @@ import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.SkipWhenEmpty;
+import java.util.List;
 import org.gradle.api.tasks.SourceTask;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.UncheckedException;
@@ -167,8 +169,18 @@ public abstract class AntlrTask extends SourceTask {
      * @return The antlr command-line arguments
      */
     @Input
-    @ReplacesEagerProperty
     public abstract ListProperty<String> getArguments();
+
+    /**
+     * Sets the list of command-line arguments passed to the antlr process. A {@code null}
+     * value leaves the previous value untouched, mirroring the historical eager behaviour.
+     */
+    @EagerSetter
+    public void setArguments(@Nullable List<String> arguments) {
+        if (arguments != null) {
+            getArguments().set(arguments);
+        }
+    }
 
     /**
      * Returns the directory to generate the parser source files into.

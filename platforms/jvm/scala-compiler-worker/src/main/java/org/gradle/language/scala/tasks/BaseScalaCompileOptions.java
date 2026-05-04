@@ -30,11 +30,12 @@ import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.scala.IncrementalCompileOptions;
 import org.gradle.api.tasks.scala.ScalaForkOptions;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.jspecify.annotations.Nullable;
 
 import javax.inject.Inject;
-import java.io.Serializable;
+
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * Options for Scala platform compilation.
@@ -183,8 +184,19 @@ public abstract class BaseScalaCompileOptions implements Serializable {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     public abstract ListProperty<String> getAdditionalParameters();
+
+    /**
+     * Sets the additional parameters passed to the Scala compiler.
+     */
+    @EagerSetter
+    public void setAdditionalParameters(@Nullable List<String> additionalParameters) {
+        if (additionalParameters != null) {
+            getAdditionalParameters().set(additionalParameters);
+        } else {
+            getAdditionalParameters().empty();
+        }
+    }
 
     /**
      * List files to be compiled.
