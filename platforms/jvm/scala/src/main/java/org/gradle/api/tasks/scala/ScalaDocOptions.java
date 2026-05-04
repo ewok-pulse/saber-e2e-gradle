@@ -16,15 +16,16 @@
 package org.gradle.api.tasks.scala;
 
 
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Options for the ScalaDoc tool.
@@ -41,8 +42,15 @@ public abstract class ScalaDocOptions implements Serializable {
      * Tells whether to generate deprecation information.
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getDeprecation();
+
+    /**
+     * Sets whether to generate deprecation information.
+     */
+    @EagerSetter
+    public void setDeprecation(boolean deprecation) {
+        getDeprecation().set(deprecation);
+    }
 
     @Internal
     public Property<Boolean> getIsDeprecation() {
@@ -53,8 +61,15 @@ public abstract class ScalaDocOptions implements Serializable {
      * Tells whether to generate unchecked information.
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getUnchecked();
+
+    /**
+     * Sets whether to generate unchecked information.
+     */
+    @EagerSetter
+    public void setUnchecked(boolean unchecked) {
+        getUnchecked().set(unchecked);
+    }
 
     @Internal
     public Property<Boolean> getIsUnchecked() {
@@ -66,48 +81,90 @@ public abstract class ScalaDocOptions implements Serializable {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     public abstract Property<String> getWindowTitle();
+
+    /**
+     * Sets the text to appear in the window title.
+     */
+    @EagerSetter
+    public void setWindowTitle(String windowTitle) {
+        getWindowTitle().set(windowTitle);
+    }
 
     /**
      * Returns the HTML text to appear in the main frame title.
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     public abstract Property<String> getDocTitle();
+
+    /**
+     * Sets the HTML text to appear in the main frame title.
+     */
+    @EagerSetter
+    public void setDocTitle(String docTitle) {
+        getDocTitle().set(docTitle);
+    }
 
     /**
      * Returns the HTML text to appear in the header for each page.
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     public abstract Property<String> getHeader();
+
+    /**
+     * Sets the HTML text to appear in the header for each page.
+     */
+    @EagerSetter
+    public void setHeader(String header) {
+        getHeader().set(header);
+    }
 
     /**
      * Returns the HTML text to appear in the footer for each page.
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     public abstract Property<String> getFooter();
+
+    /**
+     * Sets the HTML text to appear in the footer for each page.
+     */
+    @EagerSetter
+    public void setFooter(String footer) {
+        getFooter().set(footer);
+    }
 
     /**
      * Returns the HTML text to appear in the top text for each page.
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     public abstract Property<String> getTop();
+
+    /**
+     * Sets the HTML text to appear in the top text for each page.
+     */
+    @EagerSetter
+    public void setTop(String top) {
+        getTop().set(top);
+    }
 
     /**
      * Returns the HTML text to appear in the bottom text for each page.
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     public abstract Property<String> getBottom();
+
+    /**
+     * Sets the HTML text to appear in the bottom text for each page.
+     */
+    @EagerSetter
+    public void setBottom(String bottom) {
+        getBottom().set(bottom);
+    }
 
     /**
      * Returns the additional parameters passed to the compiler.
@@ -115,6 +172,14 @@ public abstract class ScalaDocOptions implements Serializable {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     public abstract ListProperty<String> getAdditionalParameters();
+
+    /**
+     * Sets the additional parameters passed to the compiler.
+     * Each parameter must start with '-'.
+     */
+    @EagerSetter
+    public void setAdditionalParameters(List<String> additionalParameters) {
+        getAdditionalParameters().set(additionalParameters);
+    }
 }

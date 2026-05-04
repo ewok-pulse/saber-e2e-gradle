@@ -16,10 +16,12 @@
 package org.gradle.process;
 
 import org.gradle.api.file.DirectoryProperty;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.MapProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
+import java.io.File;
 import java.util.Map;
 
 /**
@@ -31,8 +33,28 @@ public interface ProcessForkOptions {
      *
      * @return The executable.
      */
-    @ReplacesEagerProperty(adapter = ProcessForkOptionsAdapters.ExecutableAdapter.class)
     Property<String> getExecutable();
+
+    /**
+     * Sets the name of the executable to use.
+     *
+     * @param executable The executable. Must not be null.
+     * @since 4.0
+     */
+    @EagerSetter
+    default void setExecutable(String executable) {
+        getExecutable().set(executable);
+    }
+
+    /**
+     * Sets the name of the executable to use.
+     *
+     * @param executable The executable. Must not be null.
+     */
+    @EagerSetter
+    default void setExecutable(Object executable) {
+        executable(executable);
+    }
 
     /**
      * Sets the name of the executable to use.
@@ -47,8 +69,29 @@ public interface ProcessForkOptions {
      *
      * @return The working directory. Never returns null.
      */
-    @ReplacesEagerProperty(adapter = ProcessForkOptionsAdapters.WorkingDirAdapter.class)
     DirectoryProperty getWorkingDir();
+
+    /**
+     * Sets the working directory for the process.
+     *
+     * @param dir The working directory. Must not be null.
+     * @since 4.0
+     */
+    @EagerSetter
+    default void setWorkingDir(File dir) {
+        getWorkingDir().set(dir);
+    }
+
+    /**
+     * Sets the working directory for the process. The supplied argument is evaluated as per {@link
+     * org.gradle.api.Project#file(Object)}.
+     *
+     * @param dir The working directory. Must not be null.
+     */
+    @EagerSetter
+    default void setWorkingDir(Object dir) {
+        workingDir(dir);
+    }
 
     /**
      * Sets the working directory for the process. The supplied argument is evaluated as per {@link
@@ -64,8 +107,17 @@ public interface ProcessForkOptions {
      *
      * @return The environment. Returns an empty map when there are no environment variables.
      */
-    @ReplacesEagerProperty
     MapProperty<String, Object> getEnvironment();
+
+    /**
+     * Sets the environment variable to use for the process.
+     *
+     * @param environment The environment variables. Must not be null.
+     */
+    @EagerSetter
+    default void setEnvironment(Map<String, ?> environment) {
+        getEnvironment().set(environment);
+    }
 
     /**
      * Adds some environment variables to the environment for this process.

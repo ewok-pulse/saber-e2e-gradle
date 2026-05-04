@@ -15,6 +15,7 @@
  */
 package org.gradle.process;
 
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
@@ -32,8 +33,19 @@ public interface BaseExecSpec extends ProcessForkOptions {
      *
      * @return whether a non-zero exit value is ignored, or an exception thrown
      */
-    @ReplacesEagerProperty(originalType = boolean.class, fluentSetter = true)
     Property<Boolean> getIgnoreExitValue();
+
+    /**
+     * Sets whether a non-zero exit value is ignored, or an exception thrown.
+     *
+     * @param ignoreExitValue whether a non-zero exit value is ignored, or an exception thrown
+     * @return this
+     */
+    @EagerSetter
+    default BaseExecSpec setIgnoreExitValue(boolean ignoreExitValue) {
+        getIgnoreExitValue().set(ignoreExitValue);
+        return this;
+    }
 
     /**
      * Added for Kotlin DSL source compatibility.
@@ -48,8 +60,20 @@ public interface BaseExecSpec extends ProcessForkOptions {
      *
      * @return The standard input stream.
      */
-    @ReplacesEagerProperty(fluentSetter = true)
     Property<InputStream> getStandardInput();
+
+    /**
+     * Sets the standard input stream for the process executing the command. The stream is closed after the process
+     * completes.
+     *
+     * @param standardInput The standard input stream for the process. Must not be null.
+     * @return this
+     */
+    @EagerSetter
+    default BaseExecSpec setStandardInput(InputStream standardInput) {
+        getStandardInput().set(standardInput);
+        return this;
+    }
 
     /**
      * Returns the output stream to consume standard output from the process executing the command. Defaults to {@code
@@ -57,8 +81,20 @@ public interface BaseExecSpec extends ProcessForkOptions {
      *
      * @return The output stream
      */
-    @ReplacesEagerProperty(fluentSetter = true)
     Property<OutputStream> getStandardOutput();
+
+    /**
+     * Sets the output stream to consume standard output from the process executing the command. The stream is closed
+     * after the process completes.
+     *
+     * @param standardOutput The standard output stream for the process. Must not be null.
+     * @return this
+     */
+    @EagerSetter
+    default BaseExecSpec setStandardOutput(OutputStream standardOutput) {
+        getStandardOutput().set(standardOutput);
+        return this;
+    }
 
     /**
      * Returns the output stream to consume standard error from the process executing the command. Default to {@code
@@ -66,8 +102,20 @@ public interface BaseExecSpec extends ProcessForkOptions {
      *
      * @return The error output stream.
      */
-    @ReplacesEagerProperty(fluentSetter = true)
     Property<OutputStream> getErrorOutput();
+
+    /**
+     * Sets the output stream to consume standard error from the process executing the command. The stream is closed
+     * after the process completes.
+     *
+     * @param errorOutput The standard output error stream for the process. Must not be null.
+     * @return this
+     */
+    @EagerSetter
+    default BaseExecSpec setErrorOutput(OutputStream errorOutput) {
+        getErrorOutput().set(errorOutput);
+        return this;
+    }
 
     /**
      * Returns the full command line, including the executable plus its arguments.

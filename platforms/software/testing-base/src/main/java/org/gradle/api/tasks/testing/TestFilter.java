@@ -15,11 +15,13 @@
  */
 package org.gradle.api.tasks.testing;
 
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.SetProperty;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+
+import java.util.Arrays;
 
 /**
  * Allows filtering tests for execution.
@@ -105,8 +107,19 @@ public interface TestFilter {
      * @return included test name patterns
      */
     @Input
-    @ReplacesEagerProperty(adapter = TestFilterAdapters.IncludePatternsAdapter.class)
     SetProperty<String> getIncludePatterns();
+
+    /**
+     * Sets the test name patterns to be included in the filter. Wildcard '*' is supported. Replaces any existing test name patterns.
+     *
+     * @param includePatterns class or method name patterns to set, may contain wildcard '*'
+     * @return this filter object
+     */
+    @EagerSetter
+    default TestFilter setIncludePatterns(String... includePatterns) {
+        getIncludePatterns().set(Arrays.asList(includePatterns));
+        return this;
+    }
 
     /**
      * Returns the excluded test name patterns. They can be class or method names and may contain wildcard '*'.
@@ -115,8 +128,20 @@ public interface TestFilter {
      * @since 5.0
      */
     @Input
-    @ReplacesEagerProperty(adapter = TestFilterAdapters.ExcludePatternsAdapter.class)
     SetProperty<String> getExcludePatterns();
+
+    /**
+     * Sets the test name patterns to be excluded in the filter. Wildcard '*' is supported. Replaces any existing test name patterns.
+     *
+     * @param excludePatterns class or method name patterns to set, may contain wildcard '*'
+     * @return this filter object
+     * @since 5.0
+     */
+    @EagerSetter
+    default TestFilter setExcludePatterns(String... excludePatterns) {
+        getExcludePatterns().set(Arrays.asList(excludePatterns));
+        return this;
+    }
 
     /**
      * Add a test method specified by test class name and method name.
@@ -142,8 +167,16 @@ public interface TestFilter {
      * The default is true.
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     Property<Boolean> getFailOnNoMatchingTests();
+
+    /**
+     * Let the test task fail if a filter configuration was provided but no test matched the given configuration.
+     * @param failOnNoMatchingTests whether a test task should fail if no test is matching the filter configuration.
+     * */
+    @EagerSetter
+    default void setFailOnNoMatchingTests(boolean failOnNoMatchingTests) {
+        getFailOnNoMatchingTests().set(failOnNoMatchingTests);
+    }
 
     /**
      * Used for Kotlin source compatibility. use {@link #getFailOnNoMatchingTests()} instead.

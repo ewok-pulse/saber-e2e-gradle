@@ -17,6 +17,7 @@
 package org.gradle.api.file;
 
 import org.gradle.api.Incubating;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Optional;
@@ -47,6 +48,15 @@ public interface DeleteSpec {
     @Input
     @Optional
     @Incubating
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = SETTER, name = "setFollowSymlinks", originalType = boolean.class))
     Property<Boolean> getFollowSymlinks();
+
+    /**
+     * Specifies whether or not symbolic links should be followed during deletion.
+     *
+     * @param followSymlinks deletion will follow symlinks when true.
+     */
+    @EagerSetter
+    default void setFollowSymlinks(boolean followSymlinks) {
+        getFollowSymlinks().set(followSymlinks);
+    }
 }

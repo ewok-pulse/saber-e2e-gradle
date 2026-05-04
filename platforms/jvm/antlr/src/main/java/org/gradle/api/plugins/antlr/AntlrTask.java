@@ -24,6 +24,7 @@ import org.gradle.api.file.FileTree;
 import org.gradle.api.file.FileType;
 import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.file.SourceDirectorySet;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.plugins.antlr.internal.AntlrExecuter;
 import org.gradle.api.plugins.antlr.internal.AntlrResult;
 import org.gradle.api.plugins.antlr.internal.AntlrSourceGenerationException;
@@ -84,8 +85,13 @@ public abstract class AntlrTask extends SourceTask {
      * Specifies that all rules call {@code traceIn}/{@code traceOut}.
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getTrace();
+
+    /** Eager forwarder; see {@link #getTrace()}. */
+    @EagerSetter
+    public void setTrace(boolean trace) {
+        getTrace().set(trace);
+    }
 
     @Internal
     public Property<Boolean> getIsTrace() {
@@ -96,8 +102,13 @@ public abstract class AntlrTask extends SourceTask {
      * Specifies that all lexer rules call {@code traceIn}/{@code traceOut}.
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getTraceLexer();
+
+    /** Eager forwarder; see {@link #getTraceLexer()}. */
+    @EagerSetter
+    public void setTraceLexer(boolean traceLexer) {
+        getTraceLexer().set(traceLexer);
+    }
 
     @Internal
     public Property<Boolean> getIsTraceLexer() {
@@ -108,8 +119,13 @@ public abstract class AntlrTask extends SourceTask {
      * Specifies that all parser rules call {@code traceIn}/{@code traceOut}.
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getTraceParser();
+
+    /** Eager forwarder; see {@link #getTraceParser()}. */
+    @EagerSetter
+    public void setTraceParser(boolean traceParser) {
+        getTraceParser().set(traceParser);
+    }
 
     @Internal
     public Property<Boolean> getIsTraceParser() {
@@ -120,8 +136,13 @@ public abstract class AntlrTask extends SourceTask {
      * Specifies that all tree walker rules call {@code traceIn}/{@code traceOut}.
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getTraceTreeWalker();
+
+    /** Eager forwarder; see {@link #getTraceTreeWalker()}. */
+    @EagerSetter
+    public void setTraceTreeWalker(boolean traceTreeWalker) {
+        getTraceTreeWalker().set(traceTreeWalker);
+    }
 
     @Internal
     public Property<Boolean> getIsTraceTreeWalker() {
@@ -132,8 +153,13 @@ public abstract class AntlrTask extends SourceTask {
      * The maximum heap size for the forked antlr process (ex: '1g').
      */
     @Internal
-    @ReplacesEagerProperty
     public abstract Property<String> getMaxHeapSize();
+
+    /** Eager forwarder; see {@link #getMaxHeapSize()}. */
+    @EagerSetter
+    public void setMaxHeapSize(String maxHeapSize) {
+        getMaxHeapSize().set(maxHeapSize);
+    }
 
     /**
      * List of command-line arguments passed to the antlr process
@@ -150,8 +176,17 @@ public abstract class AntlrTask extends SourceTask {
      * @return The output directory.
      */
     @OutputDirectory
-    @ReplacesEagerProperty
     public abstract DirectoryProperty getOutputDirectory();
+
+    /**
+     * Specifies the directory to generate the parser source files into.
+     *
+     * @param outputDirectory The output directory. Must not be null.
+     */
+    @EagerSetter
+    public void setOutputDirectory(File outputDirectory) {
+        getOutputDirectory().set(outputDirectory);
+    }
 
     /**
      * Returns the classpath containing the Ant ANTLR task implementation.
@@ -159,8 +194,17 @@ public abstract class AntlrTask extends SourceTask {
      * @return The Ant task implementation classpath.
      */
     @Classpath
-    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getAntlrClasspath();
+
+    /**
+     * Specifies the classpath containing the Ant ANTLR task implementation.
+     *
+     * @param antlrClasspath The Ant task implementation classpath. Must not be null.
+     */
+    @EagerSetter
+    public void setAntlrClasspath(FileCollection antlrClasspath) {
+        getAntlrClasspath().setFrom(antlrClasspath);
+    }
 
     @Inject
     protected abstract WorkerProcessFactory getWorkerProcessBuilderFactory();

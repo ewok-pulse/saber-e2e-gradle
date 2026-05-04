@@ -22,11 +22,13 @@ import org.gradle.api.Action;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.Directory;
 import org.gradle.api.file.DirectoryProperty;
+import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileTree;
 import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.file.RegularFile;
 import org.gradle.api.internal.file.FileTreeInternal;
 import org.gradle.api.internal.provider.PropertyFactory;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.internal.tasks.compile.CompilationSourceDirs;
 import org.gradle.api.jvm.ModularitySpec;
 import org.gradle.api.model.ObjectFactory;
@@ -246,8 +248,15 @@ public abstract class Javadoc extends SourceTask {
      * @return The directory.
      */
     @Internal
-    @ReplacesEagerProperty
     public abstract DirectoryProperty getDestinationDir();
+
+    /**
+     * <p>Sets the directory to generate the documentation into.</p>
+     */
+    @EagerSetter
+    public void setDestinationDir(File destinationDir) {
+        getDestinationDir().set(destinationDir);
+    }
 
     @OutputDirectory
     @ReplacesEagerProperty(adapter = OutputDirectoryAdapter.class)
@@ -259,8 +268,17 @@ public abstract class Javadoc extends SourceTask {
      * Returns the amount of memory allocated to this task.
      */
     @Internal
-    @ReplacesEagerProperty
     public abstract Property<String> getMaxMemory();
+
+    /**
+     * Sets the amount of memory allocated to this task.
+     *
+     * @param maxMemory The amount of memory
+     */
+    @EagerSetter
+    public void setMaxMemory(String maxMemory) {
+        getMaxMemory().set(maxMemory);
+    }
 
     /**
      * <p>Returns the title for the generated documentation.</p>
@@ -269,8 +287,15 @@ public abstract class Javadoc extends SourceTask {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     public abstract Property<String> getTitle();
+
+    /**
+     * <p>Sets the title for the generated documentation.</p>
+     */
+    @EagerSetter
+    public void setTitle(String title) {
+        getTitle().set(title);
+    }
 
     /**
      * Returns the classpath to use to resolve type references in the source code.
@@ -278,8 +303,17 @@ public abstract class Javadoc extends SourceTask {
      * @return The classpath.
      */
     @Classpath
-    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getClasspath();
+
+    /**
+     * Sets the classpath to use to resolve type references in this source code.
+     *
+     * @param classpath The classpath. Must not be null.
+     */
+    @EagerSetter
+    public void setClasspath(FileCollection classpath) {
+        getClasspath().setFrom(classpath);
+    }
 
     /**
      * Returns the module path handling of this javadoc task.
@@ -325,8 +359,13 @@ public abstract class Javadoc extends SourceTask {
      * this task will fail on Javadoc error. When {@code false}, this task will ignore Javadoc errors.
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getFailOnError();
+
+    /** Eager forwarder; see {@link #getFailOnError()}. */
+    @EagerSetter
+    public void setFailOnError(boolean failOnError) {
+        getFailOnError().set(failOnError);
+    }
 
     @ReplacedBy("getFailOnError()")
     public Property<Boolean> getIsFailOnError() {
@@ -348,8 +387,13 @@ public abstract class Javadoc extends SourceTask {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     public abstract Property<String> getExecutable();
+
+    /** Eager forwarder; see {@link #getExecutable()}. */
+    @EagerSetter
+    public void setExecutable(String executable) {
+        getExecutable().set(executable);
+    }
 
     @Inject
     protected abstract Deleter getDeleter();

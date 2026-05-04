@@ -18,11 +18,11 @@ package org.gradle.api.tasks.ant;
 import org.apache.tools.ant.Target;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.internal.ConventionTask;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.work.DisableCachingByDefault;
 import org.jspecify.annotations.Nullable;
 
@@ -57,15 +57,29 @@ public abstract class AntTarget extends ConventionTask {
      * Returns the Ant target to execute.
      */
     @Internal
-    @ReplacesEagerProperty
     public abstract Property<Target> getTarget();
+
+    /**
+     * Sets the Ant target to execute.
+     */
+    @EagerSetter
+    public void setTarget(Target target) {
+        getTarget().set(target);
+    }
 
     /**
      * Returns the Ant project base directory to use when executing the target.
      */
     @Internal
-    @ReplacesEagerProperty
     public abstract DirectoryProperty getBaseDir();
+
+    /**
+     * Sets the Ant project base directory to use when executing the target.
+     */
+    @EagerSetter
+    public void setBaseDir(File baseDir) {
+        getBaseDir().set(baseDir);
+    }
 
     /**
      * {@inheritDoc}

@@ -15,8 +15,12 @@
  */
 package org.gradle.process;
 
+import java.util.List;
+
 import org.gradle.api.Incubating;
 import org.gradle.api.file.ConfigurableFileCollection;
+import org.gradle.api.file.FileCollection;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.jvm.ModularitySpec;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
@@ -67,19 +71,47 @@ public interface JavaExecSpec extends JavaForkOptions, BaseExecSpec {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(
-        replacedAccessors = @ReplacedAccessor(value = AccessorType.SETTER, name = "setMain", fluentSetter = true),
-        deprecation = @ReplacedDeprecation(removedIn = RemovedIn.GRADLE9)
-    )
     Property<String> getMainClass();
+
+    /** Eager forwarder; see {@link #getMainClass()}. */
+    @EagerSetter
+    default void setMain(String main) {
+        getMainClass().set(main);
+    }
 
     /**
      * Returns the arguments passed to the main class to be executed.
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(adapter = JavaExecSpecAdapters.ArgsAdapter.class)
     ListProperty<String> getArgs();
+
+    /**
+     * Sets the args for the main class to be executed.
+     *
+     * @param args Args for the main class.
+     *
+     * @return this
+     * @since 4.0
+     */
+    @EagerSetter
+    default JavaExecSpec setArgs(List<String> args) {
+        return setArgs((Iterable<?>) args);
+    }
+
+    /**
+     * Sets the args for the main class to be executed.
+     *
+     * @param args Args for the main class.
+     *
+     * @return this
+     */
+    @EagerSetter
+    default JavaExecSpec setArgs(Iterable<?> args) {
+        getArgs().empty();
+        args(args);
+        return this;
+    }
 
     /**
      * Adds args for the main class to be executed.
@@ -105,10 +137,13 @@ public interface JavaExecSpec extends JavaForkOptions, BaseExecSpec {
      * @since 4.6
      */
     @Nested
-    @ReplacesEagerProperty(replacedAccessors = {
-        @ReplacedAccessor(value = AccessorType.GETTER, name = "getArgumentProviders")
-    })
     ListProperty<CommandLineArgumentProvider> getArgumentProviders();
+
+    /** Eager forwarder; see {@link #getArgumentProviders()}. */
+    @EagerSetter
+    default void setArgumentProviders(List<CommandLineArgumentProvider> argumentProviders) {
+        getArgumentProviders().set(argumentProviders);
+    }
 
     /**
      * Adds elements to the classpath for executing the main class.
@@ -123,8 +158,20 @@ public interface JavaExecSpec extends JavaForkOptions, BaseExecSpec {
      * Returns the classpath for executing the main class.
      */
     @Classpath
-    @ReplacesEagerProperty(fluentSetter = true)
     ConfigurableFileCollection getClasspath();
+
+    /**
+     * Sets the classpath for executing the main class.
+     *
+     * @param classpath the classpath
+     *
+     * @return this
+     */
+    @EagerSetter
+    default JavaExecSpec setClasspath(FileCollection classpath) {
+        getClasspath().setFrom(classpath);
+        return this;
+    }
 
     /**
      * Returns the module path handling for executing the main class.

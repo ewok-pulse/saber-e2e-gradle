@@ -17,6 +17,7 @@ package org.gradle.api.tasks;
 
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.internal.ConventionTask;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.ListProperty;
@@ -24,7 +25,6 @@ import org.gradle.api.provider.MapProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.process.BaseExecSpec;
 import org.gradle.process.CommandLineArgumentProvider;
 import org.gradle.process.ExecResult;
@@ -114,9 +114,28 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
     @Optional
     @Input
     @Override
-    @ReplacesEagerProperty(adapter = AbstractExecTask.ArgsAdapter.class)
     public ListProperty<String> getArgs() {
         return execSpec.getArgs();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @EagerSetter
+    public T setArgs(List<String> arguments) {
+        execSpec.setArgs(arguments);
+        return taskType.cast(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @EagerSetter
+    public T setArgs(Iterable<?> arguments) {
+        execSpec.setArgs(arguments);
+        return taskType.cast(this);
     }
 
     /**
@@ -216,7 +235,6 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
      */
     @Internal
     @Override
-    @ReplacesEagerProperty(adapter = StandardInputAdapter.class)
     public Property<InputStream> getStandardInput() {
         return execSpec.getStandardInput();
     }
@@ -224,9 +242,18 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
     /**
      * {@inheritDoc}
      */
+    @Override
+    @EagerSetter
+    public T setStandardInput(InputStream inputStream) {
+        getStandardInput().set(inputStream);
+        return taskType.cast(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Internal
     @Override
-    @ReplacesEagerProperty(adapter = StandardOutputAdapter.class)
     public Property<OutputStream> getStandardOutput() {
         return execSpec.getStandardOutput();
     }
@@ -234,9 +261,18 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
     /**
      * {@inheritDoc}
      */
+    @Override
+    @EagerSetter
+    public T setStandardOutput(OutputStream outputStream) {
+        getStandardOutput().set(outputStream);
+        return taskType.cast(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Internal
     @Override
-    @ReplacesEagerProperty(adapter = ErrorOutputAdapter.class)
     public Property<OutputStream> getErrorOutput() {
         return execSpec.getErrorOutput();
     }
@@ -244,11 +280,30 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
     /**
      * {@inheritDoc}
      */
+    @Override
+    @EagerSetter
+    public T setErrorOutput(OutputStream outputStream) {
+        getErrorOutput().set(outputStream);
+        return taskType.cast(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Input
     @Override
-    @ReplacesEagerProperty(adapter = IgnoreExitValueAdapter.class)
     public Property<Boolean> getIgnoreExitValue() {
         return execSpec.getIgnoreExitValue();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @EagerSetter
+    public T setIgnoreExitValue(boolean value) {
+        getIgnoreExitValue().set(value);
+        return taskType.cast(this);
     }
 
     /**

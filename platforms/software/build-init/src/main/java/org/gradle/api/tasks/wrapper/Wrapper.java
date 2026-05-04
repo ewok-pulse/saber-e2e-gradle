@@ -24,6 +24,7 @@ import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.internal.file.FileLookup;
 import org.gradle.api.internal.file.FileOperations;
 import org.gradle.api.internal.file.FileResolver;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
@@ -215,8 +216,25 @@ public abstract class Wrapper extends DefaultTask {
      * Returns the file to write the wrapper script to.
      */
     @OutputFile
-    @ReplacesEagerProperty
     public abstract RegularFileProperty getScriptFile();
+
+    /**
+     * The file to write the wrapper script to.
+     *
+     * @since 4.0
+     */
+    @EagerSetter
+    public void setScriptFile(File scriptFile) {
+        getScriptFile().set(scriptFile);
+    }
+
+    /**
+     * The file to write the wrapper script to.
+     */
+    @EagerSetter
+    public void setScriptFile(Object scriptFile) {
+        getScriptFile().fileValue(getFileOperations().file(scriptFile));
+    }
 
     /**
      * Returns the file to write the wrapper batch script to.
@@ -233,8 +251,25 @@ public abstract class Wrapper extends DefaultTask {
      * Returns the file to write the wrapper jar file to.
      */
     @OutputFile
-    @ReplacesEagerProperty
     public abstract RegularFileProperty getJarFile();
+
+    /**
+     * The file to write the wrapper jar file to.
+     *
+     * @since 4.0
+     */
+    @EagerSetter
+    public void setJarFile(File jarFile) {
+        getJarFile().set(jarFile);
+    }
+
+    /**
+     * The file to write the wrapper jar file to.
+     */
+    @EagerSetter
+    public void setJarFile(Object jarFile) {
+        getJarFile().fileValue(getFileOperations().file(jarFile));
+    }
 
     /**
      * Returns the file to write the wrapper properties to.
@@ -252,8 +287,18 @@ public abstract class Wrapper extends DefaultTask {
      * distribution base directory
      */
     @Input
-    @ReplacesEagerProperty
     public abstract Property<String> getDistributionPath();
+
+    /**
+     * Sets the path where the gradle distributions needed by the wrapper are unzipped. The path is relative to the
+     * distribution base directory
+     *
+     * @see #setDistributionPath(String)
+     */
+    @EagerSetter
+    public void setDistributionPath(String distributionPath) {
+        getDistributionPath().set(distributionPath);
+    }
 
     /**
      * The version of the gradle distribution required by the wrapper.
@@ -273,9 +318,19 @@ public abstract class Wrapper extends DefaultTask {
      * which is the binary-only Gradle distribution without documentation.
      */
     @Input
-    @ReplacesEagerProperty
     @Option(option = "distribution-type", description = "The type of the Gradle distribution to be used by the wrapper.")
     public abstract Property<DistributionType> getDistributionType();
+
+    /**
+     * The type of the Gradle distribution to be used by the wrapper. By default, this is {@link DistributionType#BIN},
+     * which is the binary-only Gradle distribution without documentation.
+     *
+     * @see DistributionType
+     */
+    @EagerSetter
+    public void setDistributionType(DistributionType distributionType) {
+        getDistributionType().set(distributionType);
+    }
 
     /**
      * The list of available gradle distribution types. Always returns the contents of {@link DistributionType#values()}.
@@ -324,33 +379,72 @@ public abstract class Wrapper extends DefaultTask {
      */
     @Input
     @Optional
-    @ReplacesEagerProperty
     @Option(option = "gradle-distribution-sha256-sum", description = "The SHA-256 hash sum of the gradle distribution.")
     public abstract Property<String> getDistributionSha256Sum();
+
+    /**
+     * The SHA-256 hash sum of the gradle distribution.
+     *
+     * <p>If not set, the hash sum of the gradle distribution is not verified.
+     *
+     * <p>The wrapper allows for verification of the downloaded Gradle distribution via SHA-256 hash sum comparison.
+     * This increases security against targeted attacks by preventing a man-in-the-middle attacker from tampering with
+     * the downloaded Gradle distribution.
+     *
+     * @since 4.5
+     */
+    @EagerSetter
+    public void setDistributionSha256Sum(String distributionSha256Sum) {
+        getDistributionSha256Sum().set(distributionSha256Sum);
+    }
 
     /**
      * The distribution base specifies whether the unpacked wrapper distribution should be stored in the project or in
      * the gradle user home dir.
      */
     @Input
-    @ReplacesEagerProperty
     public abstract Property<PathBase> getDistributionBase();
+
+    /**
+     * The distribution base specifies whether the unpacked wrapper distribution should be stored in the project or in
+     * the gradle user home dir.
+     */
+    @EagerSetter
+    public void setDistributionBase(PathBase distributionBase) {
+        getDistributionBase().set(distributionBase);
+    }
 
     /**
      * Returns the path where the gradle distributions archive should be saved (i.e. the parent dir). The path is
      * relative to the archive base directory.
      */
     @Input
-    @ReplacesEagerProperty
     public abstract Property<String> getArchivePath();
+
+    /**
+     * Set's the path where the gradle distributions archive should be saved (i.e. the parent dir). The path is relative
+     * to the parent dir specified with {@link #getArchiveBase()}.
+     */
+    @EagerSetter
+    public void setArchivePath(String archivePath) {
+        getArchivePath().set(archivePath);
+    }
 
     /**
      * The archive base specifies whether the unpacked wrapper distribution should be stored in the project or in the
      * gradle user home dir.
      */
     @Input
-    @ReplacesEagerProperty
     public abstract Property<PathBase> getArchiveBase();
+
+    /**
+     * The archive base specifies whether the unpacked wrapper distribution should be stored in the project or in the
+     * gradle user home dir.
+     */
+    @EagerSetter
+    public void setArchiveBase(PathBase archiveBase) {
+        getArchiveBase().set(archiveBase);
+    }
 
     /**
      * The network timeout specifies how many ms to wait for when the wrapper is performing network operations, such

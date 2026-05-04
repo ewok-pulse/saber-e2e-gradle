@@ -38,6 +38,7 @@ import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.strategy.VersionS
 import org.gradle.api.internal.attributes.AttributeContainerInternal;
 import org.gradle.api.internal.attributes.AttributesFactory;
 import org.gradle.api.internal.provider.ProviderApiDeprecationLogger;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
@@ -64,7 +65,6 @@ import org.gradle.initialization.StartParameterBuildOptions;
 import org.gradle.internal.deprecation.DeprecationLogger;
 import org.gradle.internal.graph.GraphRenderer;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.logging.text.StyledTextOutput;
 import org.gradle.internal.logging.text.StyledTextOutputFactory;
 import org.gradle.internal.serialization.Transient;
@@ -220,16 +220,28 @@ public abstract class DependencyInsightReportTask extends DefaultTask {
     @Input
     @Optional
     @Option(option = "dependency", description = "Shows the details of given dependency.")
-    @ReplacesEagerProperty(adapter = DependencyInsightReportTaskAdapter.class)
     public abstract Property<String> getDependencyNotation();
+
+    /** Eager forwarder; see {@link #getDependencyNotation()}. */
+    @EagerSetter
+    public void setDependencyNotation(String dependencyNotation) {
+        getDependencyNotation().set(dependencyNotation);
+    }
 
     /**
      * Configuration to look the dependency in
      */
     @Internal
-    @ReplacesEagerProperty
     public Property<Configuration> getConfiguration() {
         return Objects.requireNonNull(configurationProp.get());
+    }
+
+    /**
+     * Sets the configuration to look the dependency in.
+     */
+    @EagerSetter
+    public void setConfiguration(Configuration configuration) {
+        getConfiguration().set(configuration);
     }
 
     /**
@@ -264,9 +276,24 @@ public abstract class DependencyInsightReportTask extends DefaultTask {
      * @since 4.9
      */
     @Internal
-    @ReplacesEagerProperty(originalType = boolean.class)
     @Option(option = "single-path", description = "Show at most one path to each dependency")
     public abstract Property<Boolean> getShowSinglePathToDependency();
+
+    /**
+     * Tells if the report should only display a single path to each dependency, which
+     * can be useful when the graph is large. This is false by default, meaning that for
+     * each dependency, the report will display all paths leading to it.
+     *
+     * <p>
+     * This method is exposed to the command line interface. Example usage:
+     * <pre>gradle dependencyInsight --single-path</pre>
+     *
+     * @since 4.9
+     */
+    @EagerSetter
+    public void setShowSinglePathToDependency(boolean showSinglePathToDependency) {
+        getShowSinglePathToDependency().set(showSinglePathToDependency);
+    }
 
     // kotlin source compatibility
     @Internal

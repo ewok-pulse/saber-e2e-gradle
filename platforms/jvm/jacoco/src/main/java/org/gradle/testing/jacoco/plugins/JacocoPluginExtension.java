@@ -26,6 +26,7 @@ import org.gradle.api.file.FileSystemOperations;
 import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.internal.project.ProjectInternal;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
 import org.gradle.api.model.ObjectFactory;
@@ -35,7 +36,6 @@ import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.TaskCollection;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.jacoco.JacocoAgentJar;
 import org.gradle.process.CommandLineArgumentProvider;
 import org.gradle.process.JavaForkOptions;
@@ -78,8 +78,13 @@ public abstract class JacocoPluginExtension {
     /**
      * Version of Jacoco JARs to use.
      */
-    @ReplacesEagerProperty
     public abstract Property<String> getToolVersion();
+
+    /** Eager forwarder; see {@link #getToolVersion()}. */
+    @EagerSetter
+    public void setToolVersion(String toolVersion) {
+        getToolVersion().set(toolVersion);
+    }
 
     /**
      * The directory where reports will be generated.

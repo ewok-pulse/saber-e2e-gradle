@@ -20,6 +20,7 @@ import org.gradle.api.Project;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.internal.ConventionTask;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.SetProperty;
@@ -29,14 +30,15 @@ import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.diagnostics.internal.ReportGenerator;
 import org.gradle.api.tasks.diagnostics.internal.ReportRenderer;
 import org.gradle.initialization.BuildClientMetaData;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.logging.ConsoleRenderer;
 import org.gradle.internal.logging.text.StyledTextOutputFactory;
 import org.gradle.internal.serialization.Transient;
 import org.gradle.work.DisableCachingByDefault;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.util.Objects;
+import java.util.Set;
 
 import static java.util.Collections.singleton;
 
@@ -79,8 +81,17 @@ public abstract class ConventionReportTask extends ConventionTask {
      */
     @Optional
     @OutputFile
-    @ReplacesEagerProperty
     public abstract RegularFileProperty getOutputFile();
+
+    /**
+     * Sets the file which the report will be written to. Set this to {@code null} to write the report to {@code System.out}.
+     *
+     * @param outputFile The output file. May be null.
+     */
+    @EagerSetter
+    public void setOutputFile(File outputFile) {
+        getOutputFile().set(outputFile);
+    }
 
     /**
      * Returns the set of project to generate this report for. By default, the report is generated for the task's
@@ -89,9 +100,18 @@ public abstract class ConventionReportTask extends ConventionTask {
      * @return The set of files.
      */
     @Internal
-    @ReplacesEagerProperty
     public SetProperty<Project> getProjects() {
         return Objects.requireNonNull(projects.get());
+    }
+
+    /**
+     * Specifies the set of projects to generate this report for.
+     *
+     * @param projects The set of projects. Must not be null.
+     */
+    @EagerSetter
+    public void setProjects(Set<Project> projects) {
+        getProjects().set(projects);
     }
 
     protected ReportGenerator reportGenerator() {

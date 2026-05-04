@@ -18,15 +18,16 @@ package org.gradle.api.plugins.quality;
 import org.gradle.api.Incubating;
 import org.gradle.api.Project;
 import org.gradle.api.file.DirectoryProperty;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.MapProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.resources.TextResource;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Optional;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 
 import java.io.File;
+import java.util.Map;
 
 /**
  * Configuration options for the Checkstyle plugin.
@@ -84,8 +85,15 @@ public abstract class CheckstyleExtension extends CodeQualityExtension {
     /**
      * The properties available for use in the configuration file. These are substituted into the configuration file.
      */
-    @ReplacesEagerProperty
     public abstract MapProperty<String, Object> getConfigProperties();
+
+    /**
+     * The properties available for use in the configuration file. These are substituted into the configuration file.
+     */
+    @EagerSetter
+    public void setConfigProperties(Map<String, Object> configProperties) {
+        getConfigProperties().set(configProperties);
+    }
 
     /**
      * Path to other Checkstyle configuration files. By default, this path is {@code $rootProject.projectDir/config/checkstyle}
@@ -107,8 +115,18 @@ public abstract class CheckstyleExtension extends CodeQualityExtension {
      * @return the maximum number of errors allowed
      * @since 3.4
      */
-    @ReplacesEagerProperty(originalType = int.class)
     public abstract Property<Integer> getMaxErrors();
+
+    /**
+     * Set the maximum number of errors that are tolerated before breaking the build.
+     *
+     * @param maxErrors number of errors allowed
+     * @since 3.4
+     */
+    @EagerSetter
+    public void setMaxErrors(int maxErrors) {
+        getMaxErrors().set(maxErrors);
+    }
 
     /**
      * The maximum number of warnings that are tolerated before breaking the build
@@ -119,16 +137,35 @@ public abstract class CheckstyleExtension extends CodeQualityExtension {
      * @return the maximum number of warnings allowed
      * @since 3.4
      */
-    @ReplacesEagerProperty(originalType = int.class)
     public abstract Property<Integer> getMaxWarnings();
+
+    /**
+     * Set the maximum number of warnings that are tolerated before breaking the build.
+     *
+     * @param maxWarnings number of warnings allowed
+     * @since 3.4
+     */
+    @EagerSetter
+    public void setMaxWarnings(int maxWarnings) {
+        getMaxWarnings().set(maxWarnings);
+    }
 
     /**
      * Whether rule violations are to be displayed on the console. Defaults to <code>true</code>.
      *
      * Example: showViolations = false
      */
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getShowViolations();
+
+    /**
+     * Whether rule violations are to be displayed on the console. Defaults to <code>true</code>.
+     *
+     * Example: showViolations = false
+     */
+    @EagerSetter
+    public void setShowViolations(boolean showViolations) {
+        getShowViolations().set(showViolations);
+    }
 
     public Property<Boolean> getIsShowViolations() {
         return getShowViolations();

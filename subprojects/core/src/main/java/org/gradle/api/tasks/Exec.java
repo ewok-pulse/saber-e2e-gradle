@@ -15,10 +15,10 @@
  */
 package org.gradle.api.tasks;
 
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.work.DisableCachingByDefault;
 
 import java.io.InputStream;
@@ -57,7 +57,6 @@ public abstract class Exec extends AbstractExecTask<Exec> {
      * {@inheritDoc}
      */
     @Override
-    @ReplacesEagerProperty(adapter = Exec.ArgsAdapter.class)
     public ListProperty<String> getArgs() {
         return super.getArgs();
     }
@@ -66,15 +65,43 @@ public abstract class Exec extends AbstractExecTask<Exec> {
      * {@inheritDoc}
      */
     @Override
-    @ReplacesEagerProperty(adapter = Exec.IgnoreExitValueAdapter.class)
+    @EagerSetter
+    public Exec setArgs(List<String> args) {
+        return setArgs((Iterable<?>) args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @EagerSetter
+    public Exec setArgs(Iterable<?> args) {
+        getArgs().empty();
+        args(args);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Property<Boolean> getIgnoreExitValue() {
         return super.getIgnoreExitValue();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @EagerSetter
+    public Exec setIgnoreExitValue(boolean value) {
+        getIgnoreExitValue().set(value);
+        return this;
     }
     /**
      * {@inheritDoc}
      */
     @Override
-    @ReplacesEagerProperty(adapter = Exec.StandardInputAdapter.class)
     public Property<InputStream> getStandardInput() {
         return super.getStandardInput();
     }
@@ -82,9 +109,18 @@ public abstract class Exec extends AbstractExecTask<Exec> {
     /**
      * {@inheritDoc}
      */
+    @Override
+    @EagerSetter
+    public Exec setStandardInput(InputStream value) {
+        getStandardInput().set(value);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Internal
     @Override
-    @ReplacesEagerProperty(adapter = Exec.StandardOutputAdapter.class)
     public Property<OutputStream> getStandardOutput() {
         return super.getStandardOutput();
     }
@@ -93,9 +129,28 @@ public abstract class Exec extends AbstractExecTask<Exec> {
      * {@inheritDoc}
      */
     @Override
-    @ReplacesEagerProperty(adapter = Exec.ErrorOutputAdapter.class)
+    @EagerSetter
+    public Exec setStandardOutput(OutputStream value) {
+        getStandardOutput().set(value);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Property<OutputStream> getErrorOutput() {
         return super.getErrorOutput();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @EagerSetter
+    public Exec setErrorOutput(OutputStream value) {
+        getErrorOutput().set(value);
+        return this;
     }
 
     /**

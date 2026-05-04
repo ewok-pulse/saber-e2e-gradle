@@ -18,7 +18,9 @@ package org.gradle.api.tasks.scala;
 import com.google.common.collect.ImmutableList;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.file.ConfigurableFileCollection;
+import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.ClassPathRegistry;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.internal.tasks.compile.daemon.ProcessIsolatedCompilerWorkerExecutor;
 import org.gradle.api.internal.tasks.scala.ScalaCompilerFactory;
 import org.gradle.api.internal.tasks.scala.ScalaJavaJointCompileSpec;
@@ -29,7 +31,6 @@ import org.gradle.api.tasks.scala.internal.ScalaCompileOptionsConfigurer;
 import org.gradle.initialization.ClassLoaderRegistry;
 import org.gradle.initialization.layout.ProjectCacheDir;
 import org.gradle.internal.classloader.ClasspathHasher;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.language.scala.tasks.AbstractScalaCompile;
 import org.gradle.process.internal.JavaForkOptionsFactory;
 import org.gradle.process.internal.worker.child.WorkerDirectoryProvider;
@@ -54,8 +55,13 @@ public abstract class ScalaCompile extends AbstractScalaCompile {
      * Returns the classpath to use to load the Scala compiler.
      */
     @Classpath
-    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getScalaClasspath();
+
+    /** Eager forwarder; see {@link #getScalaClasspath()}. */
+    @EagerSetter
+    public void setScalaClasspath(FileCollection scalaClasspath) {
+        getScalaClasspath().setFrom(scalaClasspath);
+    }
 
     /**
      * Returns the Scala compiler plugins to use.
@@ -63,8 +69,18 @@ public abstract class ScalaCompile extends AbstractScalaCompile {
      * @since 6.4
      */
     @Classpath
-    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getScalaCompilerPlugins();
+
+    /**
+     * Sets the Scala compiler plugins to use.
+     *
+     * @param scalaCompilerPlugins Collection of Scala compiler plugins.
+     * @since 6.4
+     */
+    @EagerSetter
+    public void setScalaCompilerPlugins(FileCollection scalaCompilerPlugins) {
+        getScalaCompilerPlugins().setFrom(scalaCompilerPlugins);
+    }
 
     @Override
     protected ScalaJavaJointCompileSpec createSpec() {
@@ -85,8 +101,13 @@ public abstract class ScalaCompile extends AbstractScalaCompile {
      * Returns the classpath to use to load the Zinc incremental compiler. This compiler in turn loads the Scala compiler.
      */
     @Classpath
-    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getZincClasspath();
+
+    /** Eager forwarder; see {@link #getZincClasspath()}. */
+    @EagerSetter
+    public void setZincClasspath(FileCollection zincClasspath) {
+        getZincClasspath().setFrom(zincClasspath);
+    }
 
     /**
      * For testing only.

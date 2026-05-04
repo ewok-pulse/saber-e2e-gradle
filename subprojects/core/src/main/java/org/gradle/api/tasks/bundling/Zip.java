@@ -22,6 +22,7 @@ import org.gradle.api.internal.file.archive.ZipCopyAction;
 import org.gradle.api.internal.file.copy.CopyAction;
 import org.gradle.api.internal.file.copy.DefaultZipCompressor;
 import org.gradle.api.internal.file.copy.ZipCompressor;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
@@ -80,8 +81,18 @@ public abstract class Zip extends AbstractArchiveTask {
      * @return the compression level of the archive contents.
      */
     @Input
-    @ReplacesEagerProperty
     public abstract Property<ZipEntryCompression> getEntryCompression();
+
+    /**
+     * Sets the compression level of the entries of the archive. If set to {@link ZipEntryCompression#DEFLATED} (the default), each entry is
+     * compressed using the DEFLATE algorithm. If set to {@link ZipEntryCompression#STORED} the entries of the archive are left uncompressed.
+     *
+     * @param entryCompression {@code STORED} or {@code DEFLATED}
+     */
+    @EagerSetter
+    public void setEntryCompression(ZipEntryCompression entryCompression) {
+        getEntryCompression().set(entryCompression);
+    }
 
     /**
      * Whether the zip can contain more than 65535 files and/or support files greater than 4GB in size.
@@ -95,8 +106,17 @@ public abstract class Zip extends AbstractArchiveTask {
      * This means you should not enable this property if you are building JARs to be used with Java 6 and earlier runtimes.
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getZip64();
+
+    /**
+     * Enables building zips with more than 65535 files or bigger than 4GB.
+     *
+     * @see #isZip64()
+     */
+    @EagerSetter
+    public void setZip64(boolean zip64) {
+        getZip64().set(zip64);
+    }
 
     /**
      * Added for Kotlin source compatibility. Use {@link #getZip64()} instead.

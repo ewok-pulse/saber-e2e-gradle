@@ -22,6 +22,7 @@ import org.gradle.api.Incubating;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.RegularFileProperty;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
@@ -42,6 +43,7 @@ import org.jspecify.annotations.Nullable;
 import javax.inject.Inject;
 import java.io.File;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -91,8 +93,13 @@ public abstract class JacocoTaskExtension {
      * Whether or not the task should generate execution data. Defaults to {@code true}.
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getEnabled();
+
+    /** Eager forwarder; see {@link #getEnabled()}. */
+    @EagerSetter
+    public void setEnabled(boolean enabled) {
+        getEnabled().set(enabled);
+    }
 
     @Internal
     public Property<Boolean> getIsEnabled() {
@@ -106,8 +113,24 @@ public abstract class JacocoTaskExtension {
      * @since 4.0
      */
     @Internal
-    @ReplacesEagerProperty(adapter = DestinationFileAdapter.class)
     public abstract RegularFileProperty getDestinationFile();
+
+    /**
+     * Set the provider for calculating the destination file.
+     *
+     * @param destinationFile Destination file provider
+     * @since 4.0
+     */
+    @EagerSetter
+    public void setDestinationFile(Provider<File> destinationFile) {
+        getDestinationFile().fileProvider(destinationFile);
+    }
+
+    /** Eager forwarder; see {@link #getDestinationFile()}. */
+    @EagerSetter
+    public void setDestinationFile(File destinationFile) {
+        getDestinationFile().set(destinationFile);
+    }
 
     /**
      * This method exists because {@link #getDestinationFile()} cannot be annotated with {@code @OutputFile} directly,
@@ -133,24 +156,39 @@ public abstract class JacocoTaskExtension {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     public abstract ListProperty<String> getIncludes();
+
+    /** Eager forwarder; see {@link #getIncludes()}. */
+    @EagerSetter
+    public void setIncludes(List<String> includes) {
+        getIncludes().set(includes);
+    }
 
     /**
      * List of class names that should be excluded from analysis. Names can use wildcard (* and ?). Defaults to an empty list.
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     public abstract ListProperty<String> getExcludes();
+
+    /** Eager forwarder; see {@link #getExcludes()}. */
+    @EagerSetter
+    public void setExcludes(List<String> excludes) {
+        getExcludes().set(excludes);
+    }
 
     /**
      * List of classloader names that should be excluded from analysis. Names can use wildcards (* and ?). Defaults to an empty list.
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     public abstract ListProperty<String> getExcludeClassLoaders();
+
+    /** Eager forwarder; see {@link #getExcludeClassLoaders()}. */
+    @EagerSetter
+    public void setExcludeClassLoaders(List<String> excludeClassLoaders) {
+        getExcludeClassLoaders().set(excludeClassLoaders);
+    }
 
     /**
      * Whether or not classes without source location should be instrumented. Defaults to {@code false}.
@@ -158,8 +196,13 @@ public abstract class JacocoTaskExtension {
      * This property is only taken into account if the used JaCoCo version supports this option (JaCoCo version &gt;= 0.7.6)
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getIncludeNoLocationClasses();
+
+    /** Eager forwarder; see {@link #getIncludeNoLocationClasses()}. */
+    @EagerSetter
+    public void setIncludeNoLocationClasses(boolean includeNoLocationClasses) {
+        getIncludeNoLocationClasses().set(includeNoLocationClasses);
+    }
 
     @Internal
     public Property<Boolean> getIsIncludeNoLocationClasses() {
@@ -171,15 +214,25 @@ public abstract class JacocoTaskExtension {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     public abstract Property<String> getSessionId();
+
+    /** Eager forwarder; see {@link #getSessionId()}. */
+    @EagerSetter
+    public void setSessionId(String sessionId) {
+        getSessionId().set(sessionId);
+    }
 
     /**
      * Whether or not to dump the coverage data at VM shutdown. Defaults to {@code true}.
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getDumpOnExit();
+
+    /** Eager forwarder; see {@link #getDumpOnExit()}. */
+    @EagerSetter
+    public void setDumpOnExit(boolean dumpOnExit) {
+        getDumpOnExit().set(dumpOnExit);
+    }
 
     @Internal
     public Property<Boolean> getIsDumpOnExit() {
@@ -190,23 +243,38 @@ public abstract class JacocoTaskExtension {
      * The type of output to generate. Defaults to {@link Output#FILE}.
      */
     @Input
-    @ReplacesEagerProperty
     public abstract Property<Output> getOutput();
+
+    /** Eager forwarder; see {@link #getOutput()}. */
+    @EagerSetter
+    public void setOutput(Output output) {
+        getOutput().set(output);
+    }
 
     /**
      * IP address or hostname to use with {@link Output#TCP_SERVER} or {@link Output#TCP_CLIENT}. Defaults to localhost.
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     public abstract Property<String> getAddress();
+
+    /** Eager forwarder; see {@link #getAddress()}. */
+    @EagerSetter
+    public void setAddress(String address) {
+        getAddress().set(address);
+    }
 
     /**
      * Port to bind to for {@link Output#TCP_SERVER} or {@link Output#TCP_CLIENT}. Defaults to 6300.
      */
     @Input
-    @ReplacesEagerProperty(originalType = int.class)
     public abstract Property<Integer> getPort();
+
+    /** Eager forwarder; see {@link #getPort()}. */
+    @EagerSetter
+    public void setPort(int port) {
+        getPort().set(port);
+    }
 
     /**
      * Path to dump all class files the agent sees are dumped to. Defaults to no dumps.
@@ -215,8 +283,17 @@ public abstract class JacocoTaskExtension {
      */
     @Optional
     @LocalState
-    @ReplacesEagerProperty
     public abstract DirectoryProperty getClassDumpDir();
+
+    /**
+     * Sets path to dump all class files the agent sees are dumped to. Defaults to no dumps.
+     *
+     * @since 3.4
+     */
+    @EagerSetter
+    public void setClassDumpDir(File classDumpDir) {
+        getClassDumpDir().set(classDumpDir);
+    }
 
     /**
      * Whether or not to expose functionality via JMX under {@code org.jacoco:type=Runtime}. Defaults to {@code false}.
@@ -224,8 +301,13 @@ public abstract class JacocoTaskExtension {
      * The configuration of the jmx property is only taken into account if the used JaCoCo version supports this option (JaCoCo version &gt;= 0.6.2)
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getJmx();
+
+    /** Eager forwarder; see {@link #getJmx()}. */
+    @EagerSetter
+    public void setJmx(boolean jmx) {
+        getJmx().set(jmx);
+    }
 
     @Internal
     public Property<Boolean> getIsJmx() {

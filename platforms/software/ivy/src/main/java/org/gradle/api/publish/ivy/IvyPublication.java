@@ -18,12 +18,12 @@ package org.gradle.api.publish.ivy;
 
 import org.gradle.api.Action;
 import org.gradle.api.component.SoftwareComponent;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.publish.Publication;
 import org.gradle.api.publish.VersionMappingStrategy;
 import org.gradle.api.tasks.Nested;
 import org.gradle.internal.HasInternalProtocol;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 /**
  * An {@code IvyPublication} is the representation/configuration of how Gradle should publish something in Ivy format, to an Ivy repository.
@@ -320,20 +320,41 @@ public interface IvyPublication extends Publication {
     /**
      * The organisation for this publication.
      */
-    @ReplacesEagerProperty
     Property<String> getOrganisation();
+
+    /**
+     * Sets the organisation for this publication.
+     */
+    @EagerSetter
+    default void setOrganisation(String organisation) {
+        getOrganisation().set(organisation);
+    }
 
     /**
      * The module for this publication.
      */
-    @ReplacesEagerProperty
     Property<String> getModule();
+
+    /**
+     * Sets the module for this publication.
+     */
+    @EagerSetter
+    default void setModule(String module) {
+        getModule().set(module);
+    }
 
     /**
      * The revision for this publication.
      */
-    @ReplacesEagerProperty
     Property<String> getRevision();
+
+    /**
+     * Sets the revision for this publication.
+     */
+    @EagerSetter
+    default void setRevision(String revision) {
+        getRevision().set(revision);
+    }
 
     /**
      * Configures the version mapping strategy.

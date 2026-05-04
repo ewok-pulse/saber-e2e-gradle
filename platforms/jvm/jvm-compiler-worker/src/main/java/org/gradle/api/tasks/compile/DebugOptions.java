@@ -16,10 +16,10 @@
 
 package org.gradle.api.tasks.compile;
 
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Optional;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 import java.io.Serializable;
 
@@ -47,6 +47,30 @@ public abstract class DebugOptions implements Serializable {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     public abstract Property<String> getDebugLevel();
+
+    /**
+     * Sets which debug information is to be generated during compilation. The value must be a
+     * comma-separated list containing any of the following keywords (without spaces in between):
+     *
+     * <dl>
+     *     <dt>{@code source}
+     *     <dd>Source file debugging information
+     *     <dt>{@code lines}
+     *     <dd>Line number debugging information
+     *     <dt>{@code vars}
+     *     <dd>Local variable debugging information
+     * </dl>
+     *
+     * <p>For example {@code source,lines,vars} is a valid value.</p>
+     *
+     * <p>Alternatively setting the value to {@code none} will disable debug information generation.</p>
+     *
+     * <p>Setting this value to null will reset the property to its default value of only
+     * generating line and source debug information.</p>
+     */
+    @EagerSetter
+    public void setDebugLevel(String debugLevel) {
+        getDebugLevel().set(debugLevel);
+    }
 }

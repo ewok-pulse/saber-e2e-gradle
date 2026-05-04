@@ -18,6 +18,7 @@ package org.gradle.api.tasks.compile;
 
 import com.google.common.collect.ImmutableList;
 import org.gradle.api.Incubating;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.Internal;
@@ -47,8 +48,13 @@ public abstract class ProviderAwareCompilerDaemonForkOptions extends BaseForkOpt
     @Optional
     @Nested
     // Marked as ACCESSORS_KEPT since incubating methods are not reported as removed
-    @ReplacesEagerProperty(binaryCompatibility = BinaryCompatibility.ACCESSORS_KEPT)
     public abstract ListProperty<CommandLineArgumentProvider> getJvmArgumentProviders();
+
+    /** Eager forwarder; see {@link #getJvmArgumentProviders()}. */
+    @EagerSetter
+    public void setJvmArgumentProviders(List<CommandLineArgumentProvider> jvmArgumentProviders) {
+        getJvmArgumentProviders().set(jvmArgumentProviders);
+    }
 
     /**
      * Returns the full set of arguments to use to launch the JVM for the compiler process. This includes arguments to define

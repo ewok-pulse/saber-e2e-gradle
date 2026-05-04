@@ -31,6 +31,7 @@ import org.gradle.api.internal.plugins.MainModule;
 import org.gradle.api.internal.plugins.StartScriptGenerator;
 import org.gradle.api.internal.plugins.UnixStartScriptGenerator;
 import org.gradle.api.internal.plugins.WindowsStartScriptGenerator;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.jvm.ModularitySpec;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.ListProperty;
@@ -57,6 +58,7 @@ import org.gradle.work.DisableCachingByDefault;
 import org.jspecify.annotations.Nullable;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
@@ -164,9 +166,14 @@ public abstract class CreateStartScripts extends ConventionTask {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     public Property<String> getOptsEnvironmentVar() {
         return optsEnvironmentVar;
+    }
+
+    /** Eager forwarder; see {@link #getOptsEnvironmentVar()}. */
+    @EagerSetter
+    public void setOptsEnvironmentVar(String optsEnvironmentVar) {
+        getOptsEnvironmentVar().set(optsEnvironmentVar);
     }
 
     /**
@@ -204,11 +211,16 @@ public abstract class CreateStartScripts extends ConventionTask {
      * TODO: This should be Provider[RegularFile], but we don't support such upgrade with @ReplacesEagerProperty
      */
     @Internal
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getUnixScript"))
     public RegularFileProperty getUnixScript() {
         return getObjectFactory().fileProperty().value(
             getOutputDir().zip(getApplicationName(), Directory::file)
         );
+    }
+
+    /** Eager forwarder; see {@link #getUnixScript()}. */
+    @EagerSetter
+    public void setUnixScript(java.io.File unixScript) {
+        getUnixScript().set(unixScript);
     }
 
     /**
@@ -216,20 +228,30 @@ public abstract class CreateStartScripts extends ConventionTask {
      * TODO: This should be Provider[RegularFile], but we don't support such upgrade with @ReplacesEagerProperty
      */
     @Internal
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getWindowsScript"))
     public RegularFileProperty getWindowsScript() {
         return getObjectFactory().fileProperty().value(
             getOutputDir().zip(getApplicationName(), (outputDir, applicationName) -> outputDir.file(applicationName + ".bat"))
         );
     }
 
+    /** Eager forwarder; see {@link #getWindowsScript()}. */
+    @EagerSetter
+    public void setWindowsScript(java.io.File windowsScript) {
+        getWindowsScript().set(windowsScript);
+    }
+
     /**
      * The directory to write the scripts into.
      */
     @OutputDirectory
-    @ReplacesEagerProperty
     public DirectoryProperty getOutputDir() {
         return outputDir;
+    }
+
+    /** Eager forwarder; see {@link #getOutputDir()}. */
+    @EagerSetter
+    public void setOutputDir(File outputDir) {
+        getOutputDir().set(outputDir);
     }
 
     /**
@@ -238,9 +260,18 @@ public abstract class CreateStartScripts extends ConventionTask {
      * @since 4.5
      */
     @Input
-    @ReplacesEagerProperty
     public Property<String> getExecutableDir() {
         return executableDir;
+    }
+
+    /**
+     * The directory to write the scripts into in the distribution.
+     *
+     * @since 4.5
+     */
+    @EagerSetter
+    public void setExecutableDir(String executableDir) {
+        getExecutableDir().set(executableDir);
     }
 
     /**
@@ -266,17 +297,27 @@ public abstract class CreateStartScripts extends ConventionTask {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(originalType = Iterable.class)
     public abstract ListProperty<String> getDefaultJvmOpts();
+
+    /** Eager forwarder; see {@link #getDefaultJvmOpts()}. */
+    @EagerSetter
+    public void setDefaultJvmOpts(Iterable<String> defaultJvmOpts) {
+        getDefaultJvmOpts().set(defaultJvmOpts);
+    }
 
     /**
      * The application's name.
      */
     @Input
     @Optional
-    @ReplacesEagerProperty
     public Property<String> getApplicationName() {
         return applicationName;
+    }
+
+    /** Eager forwarder; see {@link #getApplicationName()}. */
+    @EagerSetter
+    public void setApplicationName(String applicationName) {
+        getApplicationName().set(applicationName);
     }
 
     /**
@@ -303,8 +344,13 @@ public abstract class CreateStartScripts extends ConventionTask {
      */
     @Classpath
     @Optional
-    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getClasspath();
+
+    /** Eager forwarder; see {@link #getClasspath()}. */
+    @EagerSetter
+    public void setClasspath(FileCollection classpath) {
+        getClasspath().setFrom(classpath);
+    }
 
     /**
      * Returns the module path handling for executing the main class.

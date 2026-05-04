@@ -16,10 +16,12 @@
 
 package org.gradle.api.tasks.testing.junitplatform;
 
+import java.util.Set;
+
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.SetProperty;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.testing.TestFrameworkOptions;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 /**
  * The JUnit platform specific test options.
@@ -81,18 +83,38 @@ public abstract class JUnitPlatformOptions extends TestFrameworkOptions {
     }
 
     @Input
-    @ReplacesEagerProperty
     public abstract SetProperty<String> getIncludeEngines();
 
+    /** Eager forwarder; see {@link #getIncludeEngines()}. */
+    @EagerSetter
+    public void setIncludeEngines(Set<String> includeEngines) {
+        getIncludeEngines().set(includeEngines);
+    }
+
     @Input
-    @ReplacesEagerProperty
     public abstract SetProperty<String> getIncludeTags();
 
-    @Input
-    @ReplacesEagerProperty
-    public abstract SetProperty<String> getExcludeEngines();
+    /** Eager forwarder; see {@link #getIncludeTags()}. */
+    @EagerSetter
+    public void setIncludeTags(Set<String> includeTags) {
+        getIncludeTags().set(includeTags);
+    }
 
     @Input
-    @ReplacesEagerProperty
+    public abstract SetProperty<String> getExcludeEngines();
+
+    /** Eager forwarder; see {@link #getExcludeEngines()}. */
+    @EagerSetter
+    public void setExcludeEngines(Set<String> excludeEngines) {
+        getExcludeEngines().set(excludeEngines);
+    }
+
+    @Input
     public abstract SetProperty<String> getExcludeTags();
+
+    /** Eager forwarder; see {@link #getExcludeTags()}. */
+    @EagerSetter
+    public void setExcludeTags(Set<String> excludeTags) {
+        getExcludeTags().set(excludeTags);
+    }
 }

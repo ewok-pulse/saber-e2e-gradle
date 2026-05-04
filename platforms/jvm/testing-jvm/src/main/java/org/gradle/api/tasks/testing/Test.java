@@ -32,6 +32,7 @@ import org.gradle.api.file.FileTree;
 import org.gradle.api.file.FileTreeElement;
 import org.gradle.api.internal.classpath.ModuleRegistry;
 import org.gradle.api.internal.provider.PropertyFactory;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.internal.tasks.testing.JvmTestExecutionSpec;
 import org.gradle.api.internal.tasks.testing.TestExecutableUtils;
 import org.gradle.api.internal.tasks.testing.TestExecuter;
@@ -774,8 +775,38 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      * @since 4.0
      */
     @Internal
-    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getTestClassesDirs();
+
+    /**
+     * Sets the directories to scan for compiled test sources.
+     *
+     * Typically, this would be configured to use the output of a source set:
+     * <pre class='autoTested'>
+     * plugins {
+     *     id 'java'
+     * }
+     *
+     * sourceSets {
+     *    integrationTest {
+     *       compileClasspath += main.output
+     *       runtimeClasspath += main.output
+     *    }
+     * }
+     *
+     * task integrationTest(type: Test) {
+     *     // Runs tests from src/integrationTest
+     *     testClassesDirs = sourceSets.integrationTest.output.classesDirs
+     *     classpath = sourceSets.integrationTest.runtimeClasspath
+     * }
+     * </pre>
+     *
+     * @param testClassesDirs All test class directories to be used.
+     * @since 4.0
+     */
+    @EagerSetter
+    public void setTestClassesDirs(FileCollection testClassesDirs) {
+        getTestClassesDirs().setFrom(testClassesDirs);
+    }
 
     /**
      * Returns directories to scan for non-class-based test definition files.
@@ -844,8 +875,13 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      * @since 7.3
      */
     @Nested
-    @ReplacesEagerProperty(adapter = TestFrameworkAdapter.class)
     public abstract Property<TestFramework> getTestFramework();
+
+    /** Eager forwarder; see {@link #getTestFramework()}. */
+    @EagerSetter
+    public void setTestFramework(TestFramework testFramework) {
+        getTestFramework().set(testFramework);
+    }
 
     /**
      * Do not call this method.
@@ -1030,16 +1066,26 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      * Returns the classpath to use to execute the tests.
      */
     @Internal("captured by stableClasspath")
-    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getClasspath();
+
+    /** Eager forwarder; see {@link #getClasspath()}. */
+    @EagerSetter
+    public void setClasspath(FileCollection classpath) {
+        getClasspath().setFrom(classpath);
+    }
 
     /**
      * Specifies whether test classes should be detected. When {@code true} the classes which match the include and exclude patterns are scanned for test classes, and any found are executed. When
      * {@code false} the classes which match the include and exclude patterns are executed.
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getScanForTestClasses();
+
+    /** Eager forwarder; see {@link #getScanForTestClasses()}. */
+    @EagerSetter
+    public void setScanForTestClasses(boolean scanForTestClasses) {
+        getScanForTestClasses().set(scanForTestClasses);
+    }
 
     /**
      * Added for Kotlin source compatibility. Use {@link #getScanForTestClasses()} instead.
@@ -1064,8 +1110,21 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      * @return The maximum number of test classes to execute in a test process. Returns 0 when there is no maximum.
      */
     @Internal
-    @ReplacesEagerProperty(adapter = ForkEveryAdapter.class)
     public abstract Property<Long> getForkEvery();
+
+    /**
+     * Sets the maximum number of test classes to execute in a forked test process.
+     * <p>
+     * By default, Gradle automatically uses a separate JVM when executing tests, so changing this property is usually not necessary.
+     * </p>
+     *
+     * @param forkEvery The maximum number of test classes. Use 0 to specify no maximum.
+     * @since 8.1
+     */
+    @EagerSetter
+    public void setForkEvery(long forkEvery) {
+        getForkEvery().set(forkEvery);
+    }
 
     /**
      * Returns the maximum number of test processes to start in parallel.
@@ -1082,8 +1141,20 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      * @return The maximum number of forked test processes.
      */
     @Internal
-    @ReplacesEagerProperty(adapter = MaxParallelForks.class)
     public abstract Property<Integer> getMaxParallelForks();
+
+    /**
+     * Sets the maximum number of test processes to start in parallel.
+     * <p>
+     * By default, Gradle executes a single test class at a time but allows multiple {@link Test} tasks to run in parallel.
+     * </p>
+     *
+     * @param maxParallelForks The maximum number of forked test processes. Use 1 to disable parallel test execution for this task.
+     */
+    @EagerSetter
+    public void setMaxParallelForks(int maxParallelForks) {
+        getMaxParallelForks().set(maxParallelForks);
+    }
 
     /**
      * Returns the classes files to scan for test classes.

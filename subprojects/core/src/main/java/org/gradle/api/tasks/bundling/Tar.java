@@ -22,6 +22,7 @@ import org.gradle.api.internal.file.archive.compression.Bzip2Archiver;
 import org.gradle.api.internal.file.archive.compression.GzipArchiver;
 import org.gradle.api.internal.file.archive.compression.SimpleCompressor;
 import org.gradle.api.internal.file.copy.CopyAction;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
@@ -61,6 +62,15 @@ public abstract class Tar extends AbstractArchiveTask {
      * @return The compression. Never returns null.
      */
     @Input
-    @ReplacesEagerProperty
     public abstract Property<Compression> getCompression();
+
+    /**
+     * Configures the compressor based on passed in compression.
+     *
+     * @param compression The compression. Should not be null.
+     */
+    @EagerSetter
+    public void setCompression(Compression compression) {
+        getCompression().set(compression);
+    }
 }

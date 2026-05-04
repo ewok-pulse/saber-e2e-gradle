@@ -18,6 +18,7 @@ package org.gradle.vcs;
 
 import org.gradle.api.Action;
 import org.gradle.api.initialization.definition.InjectedPluginDependencies;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
@@ -43,8 +44,17 @@ public interface VersionControlRepository {
      *
      * @return the root directory of the build, relative to the root of this repository.
      */
-    @ReplacesEagerProperty
     Property<String> getRootDir();
+
+    /**
+     * Sets the relative path to the root of the build within the repository. Use an empty string to refer to the root of the repository.
+     *
+     * @param rootDir The root directory of the build, relative to the root of this repository.
+     */
+    @EagerSetter
+    default void setRootDir(String rootDir) {
+        getRootDir().set(rootDir);
+    }
 
     /**
      * Defines the plugins to be injected into the build.

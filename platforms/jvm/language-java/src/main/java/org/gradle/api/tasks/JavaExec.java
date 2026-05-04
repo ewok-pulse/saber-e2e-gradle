@@ -24,6 +24,7 @@ import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.ConventionTask;
 import org.gradle.api.internal.provider.PropertyFactory;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.jvm.ModularitySpec;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.ListProperty;
@@ -338,9 +339,28 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      * {@inheritDoc}
      */
     @Override
-    @ReplacesEagerProperty(adapter = ArgsAdapter.class)
     public ListProperty<String> getArgs() {
         return javaExecSpec.getArgs();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @EagerSetter
+    public JavaExec setArgs(List<String> args) {
+        return setArgs((Iterable<?>) args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @EagerSetter
+    public JavaExec setArgs(Iterable<?> args) {
+        getArgs().empty();
+        args(args);
+        return this;
     }
 
     /**
@@ -405,9 +425,18 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      * {@inheritDoc}
      */
     @Override
-    @ReplacesEagerProperty(adapter = ClasspathAdapter.class)
     public ConfigurableFileCollection getClasspath() {
         return javaExecSpec.getClasspath();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @EagerSetter
+    public JavaExec setClasspath(FileCollection fileCollection) {
+        getClasspath().setFrom(fileCollection);
+        return this;
     }
 
     /**
@@ -521,7 +550,6 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      */
     @Override
     @Internal
-    @ReplacesEagerProperty(adapter = JavaExec.StandardInputAdapter.class)
     public Property<InputStream> getStandardInput() {
         return javaExecSpec.getStandardInput();
     }
@@ -530,8 +558,17 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      * {@inheritDoc}
      */
     @Override
+    @EagerSetter
+    public JavaExec setStandardInput(InputStream value) {
+        getStandardInput().set(value);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     @Internal
-    @ReplacesEagerProperty(adapter = JavaExec.StandardOutputAdapter.class)
     public Property<OutputStream> getStandardOutput() {
         return javaExecSpec.getStandardOutput();
     }
@@ -540,8 +577,17 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      * {@inheritDoc}
      */
     @Override
+    @EagerSetter
+    public JavaExec setStandardOutput(OutputStream value) {
+        getStandardOutput().set(value);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     @Internal
-    @ReplacesEagerProperty(adapter = JavaExec.ErrorOutputAdapter.class)
     public Property<OutputStream> getErrorOutput() {
         return javaExecSpec.getErrorOutput();
     }
@@ -550,10 +596,29 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      * {@inheritDoc}
      */
     @Override
+    @EagerSetter
+    public JavaExec setErrorOutput(OutputStream value) {
+        getErrorOutput().set(value);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     @Input
-    @ReplacesEagerProperty(adapter = JavaExec.IgnoreExitValueAdapter.class)
     public Property<Boolean> getIgnoreExitValue() {
         return javaExecSpec.getIgnoreExitValue();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @EagerSetter
+    public JavaExec setIgnoreExitValue(boolean value) {
+        getIgnoreExitValue().set(value);
+        return this;
     }
 
     /**

@@ -15,6 +15,7 @@
  */
 package org.gradle.process;
 
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Provider;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
@@ -32,8 +33,38 @@ public interface ExecSpec extends BaseExecSpec {
      * {@inheritDoc}
      */
     @Override
-    @ReplacesEagerProperty(adapter = ExecSpecAdapters.CommandLineAdapter.class)
     Provider<List<String>> getCommandLine();
+
+    /**
+     * Sets the full command line, including the executable to be executed plus its arguments.
+     *
+     * @param args the command plus the args to be executed
+     * @since 4.0
+     */
+    @EagerSetter
+    default void setCommandLine(List<String> args) {
+        commandLine(args);
+    }
+
+    /**
+     * Sets the full command line, including the executable to be executed plus its arguments.
+     *
+     * @param args the command plus the args to be executed
+     */
+    @EagerSetter
+    default void setCommandLine(Object... args) {
+        commandLine(args);
+    }
+
+    /**
+     * Sets the full command line, including the executable to be executed plus its arguments.
+     *
+     * @param args the command plus the args to be executed
+     */
+    @EagerSetter
+    default void setCommandLine(Iterable<?> args) {
+        commandLine(args);
+    }
 
     /**
      * Sets the full command line, including the executable to be executed plus its arguments.
@@ -70,16 +101,43 @@ public interface ExecSpec extends BaseExecSpec {
     /**
      * Returns the arguments for the command to be executed. Defaults to an empty list.
      */
-    @ReplacesEagerProperty(adapter = ExecSpecAdapters.ArgsAdapter.class)
     ListProperty<String> getArgs();
+
+    /**
+     * Sets the arguments for the command to be executed.
+     *
+     * @param args args for the command
+     * @return this
+     * @since 4.0
+     */
+    @EagerSetter
+    default ExecSpec setArgs(List<String> args) {
+        return setArgs((Iterable<?>) args);
+    }
+
+    /**
+     * Sets the arguments for the command to be executed.
+     *
+     * @param args args for the command
+     * @return this
+     */
+    @EagerSetter
+    default ExecSpec setArgs(Iterable<?> args) {
+        getArgs().empty();
+        args(args);
+        return this;
+    }
 
     /**
      * Argument providers for the application.
      *
      * @since 4.6
      */
-    @ReplacesEagerProperty(replacedAccessors = {
-        @ReplacedAccessor(value = AccessorType.GETTER, name = "getArgumentProviders")
-    })
     ListProperty<CommandLineArgumentProvider> getArgumentProviders();
+
+    /** Eager forwarder; see {@link #getArgumentProviders()}. */
+    @EagerSetter
+    default void setArgumentProviders(List<CommandLineArgumentProvider> argumentProviders) {
+        getArgumentProviders().set(argumentProviders);
+    }
 }

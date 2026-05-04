@@ -17,13 +17,13 @@
 package org.gradle.caching.http;
 
 import org.gradle.api.Action;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Nested;
 import org.gradle.caching.configuration.AbstractBuildCache;
 import org.jspecify.annotations.Nullable;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 import javax.inject.Inject;
 import java.net.URI;
@@ -71,8 +71,23 @@ public abstract class HttpBuildCache extends AbstractBuildCache {
     /**
      * Returns the URI to the cache.
      */
-    @ReplacesEagerProperty(adapter = UrlAdapter.class)
     public abstract Property<URI> getUrl();
+
+    /**
+     * Sets the URL of the cache. The URL must end in a '/'.
+     */
+    @EagerSetter
+    public void setUrl(URL url) throws URISyntaxException {
+        getUrl().set(url.toURI());
+    }
+
+    /**
+     * Sets the URL of the cache. The URL must end in a '/'.
+     */
+    @EagerSetter
+    public void setUrl(URI url) {
+        getUrl().set(url);
+    }
 
     /**
      * Sets the URL of the cache. The URL must end in a '/'.
@@ -111,8 +126,18 @@ public abstract class HttpBuildCache extends AbstractBuildCache {
      *
      * @since 4.2
      */
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getAllowUntrustedServer();
+
+    /**
+     * Specifies whether it is acceptable to communicate with an HTTP build cache backend with an untrusted SSL certificate.
+     *
+     * @see #isAllowUntrustedServer()
+     * @since 4.2
+     */
+    @EagerSetter
+    public void setAllowUntrustedServer(boolean allowUntrustedServer) {
+        getAllowUntrustedServer().set(allowUntrustedServer);
+    }
 
     /**
      * This method exists only for Kotlin source backward compatibility.
@@ -138,8 +163,18 @@ public abstract class HttpBuildCache extends AbstractBuildCache {
      *
      * @since 6.0
      */
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getAllowInsecureProtocol();
+
+    /**
+     * Specifies whether it is acceptable to communicate with a build cache over an insecure HTTP connection.
+     *
+     * @see #isAllowInsecureProtocol()
+     * @since 6.0
+     */
+    @EagerSetter
+    public void setAllowInsecureProtocol(boolean allowInsecureProtocol) {
+        getAllowInsecureProtocol().set(allowInsecureProtocol);
+    }
 
     /**
      * This method exists only for Kotlin source backward compatibility.
@@ -163,8 +198,17 @@ public abstract class HttpBuildCache extends AbstractBuildCache {
      *
      * @since 7.2
      */
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getUseExpectContinue();
+
+    /**
+     * Specifies whether HTTP expect-continue should be used for store requests.
+     *
+     * @since 7.2
+     */
+    @EagerSetter
+    public void setUseExpectContinue(boolean useExpectContinue) {
+        getUseExpectContinue().set(useExpectContinue);
+    }
 
     /**
      * This method exists only for Kotlin source backward compatibility.

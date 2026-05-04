@@ -17,15 +17,17 @@ package org.gradle.api.plugins.quality;
 
 import org.gradle.api.Project;
 import org.gradle.api.file.ConfigurableFileCollection;
+import org.gradle.api.file.FileCollection;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.resources.TextResource;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Configuration options for the PMD plugin.
@@ -54,8 +56,19 @@ public abstract class PmdExtension extends CodeQualityExtension {
      *     ruleSets = ["category/java/errorprone.xml", "category/java/bestpractices.xml"]
      * </pre>
      */
-    @ReplacesEagerProperty
     public abstract ListProperty<String> getRuleSets();
+
+    /**
+     * The built-in rule sets to be used. See the <a href="https://docs.pmd-code.org/pmd-doc-7.13.0/pmd_rules_java.html">official list</a> of built-in rule sets.
+     *
+     * <pre>
+     *     ruleSets = ["category/java/errorprone.xml", "category/java/bestpractices.xml"]
+     * </pre>
+     */
+    @EagerSetter
+    public void setRuleSets(List<String> ruleSets) {
+        this.getRuleSetsProperty().set(ruleSets);
+    }
 
     /**
      * Convenience method for adding rule sets.
@@ -73,8 +86,28 @@ public abstract class PmdExtension extends CodeQualityExtension {
     /**
      * The target jdk to use with pmd, 1.3, 1.4, 1.5, 1.6, 1.7 or jsp
      */
-    @ReplacesEagerProperty(adapter = TargetJdkAdapter.class)
     public abstract Property<TargetJdk> getTargetJdk();
+
+    /**
+     * Sets the target jdk used with pmd.
+     *
+     * @param targetJdk The target jdk
+     * @since 4.0
+     */
+    @EagerSetter
+    public void setTargetJdk(TargetJdk targetJdk) {
+        getTargetJdk().set(targetJdk);
+    }
+
+    /**
+     * Sets the target jdk used with pmd.
+     *
+     * @param value The value for the target jdk as defined by {@link TargetJdk#toVersion(Object)}
+     */
+    @EagerSetter
+    public void setTargetJdk(Object value) {
+        getTargetJdk().set(TargetJdk.toVersion(value));
+    }
 
     /**
      * The maximum number of failures to allow before stopping the build.
@@ -139,8 +172,20 @@ public abstract class PmdExtension extends CodeQualityExtension {
      *     ruleSetFiles = files("config/pmd/myRuleSet.xml")
      * </pre>
      */
-    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getRuleSetFiles();
+
+    /**
+     * The custom rule set files to be used. See the <a href="https://docs.pmd-code.org/pmd-doc-7.13.0/pmd_userdocs_making_rulesets.html">official documentation</a> for how to author a rule set file.
+     * This adds to the default rule sets defined by {@link #getRuleSets()}.
+     *
+     * <pre>
+     *     ruleSetFiles = files("config/pmd/myRuleSets.xml")
+     * </pre>
+     */
+    @EagerSetter
+    public void setRuleSetFiles(FileCollection ruleSetFiles) {
+        getRuleSetFiles().setFrom(ruleSetFiles);
+    }
 
     /**
      * Convenience method for adding rule set files.
@@ -158,8 +203,15 @@ public abstract class PmdExtension extends CodeQualityExtension {
     /**
      * Whether or not to write PMD results to {@code System.out}.
      */
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getConsoleOutput();
+
+    /**
+     * Whether or not to write PMD results to {@code System.out}.
+     */
+    @EagerSetter
+    public void setConsoleOutput(boolean consoleOutput) {
+        getConsoleOutput().set(consoleOutput);
+    }
 
     public Property<Boolean> getIsConsoleOutput() {
         return getConsoleOutput();

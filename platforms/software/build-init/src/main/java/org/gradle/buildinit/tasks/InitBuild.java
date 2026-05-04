@@ -24,6 +24,7 @@ import org.gradle.api.Incubating;
 import org.gradle.api.file.Directory;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.ProjectLayout;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.internal.tasks.userinput.NonInteractiveUserInputHandler;
 import org.gradle.api.internal.tasks.userinput.UserInputHandler;
 import org.gradle.api.internal.tasks.userinput.UserQuestions;
@@ -136,9 +137,14 @@ public abstract class InitBuild extends DefaultTask {
      */
     @Input
     @Optional
-    @ReplacesEagerProperty
     @Option(option = "type", description = "Set the type of project to generate.")
     public abstract Property<String> getType();
+
+    /** Eager forwarder; see {@link #getType()}. */
+    @EagerSetter
+    public void setType(String type) {
+        getType().set(type);
+    }
 
     /**
      * Should the build be split into multiple subprojects?
@@ -160,9 +166,18 @@ public abstract class InitBuild extends DefaultTask {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     @Option(option = "dsl", description = "Set the build script DSL to be used in generated scripts.")
     public abstract Property<String> getDsl();
+
+    /**
+     * Set the build script DSL to be used.
+     *
+     * @since 4.5
+     */
+    @EagerSetter
+    public void setDsl(String dsl) {
+        getDsl().set(dsl);
+    }
 
     /**
      * Can the generated build use new and unstable features?
@@ -214,8 +229,17 @@ public abstract class InitBuild extends DefaultTask {
     @Input
     @Optional
     @Option(option = "project-name", description = "Set the project name.")
-    @ReplacesEagerProperty
     public abstract Property<String> getProjectName();
+
+    /**
+     * Set the project name.
+     *
+     * @since 5.0
+     */
+    @EagerSetter
+    public void setProjectName(String projectName) {
+        getProjectName().set(projectName);
+    }
 
     /**
      * The name of the package to use for generated source.
@@ -224,18 +248,34 @@ public abstract class InitBuild extends DefaultTask {
      */
     @Input
     @Optional
-    @ReplacesEagerProperty
     @Option(option = "package", description = "Set the package for source files.")
     public abstract Property<String> getPackageName();
+
+    /**
+     * Set the package name.
+     *
+     * @since 5.0
+     */
+    @EagerSetter
+    public void setPackageName(String packageName) {
+        getPackageName().set(packageName);
+    }
 
     /**
      * The test framework to be used in the generated project.
      */
     @Input
     @Optional
-    @ReplacesEagerProperty
     @Option(option = "test-framework", description = "Set the test framework to be used.")
     public abstract Property<String> getTestFramework();
+
+    /**
+     * Set the test framework to be used.
+     */
+    @EagerSetter
+    public void setTestFramework(String testFramework) {
+        getTestFramework().set(testFramework);
+    }
 
     /**
      * How to handle insecure (http) URLs used for Maven Repositories.

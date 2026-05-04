@@ -16,11 +16,11 @@
 
 package org.gradle.api.tasks.compile;
 
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.jspecify.annotations.Nullable;
 
@@ -43,8 +43,19 @@ public abstract class ForkOptions extends ProviderAwareCompilerDaemonForkOptions
      */
     @Optional
     @Input
-    @ReplacesEagerProperty
     public abstract Property<String> getExecutable();
+
+    /**
+     * Sets the compiler executable to be used.
+     * <p>
+     * Only takes effect if {@code CompileOptions.fork} is {@code true}. Defaults to {@code null}.
+     * <p>
+     * Setting the executable disables task output caching.
+     */
+    @EagerSetter
+    public void setExecutable(String executable) {
+        getExecutable().set(executable);
+    }
 
     /**
      * Returns the Java home which contains the compiler to use.
@@ -77,6 +88,15 @@ public abstract class ForkOptions extends ProviderAwareCompilerDaemonForkOptions
      * in which case the directory will be chosen automatically.
      */
     @Internal
-    @ReplacesEagerProperty
     public abstract Property<String> getTempDir();
+
+    /**
+     * Sets the directory used for temporary files that may be created to pass
+     * command line arguments to the compiler process. Defaults to {@code null},
+     * in which case the directory will be chosen automatically.
+     */
+    @EagerSetter
+    public void setTempDir(String tempDir) {
+        getTempDir().set(tempDir);
+    }
 }

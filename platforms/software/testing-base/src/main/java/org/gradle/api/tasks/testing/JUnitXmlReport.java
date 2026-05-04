@@ -17,11 +17,11 @@
 package org.gradle.api.tasks.testing;
 
 import org.gradle.api.Incubating;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.reporting.DirectoryReport;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 /**
  * The JUnit XML files, commonly used to communicate results to CI servers.
@@ -34,8 +34,15 @@ public interface JUnitXmlReport extends DirectoryReport {
      * Should the output be associated with individual test cases instead of at the suite level.
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     Property<Boolean> getOutputPerTestCase();
+
+    /**
+     * Should the output be associated with individual test cases instead of at the suite level.
+     */
+    @EagerSetter
+    default void setOutputPerTestCase(boolean outputPerTestCase) {
+        getOutputPerTestCase().set(outputPerTestCase);
+    }
 
     /**
      * Used for Kotlin backward source compatibility after migration to Provider API.

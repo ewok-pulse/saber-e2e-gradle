@@ -18,12 +18,12 @@ package org.gradle.api.publish.maven;
 
 import org.gradle.api.Action;
 import org.gradle.api.component.SoftwareComponent;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.publish.Publication;
 import org.gradle.api.publish.VersionMappingStrategy;
 import org.gradle.api.tasks.Nested;
 import org.gradle.internal.HasInternalProtocol;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 /**
  * A {@code MavenPublication} is the representation/configuration of how Gradle should publish something in Maven format.
@@ -273,20 +273,41 @@ public interface MavenPublication extends Publication {
     /**
      * GroupId for this publication.
      */
-    @ReplacesEagerProperty
     Property<String> getGroupId();
+
+    /**
+     * Sets the groupId for this publication.
+     */
+    @EagerSetter
+    default void setGroupId(String groupId) {
+        getGroupId().set(groupId);
+    }
 
     /**
      * ArtifactId for this publication.
      */
-    @ReplacesEagerProperty
     Property<String> getArtifactId();
+
+    /**
+     * Sets the artifactId for this publication.
+     */
+    @EagerSetter
+    default void setArtifactId(String artifactId) {
+        getArtifactId().set(artifactId);
+    }
 
     /**
      * Version for this publication.
      */
-    @ReplacesEagerProperty
     Property<String> getVersion();
+
+    /**
+     * Sets the version for this publication.
+     */
+    @EagerSetter
+    default void setVersion(String version) {
+        getVersion().set(version);
+    }
 
     /**
      * Configures the version mapping strategy.

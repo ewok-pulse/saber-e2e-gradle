@@ -17,6 +17,7 @@
 package org.gradle.caching.local;
 
 import org.gradle.api.file.DirectoryProperty;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.tasks.Optional;
 import org.gradle.caching.configuration.AbstractBuildCache;
 import org.gradle.internal.file.PathToFileResolver;
@@ -38,8 +39,17 @@ public abstract class DirectoryBuildCache extends AbstractBuildCache {
      * The directory to use to store the build cache.
      */
     @Optional
-    @ReplacesEagerProperty(adapter = DirectoryAdapter.class)
     public abstract DirectoryProperty getDirectory();
+
+    /**
+     * Sets the directory to use to store the build cache.
+     *
+     * The directory is evaluated as per {@code Project.file(Object)}.
+     */
+    @EagerSetter
+    public void setDirectory(Object directory) {
+        getDirectory().set(getFileResolver().resolve(directory));
+    }
 
     @Inject
     @Deprecated

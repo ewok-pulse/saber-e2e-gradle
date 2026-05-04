@@ -27,6 +27,7 @@ import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.internal.file.FileOperations;
 import org.gradle.api.internal.file.FileTreeInternal;
 import org.gradle.api.internal.file.temp.TemporaryFileProvider;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.internal.tasks.compile.CleaningJavaCompiler;
 import org.gradle.api.internal.tasks.compile.CommandLineJavaCompileSpec;
 import org.gradle.api.internal.tasks.compile.CompilationSourceDirs;
@@ -58,7 +59,6 @@ import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.WorkResult;
 import org.gradle.internal.buildoption.FeatureFlags;
 import org.gradle.internal.file.Deleter;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.jvm.toolchain.JavaInstallationMetadata;
 import org.gradle.jvm.toolchain.JavaLauncher;
@@ -320,8 +320,17 @@ public abstract class GroovyCompile extends AbstractCompile implements HasCompil
      * @return The classpath.
      */
     @Classpath
-    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getGroovyClasspath();
+
+    /**
+     * Sets the classpath containing the version of Groovy to use for compilation.
+     *
+     * @param groovyClasspath The classpath. Must not be null.
+     */
+    @EagerSetter
+    public void setGroovyClasspath(FileCollection groovyClasspath) {
+        getGroovyClasspath().setFrom(groovyClasspath);
+    }
 
     /**
      * The toolchain {@link JavaLauncher} to use for executing the Groovy compiler.

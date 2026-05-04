@@ -17,6 +17,8 @@ package org.gradle.api.tasks.compile;
 
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.DirectoryProperty;
+import org.gradle.api.file.FileCollection;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.OutputDirectory;
@@ -50,8 +52,17 @@ public abstract class AbstractCompile extends SourceTask {
      * @return The classpath.
      */
     @Classpath
-    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getClasspath();
+
+    /**
+     * Sets the classpath to use to compile the source files.
+     *
+     * @param classpath The classpath. Must not be null, but may be empty.
+     */
+    @EagerSetter
+    public void setClasspath(FileCollection classpath) {
+        getClasspath().setFrom(classpath);
+    }
 
     /**
      * Returns the directory property that represents the directory to generate the {@code .class} files into.

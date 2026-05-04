@@ -19,6 +19,7 @@ import com.google.common.collect.ImmutableList;
 import org.gradle.api.Action;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.RegularFileProperty;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.MapProperty;
@@ -32,11 +33,13 @@ import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Compilation options to be passed to the Groovy compiler.
@@ -63,8 +66,15 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Tells whether the compilation task should fail if compile errors occurred. Defaults to {@code true}.
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getFailOnError();
+
+    /**
+     * Sets whether the compilation task should fail if compile errors occurred. Defaults to {@code true}.
+     */
+    @EagerSetter
+    public void setFailOnError(boolean failOnError) {
+        getFailOnError().set(failOnError);
+    }
 
     @Internal
     public Property<Boolean> getIsFailOnError() {
@@ -75,8 +85,15 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Tells whether to turn on verbose output. Defaults to {@code false}.
      */
     @Console
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getVerbose();
+
+    /**
+     * Sets whether to turn on verbose output. Defaults to {@code false}.
+     */
+    @EagerSetter
+    public void setVerbose(boolean verbose) {
+        getVerbose().set(verbose);
+    }
 
     @Internal
     public Property<Boolean> getIsVerbose() {
@@ -87,8 +104,15 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Tells whether to print which source files are to be compiled. Defaults to {@code false}.
      */
     @Console
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getListFiles();
+
+    /**
+     * Sets whether to print which source files are to be compiled. Defaults to {@code false}.
+     */
+    @EagerSetter
+    public void setListFiles(boolean listFiles) {
+        getListFiles().set(listFiles);
+    }
 
     @Internal
     public Property<Boolean> getIsListFiles() {
@@ -99,15 +123,29 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Tells the source encoding. Defaults to {@code UTF-8}.
      */
     @Input
-    @ReplacesEagerProperty
     public abstract Property<String> getEncoding();
+
+    /**
+     * Sets the source encoding. Defaults to {@code UTF-8}.
+     */
+    @EagerSetter
+    public void setEncoding(String encoding) {
+        getEncoding().set(encoding);
+    }
 
     /**
      * Tells whether to run the Groovy compiler in a separate process. Defaults to {@code true}.
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getFork();
+
+    /**
+     * Sets whether to run the Groovy compiler in a separate process. Defaults to {@code true}.
+     */
+    @EagerSetter
+    public void setFork(boolean fork) {
+        getFork().set(fork);
+    }
 
     @Internal
     public Property<Boolean> getIsFork() {
@@ -155,8 +193,17 @@ public abstract class GroovyCompileOptions implements Serializable {
     @Optional
     @PathSensitive(PathSensitivity.NONE)
     @InputFile
-    @ReplacesEagerProperty
     public abstract RegularFileProperty getConfigurationScript();
+
+    /**
+     * Sets the path to the groovy configuration file.
+     *
+     * @see #getConfigurationScript()
+     */
+    @EagerSetter
+    public void setConfigurationScript(File configurationScript) {
+        getConfigurationScript().set(configurationScript);
+    }
 
     /**
      * Whether the Groovy code should be subject to Java annotation processing.
@@ -171,8 +218,17 @@ public abstract class GroovyCompileOptions implements Serializable {
      * No annotation processing will be performed regardless, on Java or Groovy source.
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getJavaAnnotationProcessing();
+
+    /**
+     * Sets whether Java annotation processors should process annotations on stubs.
+     *
+     * Defaults to {@code false}.
+     */
+    @EagerSetter
+    public void setJavaAnnotationProcessing(boolean javaAnnotationProcessing) {
+        getJavaAnnotationProcessing().set(javaAnnotationProcessing);
+    }
 
     @Internal
     public Property<Boolean> getIsJavaAnnotationProcessing() {
@@ -185,8 +241,18 @@ public abstract class GroovyCompileOptions implements Serializable {
      * @since 6.1
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getParameters();
+
+    /**
+     * Sets whether metadata for reflection on method parameter names should be generated.
+     * Defaults to {@code false}
+     *
+     * @since 6.1
+     */
+    @EagerSetter
+    public void setParameters(boolean parameters) {
+        getParameters().set(parameters);
+    }
 
     @Internal
     public Property<Boolean> getIsParameters() {
@@ -226,8 +292,16 @@ public abstract class GroovyCompileOptions implements Serializable {
      */
     @Input
     @Optional
-    @ReplacesEagerProperty
     public abstract MapProperty<String, Boolean> getOptimizationOptions();
+
+    /**
+     * Sets optimization options for the Groovy compiler. Allowed values for an option are {@code true} and {@code false}.
+     * Only takes effect when compiling against Groovy 1.8 or higher.
+     */
+    @EagerSetter
+    public void setOptimizationOptions(Map<String, Boolean> optimizationOptions) {
+        getOptimizationOptions().set(optimizationOptions);
+    }
 
     /**
      * Returns the set of global AST transformations which should not be loaded into the Groovy compiler.
@@ -243,17 +317,33 @@ public abstract class GroovyCompileOptions implements Serializable {
      * compilation. Defaults to {@code null}, in which case a temporary directory will be used.
      */
     @Internal
-    @ReplacesEagerProperty
     // TOOD:LPTR Should be just a relative path
     public abstract DirectoryProperty getStubDir();
+
+    /**
+     * Sets the directory where Java stubs for Groovy classes will be stored during Java/Groovy joint
+     * compilation. Defaults to {@code null}, in which case a temporary directory will be used.
+     */
+    @EagerSetter
+    public void setStubDir(File stubDir) {
+        getStubDir().set(stubDir);
+    }
 
     /**
      * Returns the list of acceptable source file extensions. Only takes effect when compiling against
      * Groovy 1.7 or higher. Defaults to {@code ImmutableList.of("java", "groovy")}.
      */
     @Input
-    @ReplacesEagerProperty
     public abstract ListProperty<String> getFileExtensions();
+
+    /**
+     * Sets the list of acceptable source file extensions. Only takes effect when compiling against
+     * Groovy 1.7 or higher. Defaults to {@code ImmutableList.of("java", "groovy")}.
+     */
+    @EagerSetter
+    public void setFileExtensions(List<String> fileExtensions) {
+        getFileExtensions().set(fileExtensions);
+    }
 
     /**
      * Tells whether Java stubs for Groovy classes generated during Java/Groovy joint compilation
@@ -261,8 +351,17 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Defaults to {@code false}.
      */
     @Input
-    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getKeepStubs();
+
+    /**
+     * Sets whether Java stubs for Groovy classes generated during Java/Groovy joint compilation
+     * should be kept after compilation has completed. Useful for joint compilation debugging purposes.
+     * Defaults to {@code false}.
+     */
+    @EagerSetter
+    public void setKeepStubs(boolean keepStubs) {
+        getKeepStubs().set(keepStubs);
+    }
 
     @Internal
     public Property<Boolean> getIsKeepStubs() {

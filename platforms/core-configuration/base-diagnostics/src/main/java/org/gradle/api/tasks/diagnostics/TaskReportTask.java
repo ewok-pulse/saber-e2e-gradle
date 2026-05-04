@@ -24,6 +24,7 @@ import org.gradle.api.internal.project.ProjectIdentity;
 import org.gradle.api.internal.project.ProjectInternal;
 import org.gradle.api.internal.project.ProjectTaskLister;
 import org.gradle.api.internal.project.taskfactory.TaskIdentity;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Console;
@@ -74,10 +75,13 @@ public abstract class TaskReportTask extends ConventionReportTask {
     }
 
     @Override
-    @ReplacesEagerProperty(replacedAccessors = {
-        @ReplacedAccessor(value = ReplacedAccessor.AccessorType.SETTER, name = "setRenderer", originalType = TaskReportRenderer.class)
-    })
     public abstract Property<TaskReportRenderer> getRenderer();
+
+    /** Eager forwarder; see {@link #getRenderer()}. */
+    @EagerSetter
+    public void setRenderer(TaskReportRenderer renderer) {
+        getRenderer().set(renderer);
+    }
 
     // TODO config-cache - should invalidate the cache or the filtering and merging should be moved to task execution time
     /**
@@ -106,8 +110,17 @@ public abstract class TaskReportTask extends ConventionReportTask {
      */
     @Console
     @Option(option = "group", description = "Show tasks for a specific group.")
-    @ReplacesEagerProperty
     public abstract Property<String> getDisplayGroup();
+
+    /**
+     * Set a specific task group to be displayed.
+     *
+     * @since 5.1
+     */
+    @EagerSetter
+    public void setDisplayGroup(String displayGroup) {
+        getDisplayGroup().set(displayGroup);
+    }
 
     /**
      * Returns the task groups to be displayed.

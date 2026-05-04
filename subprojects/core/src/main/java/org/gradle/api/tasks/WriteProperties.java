@@ -20,6 +20,7 @@ import com.google.common.base.Preconditions;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.internal.provider.ProviderApiDeprecationLogger;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.MapProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
@@ -71,8 +72,19 @@ public abstract class WriteProperties extends DefaultTask {
      * Returns an immutable view of properties to be written to the properties file.
      */
     @Input
-    @ReplacesEagerProperty(adapter = PropertiesAdapter.class)
     public abstract MapProperty<String, Object> getProperties();
+
+    /**
+     * Sets all properties to be written to the properties file replacing any existing properties.
+     *
+     * @see #properties(Map)
+     * @see #property(String, Object)
+     */
+    @EagerSetter
+    public void setProperties(Map<String, Object> properties) {
+        getProperties().empty();
+        properties.forEach(this::property);
+    }
 
     /**
      * Adds a property to be written to the properties file.
@@ -128,24 +140,46 @@ public abstract class WriteProperties extends DefaultTask {
      * Defaults to {@literal `\n`}.
      */
     @Input
-    @ReplacesEagerProperty
     public abstract Property<String> getLineSeparator();
+
+    /**
+     * Sets the line separator to be used when creating the properties file.
+     */
+    @EagerSetter
+    public void setLineSeparator(String lineSeparator) {
+        getLineSeparator().set(lineSeparator);
+    }
 
     /**
      * The optional comment to add at the beginning of the properties file.
      */
     @Input
     @Optional
-    @ReplacesEagerProperty
     public abstract Property<String> getComment();
+
+    /**
+     * Sets the optional comment to add at the beginning of the properties file.
+     */
+    @EagerSetter
+    public void setComment(String comment) {
+        getComment().set(comment);
+    }
 
     /**
      * The encoding used to write the properties file. Defaults to {@literal ISO_8859_1}.
      * If set to anything different, unicode escaping is turned off.
      */
     @Input
-    @ReplacesEagerProperty
     public abstract Property<String> getEncoding();
+
+    /**
+     * Sets the encoding used to write the properties file. Defaults to {@literal ISO_8859_1}.
+     * If set to anything different, unicode escaping is turned off.
+     */
+    @EagerSetter
+    public void setEncoding(String encoding) {
+        getEncoding().set(encoding);
+    }
 
     /**
      * The output properties file.

@@ -16,6 +16,7 @@
 package org.gradle.api.artifacts.repositories;
 
 import org.gradle.api.Action;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.SetProperty;
 import org.gradle.declarative.dsl.model.annotations.HiddenInDefinition;
@@ -23,6 +24,9 @@ import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazy
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * An artifact repository which uses a Maven format to store artifacts and meta-data.
@@ -55,8 +59,37 @@ public interface MavenArtifactRepository extends ArtifactRepository, UrlArtifact
      * @return The additional URLs. Returns an empty list if there are no such URLs.
      */
     @HiddenInDefinition
-    @ReplacesEagerProperty(adapter = MavenArtifactRepositoryAdapters.ArtifactUrlsAdapter.class)
     SetProperty<URI> getArtifactUrls();
+
+    /**
+     * Sets the additional URLs to use to find artifact files. Note that these URLs are not used to find POM files.
+     *
+     * @param urls The URLs.
+     * @since 4.0
+     * @deprecated Maven repositories with separate locations for POMs and artifacts are a Gradle-only feature with no equivalent in Maven. This method is scheduled to be removed in Gradle 10.
+     */
+    @Deprecated
+    @EagerSetter
+    default void setArtifactUrls(Set<URI> urls) {
+        getArtifactUrls().set(urls);
+    }
+
+    /**
+     * Sets the additional URLs to use to find artifact files. Note that these URLs are not used to find POM files.
+     *
+     * <p>The provided values are evaluated as per {@link org.gradle.api.Project#uri(Object)}. This means, for example, you can pass in a {@code File} object, or a relative path to be evaluated
+     * relative to the project directory.
+     *
+     * @param urls The URLs.
+     * @deprecated Maven repositories with separate locations for POMs and artifacts are a Gradle-only feature with no equivalent in Maven. This method is scheduled to be removed in Gradle 10.
+     */
+    @Deprecated
+    @EagerSetter
+    default void setArtifactUrls(Iterable<?> urls) {
+        List<Object> list = new ArrayList<>();
+        urls.forEach(list::add);
+        artifactUrls(list.toArray());
+    }
 
     /**
      * Adds some additional URLs to use to find artifact files. Note that these URLs are not used to find POM files.
