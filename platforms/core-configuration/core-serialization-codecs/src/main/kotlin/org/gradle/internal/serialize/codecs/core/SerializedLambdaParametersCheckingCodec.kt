@@ -21,7 +21,7 @@ import org.gradle.internal.serialize.graph.Codec
 import org.gradle.internal.serialize.graph.IsolateContext
 import org.gradle.internal.serialize.graph.ReadContext
 import org.gradle.internal.serialize.graph.WriteContext
-import org.gradle.internal.serialize.graph.codecs.NarrowingCodec
+import org.gradle.internal.serialize.graph.codecs.findIncompatibleNarrowing
 import org.gradle.internal.serialize.graph.encodeBean
 import org.gradle.internal.serialize.graph.decodeBean
 import org.gradle.internal.serialize.graph.logUnsupported
@@ -68,7 +68,7 @@ object SerializedLambdaParametersCheckingCodec : Codec<SerializedLambda> {
 
     /**
      * Returns the parameter type as a [KClass] when its registered codec is a
-     * [NarrowingCodec] whose decoded type cannot be assigned back to that
+     * narrowing codec whose decoded type cannot be assigned back to that
      * parameter type — meaning the lambda invocation post-deserialization would
      * receive a value of the wrong type. Returns null when the parameter is a
      * primitive, unloadable, has no codec, or roundtrips compatibly.
@@ -88,8 +88,7 @@ object SerializedLambdaParametersCheckingCodec : Codec<SerializedLambda> {
         } catch (_: ClassNotFoundException) {
             return null
         }
-        val narrowing = codecForRuntimeType(paramClass) as? NarrowingCodec<*> ?: return null
-        if (paramClass.isAssignableFrom(narrowing.decodedType)) return null
+        findIncompatibleNarrowing(paramClass) ?: return null
         return paramClass.kotlin
     }
 

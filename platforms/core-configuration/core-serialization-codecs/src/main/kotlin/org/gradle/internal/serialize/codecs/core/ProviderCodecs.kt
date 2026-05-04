@@ -61,6 +61,7 @@ import org.gradle.internal.serialize.graph.IsolateContext
 import org.gradle.internal.serialize.graph.MutableIsolateContext
 import org.gradle.internal.serialize.graph.ReadContext
 import org.gradle.internal.serialize.graph.WriteContext
+import org.gradle.internal.serialize.graph.codecs.findIncompatibleNarrowing
 import org.gradle.internal.serialize.graph.taskDescription
 import org.gradle.internal.serialize.graph.codecs.BeanCodec
 import org.gradle.internal.serialize.graph.codecs.Bindings
@@ -400,8 +401,7 @@ abstract class AbstractPropertyCodec<P : AbstractProperty<*, *>>(
  * load than the property expects.
  */
 private fun WriteContext.rejectUnsupportedPropertyValueType(propertyKind: Class<*>, valueType: Class<*>) {
-    val narrowing = codecForRuntimeType(valueType) as? NarrowingCodec<*> ?: return
-    if (valueType.isAssignableFrom(narrowing.decodedType)) return
+    val narrowing = findIncompatibleNarrowing(valueType) ?: return
 
     val resolution = if (MapProperty::class.java.isAssignableFrom(propertyKind)) {
         "Avoid using ${valueType.simpleName} as a MapProperty key or value."

@@ -17,6 +17,7 @@
 package org.gradle.internal.serialize.graph.codecs
 
 import org.gradle.internal.serialize.graph.Codec
+import org.gradle.internal.serialize.graph.WriteContext
 
 
 /**
@@ -56,4 +57,31 @@ interface NarrowingCodec<T : Any> : Codec<T> {
      * instead).
      */
     val narrowingResolution: String
+}
+
+
+/**
+ * Returns the [NarrowingCodec] registered for [runtimeType] when its decoded
+ * type cannot be assigned to [declaredType] — meaning a value of [runtimeType]
+ * flowing into a slot typed [declaredType] cannot survive the configuration
+ * cache roundtrip. Returns null when the slot can accept the codec's decoded
+ * type (or when no [NarrowingCodec] applies).
+ *
+ * Centralises the codec-lookup core shared by every store-time roundtrip-type
+ * check (bean fields, record components, lambda parameters, `Property<T>`
+ * value types, Kotlin delegates). Callers layer their own carve-outs and
+ * reporting on top of the returned codec.
+ *
+ * Pass [runtimeType] explicitly when the value's runtime class is more specific
+ * than the slot's declared type (the common case for bean fields). Omit it when
+ * the slot's declared type IS the only type signal available (the lambda and
+ * `Property<T>` cases) — it then defaults to [declaredType].
+ */
+fun WriteContext.findIncompatibleNarrowing(
+    declaredType: Class<*>,
+    runtimeType: Class<*> = declaredType
+): NarrowingCodec<*>? {
+    val narrowing = codecForRuntimeType(runtimeType) as? NarrowingCodec<*> ?: return null
+    if (declaredType.isAssignableFrom(narrowing.decodedType)) return null
+    return narrowing
 }

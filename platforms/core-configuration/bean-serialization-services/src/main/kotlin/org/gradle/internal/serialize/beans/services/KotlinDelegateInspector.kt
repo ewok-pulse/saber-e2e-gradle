@@ -16,19 +16,27 @@
 
 package org.gradle.internal.serialize.beans.services
 
+import java.lang.reflect.Field
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 
 
 /**
- * Extracts the current value from Kotlin property delegates so that it can be
- * inspected for unsupported types before configuration cache serialization.
+ * Reflective utilities for inspecting Kotlin property delegates ahead of
+ * configuration cache serialization.
  *
- * Kotlin `by`-delegates create a backing field whose *declared* type is the
- * delegate class (e.g. `Lazy`), hiding the actual value type from the
- * NarrowingCodec-driven check that operates on the field's runtime value.
- * This inspector looks *inside* recognised delegate wrappers to retrieve the
- * wrapped value.
+ * Kotlin `by`-delegates create a backing field named `<property>$delegate`
+ * whose *declared* type is the delegate class (e.g. `Lazy`), hiding the
+ * actual value type from the NarrowingCodec-driven check that operates on
+ * the field's runtime value. This inspector exposes two views of that
+ * compile-time machinery:
+ *
+ * - **Value-side** ([extractValue], [isKotlinDelegate], [delegateKindName]):
+ *   look *inside* recognised delegate wrappers to retrieve and label the
+ *   wrapped value.
+ * - **Field-side** ([kotlinPropertyGetterReturnType]): given a `$delegate`
+ *   backing field, find the corresponding Kotlin getter and return its
+ *   declared return type (the user-visible property type).
  *
  * Currently supports:
  * - [Lazy] (`by lazy { … }`) — the most common delegate in Gradle tasks
@@ -82,6 +90,40 @@ internal object KotlinDelegateInspector {
             "Not a recognised Kotlin property delegate: ${delegate::class.java.name}. " +
                 "Callers must guard with isKotlinDelegate() before calling delegateKindName()."
         )
+    }
+
+    /**
+     * Returns the declared return type of the Kotlin property backed by the given
+     * `$delegate` field.
+     *
+     * Kotlin compiles `val x by delegate` into a field `x$delegate` and a getter
+     * `getX()`. This method finds the getter and returns its return type so
+     * callers can compare against a codec's decoded type.
+     *
+     * @throws DelegateInspectionException if [delegateField] does not follow the
+     *   `<name>$delegate` naming convention, or if the expected getter cannot be
+     *   found (for example, when the property is private and the getter is therefore
+     *   not visible to [Class.getMethod]).
+     */
+    fun kotlinPropertyGetterReturnType(delegateField: Field): Class<*> {
+        val propertyName = delegateField.name.removeSuffix("\$delegate")
+        if (propertyName == delegateField.name) {
+            throw DelegateInspectionException(
+                "Field '${delegateField.name}' on ${delegateField.declaringClass.name} " +
+                    "does not follow the Kotlin delegate naming convention (<name>\$delegate)."
+            )
+        }
+        val getterName = "get${propertyName.replaceFirstChar { it.uppercase() }}"
+        return try {
+            delegateField.declaringClass.getMethod(getterName).returnType
+        } catch (e: NoSuchMethodException) {
+            throw DelegateInspectionException(
+                "Could not find getter '$getterName()' on ${delegateField.declaringClass.name} " +
+                    "for delegate field '${delegateField.name}'. " +
+                    "Available methods: ${delegateField.declaringClass.methods.map { it.name }.sorted().distinct().joinToString(", ")}",
+                e
+            )
+        }
     }
 
     private fun extractFromLazy(delegate: Lazy<*>): Any? =

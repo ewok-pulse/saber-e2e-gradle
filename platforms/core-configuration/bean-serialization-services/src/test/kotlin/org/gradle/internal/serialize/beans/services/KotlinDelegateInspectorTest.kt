@@ -19,6 +19,8 @@ package org.gradle.internal.serialize.beans.services
 import kotlin.properties.Delegates
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
+import org.gradle.api.artifacts.Configuration
+import org.gradle.api.file.FileCollection
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -130,4 +132,70 @@ class KotlinDelegateInspectorTest {
         KotlinDelegateInspector.delegateKindName("not a delegate")
     }
     // endregion delegateKindName
+
+    // region kotlinPropertyGetterReturnType
+    @Test
+    fun `kotlinPropertyGetterReturnType returns Configuration class for Configuration-typed property`() {
+        val field = BeanWithConfigurationDelegate::class.java.getDeclaredField("conf\$delegate")
+        assertEquals(Configuration::class.java, KotlinDelegateInspector.kotlinPropertyGetterReturnType(field))
+    }
+
+    @Test
+    fun `kotlinPropertyGetterReturnType returns FileCollection class for FileCollection-typed property`() {
+        val field = BeanWithFileCollectionDelegate::class.java.getDeclaredField("files\$delegate")
+        assertEquals(FileCollection::class.java, KotlinDelegateInspector.kotlinPropertyGetterReturnType(field))
+    }
+
+    @Test
+    fun `kotlinPropertyGetterReturnType returns String class for String-typed property`() {
+        val field = BeanWithStringDelegate::class.java.getDeclaredField("name\$delegate")
+        assertEquals(String::class.java, KotlinDelegateInspector.kotlinPropertyGetterReturnType(field))
+    }
+
+    @Test(expected = DelegateInspectionException::class)
+    fun `kotlinPropertyGetterReturnType throws when field does not follow delegate naming convention`() {
+        val field = BeanWithPlainField::class.java.getDeclaredField("notADelegate")
+        KotlinDelegateInspector.kotlinPropertyGetterReturnType(field)
+    }
+
+    @Test(expected = DelegateInspectionException::class)
+    fun `kotlinPropertyGetterReturnType throws when getter cannot be found for delegate field`() {
+        // A private val produces a $delegate field but a private getter,
+        // so Class.getMethod (public-only) cannot find it.
+        val field = BeanWithPrivateDelegate::class.java.getDeclaredField("hidden\$delegate")
+        KotlinDelegateInspector.kotlinPropertyGetterReturnType(field)
+    }
+    // endregion kotlinPropertyGetterReturnType
+
+    // region test fixtures
+    @Suppress("unused")
+    private class BeanWithConfigurationDelegate {
+        val conf by lazy<Configuration> {
+            throw UnsupportedOperationException("not called in test")
+        }
+    }
+
+    @Suppress("unused")
+    private class BeanWithFileCollectionDelegate {
+        val files by lazy<FileCollection> {
+            throw UnsupportedOperationException("not called in test")
+        }
+    }
+
+    @Suppress("unused")
+    private class BeanWithStringDelegate {
+        val name by lazy { "hello" }
+    }
+
+    @Suppress("unused")
+    private class BeanWithPlainField {
+        @JvmField
+        val notADelegate: String = "plain"
+    }
+
+    @Suppress("unused")
+    private class BeanWithPrivateDelegate {
+        private val hidden by lazy { "invisible getter" }
+    }
+    // endregion test fixtures
 }

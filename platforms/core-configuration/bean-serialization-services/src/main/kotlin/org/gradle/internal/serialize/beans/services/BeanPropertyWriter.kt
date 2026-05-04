@@ -24,6 +24,7 @@ import org.gradle.internal.reflect.UnsupportedTypeException
 import org.gradle.internal.serialize.graph.BeanStateWriter
 import org.gradle.internal.serialize.graph.WriteContext
 import org.gradle.internal.serialize.graph.codecs.NarrowingCodec
+import org.gradle.internal.serialize.graph.codecs.findIncompatibleNarrowing
 import org.gradle.internal.serialize.graph.reportSerializationError
 import org.gradle.internal.serialize.graph.taskDescription
 import org.gradle.internal.serialize.graph.withDebugFrame
@@ -70,10 +71,7 @@ class BeanPropertyWriter(
     internal
     suspend fun WriteContext.checkForIncompatibleRoundtrip(field: Field, fieldName: String, fieldValue: Any?) {
         if (fieldValue == null) return
-        val codec = codecForRuntimeType(fieldValue.javaClass) ?: return
-        val narrowing = codec as? NarrowingCodec<*> ?: return
-        // Pass when field can accept the decoded type directly.
-        if (field.type.isAssignableFrom(narrowing.decodedType)) return
+        val narrowing = findIncompatibleNarrowing(field.type, fieldValue.javaClass) ?: return
         // Pass when the field's declared type is a subtype of the codec's decoded type:
         // the codec may produce a concrete instance of that subtype at runtime (codecs
         // declare a broad interface but generally construct via a factory that yields
@@ -112,9 +110,8 @@ class BeanPropertyWriter(
     suspend fun WriteContext.checkKotlinDelegateForUnsupportedValue(field: Field, fieldName: String, fieldValue: Any?) {
         if (!KotlinDelegateInspector.isKotlinDelegate(fieldValue)) return
         val delegateValue = KotlinDelegateInspector.extractValue(fieldValue!!) ?: return
-        val narrowing = (codecForRuntimeType(delegateValue.javaClass) as? NarrowingCodec<*>) ?: return
-        val kotlinGetterReturnType = kotlinPropertyGetterReturnType(field) ?: return
-        if (kotlinGetterReturnType.isAssignableFrom(narrowing.decodedType)) return
+        val kotlinGetterReturnType = KotlinDelegateInspector.kotlinPropertyGetterReturnType(field)
+        val narrowing = findIncompatibleNarrowing(kotlinGetterReturnType, delegateValue.javaClass) ?: return
         reportUnsupportedKotlinDelegateType(field, fieldName, fieldValue, narrowing, kotlinGetterReturnType)
     }
 
@@ -140,37 +137,6 @@ class BeanPropertyWriter(
             listOf(narrowing.narrowingResolution)
         )
         reportSerializationError(PropertyKind.Field, fieldName, exception)
-    }
-
-    /**
-     * Returns the declared return type of the Kotlin property backed by the given
-     * `$delegate` field, or null if the field does not follow the delegate naming
-     * convention or the expected getter cannot be found.
-     *
-     * Kotlin compiles `val x by delegate` into a field `x$delegate` and a getter
-     * `getX()`. This method finds the getter and returns its return type so
-     * callers can compare against a codec's decoded type.
-     */
-    internal
-    fun kotlinPropertyGetterReturnType(delegateField: Field): Class<*>? {
-        val propertyName = delegateField.name.removeSuffix("\$delegate")
-        if (propertyName == delegateField.name) {
-            throw DelegateInspectionException(
-                "Field '${delegateField.name}' on ${delegateField.declaringClass.name} " +
-                    "does not follow the Kotlin delegate naming convention (<name>\$delegate)."
-            )
-        }
-        val getterName = "get${propertyName.replaceFirstChar { it.uppercase() }}"
-        return try {
-            delegateField.declaringClass.getMethod(getterName).returnType
-        } catch (e: NoSuchMethodException) {
-            throw DelegateInspectionException(
-                "Could not find getter '$getterName()' on ${delegateField.declaringClass.name} " +
-                    "for delegate field '${delegateField.name}'. " +
-                    "Available methods: ${delegateField.declaringClass.methods.map { it.name }.sorted().distinct().joinToString(", ")}",
-                e
-            )
-        }
     }
 
     private

@@ -22,7 +22,7 @@ import org.gradle.internal.serialize.graph.WriteContext
 import org.gradle.internal.serialize.graph.codecs.Decoding
 import org.gradle.internal.serialize.graph.codecs.Encoding
 import org.gradle.internal.serialize.graph.codecs.EncodingProducer
-import org.gradle.internal.serialize.graph.codecs.NarrowingCodec
+import org.gradle.internal.serialize.graph.codecs.findIncompatibleNarrowing
 import org.gradle.internal.serialize.graph.logPropertyProblem
 import org.gradle.internal.serialize.graph.readPropertyValue
 import org.gradle.internal.serialize.graph.reportUnsupportedFieldType
@@ -98,15 +98,14 @@ object JavaRecordEncoding : Encoding {
     /**
      * Returns the field's declared type as a [KClass] when serializing a value of
      * [fieldValue] into [field] cannot survive the configuration cache roundtrip,
-     * because the codec that handles [fieldValue] declares a [NarrowingCodec.decodedType]
-     * that the field cannot accept. Returns null when the roundtrip is compatible
-     * (or no [NarrowingCodec] applies).
+     * because the codec that handles [fieldValue] declares a decoded type that
+     * the field cannot accept. Returns null when the roundtrip is compatible.
      */
     private fun WriteContext.unsupportedNarrowedTypeFor(field: Field, fieldValue: Any?): KClass<*>? {
         val lookupType = fieldValue?.javaClass ?: field.type
-        val codec = codecForRuntimeType(lookupType) ?: return null
-        val narrowing = codec as? NarrowingCodec<*> ?: return null
-        if (field.type.isAssignableFrom(narrowing.decodedType)) return null
+        val narrowing = findIncompatibleNarrowing(field.type, lookupType) ?: return null
+        // Pass when the field's declared type is a subtype of the codec's decoded type:
+        // the codec may produce a concrete instance of that subtype at runtime.
         if (narrowing.decodedType.isAssignableFrom(field.type)) return null
         return field.type.kotlin
     }
