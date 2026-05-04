@@ -534,6 +534,17 @@ Since the previous version was 1.10.15, the link:https://github.com/apache/ant/b
 Groovy has been updated to link:https://groovy-lang.org/changelogs/changelog-4.0.31.html[4.0.31].
 Since the previous version was 4.0.29, the link:https://groovy-lang.org/changelogs/changelog-4.0.30.html[4.0.30] changes are also included.
 
+[[parameters_none_changes]]
+==== Behavior and contract changes for `*Parameters.None`
+
+The marker types used to declare a parameterless action — link:{javadocPath}/org/gradle/workers/WorkParameters.None.html[`WorkParameters.None`], link:{javadocPath}/org/gradle/api/artifacts/transform/TransformParameters.None.html[`TransformParameters.None`], link:{javadocPath}/org/gradle/api/services/BuildServiceParameters.None.html[`BuildServiceParameters.None`], link:{javadocPath}/org/gradle/api/provider/ValueSourceParameters.None.html[`ValueSourceParameters.None`], link:{javadocPath}/org/gradle/api/flow/FlowParameters.None.html[`FlowParameters.None`] and `JvmTestToolchainParameters.None` — have been standardized.
+
+1. **The configuration `Action` is now invoked even when the action declares `None` as its parameters type.** Calls like `WorkQueue.submit(MyAction.class, p -> ...)`, `FlowActionSpec.parameters { ... }`, `ValueSourceSpec.parameters { ... }`, `BuildServiceSpec.parameters { ... }` and `TransformSpec.parameters { ... }` now always run the configuration block. When the parameters type is `None`, the block receives the `None.INSTANCE` singleton instead of being skipped. Existing blocks that just configured properties on a real parameters type are unaffected; any code that relied on the block being silently skipped for `None` will now run.
+
+2. **`getParameters()` returns `None.INSTANCE` instead of `null` for parameterless actions.** Inside a `WorkAction`, `TransformAction`, `BuildService`, `ValueSource` or `FlowAction` that declares `None` as its parameters type, `getParameters()` now returns the `None.INSTANCE` singleton. Previously it could return `null`. Null-checks against the result are no longer required.
+
+No source change is needed in typical builds. If you have custom code that branched on `getParameters() == null` to detect a parameterless action, replace it with `getParameters() instanceof WorkParameters.None` (or the equivalent `None` type).
+
 [[changes_9.5.0]]
 == Upgrading from 9.4.0 and earlier
 
