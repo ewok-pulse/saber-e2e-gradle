@@ -94,9 +94,11 @@ import org.gradle.initialization.DefaultSettings
 import org.gradle.internal.jvm.Jvm
 import org.gradle.internal.locking.DefaultDependencyLockingHandler
 import org.gradle.invocation.DefaultGradle
+import org.gradle.test.fixtures.dsl.GradleDsl
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.JdkVersionTestPreconditions
 
+import spock.lang.Issue
 import spock.lang.Shared
 
 import java.util.concurrent.Executor
@@ -345,47 +347,59 @@ class ConfigurationCacheUnsupportedTypesIntegrationTest extends AbstractConfigur
         """
 
         when:
-        configurationCacheRunLenient "broken"
+        if (failsAtStore) {
+            configurationCacheFails "broken"
+        } else {
+            configurationCacheRunLenient "broken"
+        }
 
         then:
-        problems.assertResultHasProblems(result) {
-            totalProblemsCount = 9
-            withUniqueProblems(
-                "Task `:broken` of type `SomeTask`: cannot deserialize object of type '${baseType.name}' as these are not supported with the configuration cache.",
-                "Task `:broken` of type `SomeTask`: cannot serialize object of type '${concreteType.name}', a subtype of '${baseType.name}', as these are not supported with the configuration cache.",
-                "Task `:broken` of type `SomeTask`: value '$deserializedValue' is not assignable to '${baseType.name}'"
+        if (failsAtStore) {
+            // NarrowingCodec-driven check rejects the incompatible round-trip at store time.
+            failure.assertHasCause(
+                "Cannot serialize value of type ${concreteType.name}_Decorated into field badField of SomeTask in task :broken of type SomeTask: its codec produces ${decodedTypeName} on load, which cannot be assigned to a field of type ${baseType.name}."
             )
-            problemsWithStackTraceCount = 0
+            failure.assertHasResolution(resolution)
+        } else {
+            // No NarrowingCodec fires for this type; the only signal is the read-time
+            // type-assignment check that rejects the decoded value on load.
+            problems.assertResultHasProblems(result) {
+                totalProblemsCount = 3
+                withUniqueProblems(
+                    "Task `:broken` of type `SomeTask`: value '$deserializedValue' is not assignable to '${baseType.name}'"
+                )
+                problemsWithStackTraceCount = 0
+            }
         }
 
         when:
-        configurationCacheRunLenient "broken"
-
-        and:
-        outputContains("this.reference = null")
-        outputContains("bean.reference = null")
-        outputContains("beanWithSameType.reference = null")
-
-        then:
-        problems.assertResultHasProblems(result) {
-            totalProblemsCount = 6
-            withUniqueProblems(
-                "Task `:broken` of type `SomeTask`: cannot deserialize object of type '${baseType.name}' as these are not supported with the configuration cache.",
-                "Task `:broken` of type `SomeTask`: value '$deserializedValue' is not assignable to '${baseType.name}'"
-            )
-            problemsWithStackTraceCount = 0
+        if (!failsAtStore) {
+            configurationCacheRunLenient "broken"
         }
 
         and:
-        outputContains("this.reference = null")
-        outputContains("bean.reference = null")
-        outputContains("beanWithSameType.reference = null")
+        if (!failsAtStore) {
+            outputContains("this.reference = null")
+            outputContains("bean.reference = null")
+            outputContains("beanWithSameType.reference = null")
+        }
+
+        then:
+        if (!failsAtStore) {
+            problems.assertResultHasProblems(result) {
+                totalProblemsCount = 3
+                withUniqueProblems(
+                    "Task `:broken` of type `SomeTask`: value '$deserializedValue' is not assignable to '${baseType.name}'"
+                )
+                problemsWithStackTraceCount = 0
+            }
+        }
 
         where:
-        concreteType                   | baseType           | creator                                     | reference                                            | deserializedValue
-        DefaultLegacyConfiguration     | Configuration      | "project.configurations.create('some')"     | "project.configurations.getByName('some')"           | 'file collection'
-        DefaultResolvableConfiguration | Configuration      | "project.configurations.resolvable('some')" | "project.configurations.getByName('some')"           | 'file collection'
-        DefaultSourceDirectorySet      | SourceDirectorySet | ""                                          | "project.objects.sourceDirectorySet('some', 'more')" | 'file tree'
+        concreteType                   | baseType           | creator                                     | reference                                            | deserializedValue | failsAtStore | decodedTypeName                      | resolution
+        DefaultLegacyConfiguration     | Configuration      | "project.configurations.create('some')"     | "project.configurations.getByName('some')"           | 'file collection' | true         | 'org.gradle.api.file.FileCollection' | 'Use a ConfigurableFileCollection instead.'
+        DefaultResolvableConfiguration | Configuration      | "project.configurations.resolvable('some')" | "project.configurations.getByName('some')"           | 'file collection' | true         | 'org.gradle.api.file.FileCollection' | 'Use a ConfigurableFileCollection instead.'
+        DefaultSourceDirectorySet      | SourceDirectorySet | ""                                          | "project.objects.sourceDirectorySet('some', 'more')" | 'file tree'       | true         | 'org.gradle.api.file.FileTree'       | 'Use a ConfigurableFileCollection or ConfigurableFileTree instead.'
     }
 
     @Requires(JdkVersionTestPreconditions.Jdk14OrLater)
@@ -509,9 +523,8 @@ class ConfigurationCacheUnsupportedTypesIntegrationTest extends AbstractConfigur
 
         then:
         problems.assertResultHasProblems(result) {
-            totalProblemsCount = 6
+            totalProblemsCount = 4
             withUniqueProblems(
-                "Task `:broken` of type `SomeTask`: cannot deserialize object of type '${baseType.name}' as these are not supported with the configuration cache.",
                 "Task `:broken` of type `SomeTask`: cannot serialize object of type '${concreteType.name}', a subtype of '${baseType.name}', as these are not supported with the configuration cache.",
                 "Task `:broken` of type `SomeTask`: value '$deserializedValue' is not assignable to '${baseType.name}'"
             )
@@ -527,9 +540,8 @@ class ConfigurationCacheUnsupportedTypesIntegrationTest extends AbstractConfigur
 
         then:
         problems.assertResultHasProblems(result) {
-            totalProblemsCount = 4
+            totalProblemsCount = 2
             withUniqueProblems(
-                "Task `:broken` of type `SomeTask`: cannot deserialize object of type '${baseType.name}' as these are not supported with the configuration cache.",
                 "Task `:broken` of type `SomeTask`: value '$deserializedValue' is not assignable to '${baseType.name}'"
             )
             problemsWithStackTraceCount = 0
@@ -544,5 +556,168 @@ class ConfigurationCacheUnsupportedTypesIntegrationTest extends AbstractConfigur
         DefaultLegacyConfiguration     | Configuration      | "project.configurations.create('some')"     | "project.configurations.getByName('some')"           | 'file collection'
         DefaultResolvableConfiguration | Configuration      | "project.configurations.resolvable('some')" | "project.configurations.getByName('some')"           | 'file collection'
         DefaultSourceDirectorySet      | SourceDirectorySet | ""                                          | "project.objects.sourceDirectorySet('some', 'more')" | 'file tree'
+    }
+
+    @Requires(JdkVersionTestPreconditions.KotlinSupportedJdk)
+    @Issue("https://github.com/gradle/gradle/issues/16177")
+    def "reports when Kotlin #delegateKind delegate wraps an unsupported type, when the type is implicit (#configSource)"() {
+        given:
+        file("buildSrc/settings.gradle.kts").text = ""
+        file("buildSrc/build.gradle.kts").text = """
+            plugins { `kotlin-dsl` }
+            ${mavenCentralRepository(GradleDsl.KOTLIN)}
+        """
+        file("buildSrc/src/main/kotlin/BrokenTask.kt").text = """
+            import org.gradle.api.DefaultTask
+            import org.gradle.api.tasks.Internal
+            import org.gradle.api.tasks.TaskAction
+            import kotlin.properties.Delegates
+
+            open class BrokenTask : DefaultTask() {
+                $delegateDeclaration
+
+                @TaskAction
+                fun run() {
+                    println("task executed")
+                }
+            }
+        """.stripIndent()
+        buildFile << """
+            tasks.register("broken", BrokenTask) {
+                println("configured classPath type: " + classPath.class.name)
+            }
+        """
+
+        when:
+        configurationCacheFails "broken"
+
+        then: "CC detects the unsupported type inside the delegate with a clear cause and resolution"
+        // NarrowingCodec-driven check reports both the user's declared property type
+        // (Configuration) and the codec's decoded type (FileCollection), so the user
+        // can see the mismatch between what they wrote and what the codec produces.
+        failure.assertHasCause(
+            "Cannot serialize $delegateLabel delegate for property 'classPath: Configuration' in task :broken of type BrokenTask. " +
+            "The codec for the delegate's value produces org.gradle.api.file.FileCollection on load, " +
+            "which cannot be assigned to a property of type org.gradle.api.artifacts.Configuration."
+        )
+        failure.assertHasResolution("Use a ConfigurableFileCollection instead.")
+
+        where:
+        delegateKind | configSource | delegateLabel         | delegateDeclaration
+        "lazy"       | "detached"   | "lazy"                | '@get:Internal val classPath by lazy { project.configurations.detachedConfiguration() }'
+        "lazy"       | "created"    | "lazy"                | '@get:Internal val classPath by lazy { project.configurations.create("myConf") }'
+        "observable" | "detached"   | "observable/vetoable" | '@get:Internal var classPath by Delegates.observable(project.configurations.detachedConfiguration()) { _, _, _ -> }'
+        "observable" | "created"    | "observable/vetoable" | '@get:Internal var classPath by Delegates.observable(project.configurations.create("myConf")) { _, _, _ -> }'
+        "vetoable"   | "detached"   | "observable/vetoable" | '@get:Internal var classPath by Delegates.vetoable(project.configurations.detachedConfiguration()) { _, _, _ -> true }'
+        "vetoable"   | "created"    | "observable/vetoable" | '@get:Internal var classPath by Delegates.vetoable(project.configurations.create("myConf")) { _, _, _ -> true }'
+    }
+
+    @Requires(JdkVersionTestPreconditions.KotlinSupportedJdk)
+    @Issue("https://github.com/gradle/gradle/issues/16177")
+    def "Kotlin #delegateKind delegate with explicit FileCollection type works with configuration cache (#configSource)"() {
+        given:
+        file("buildSrc/settings.gradle.kts").text = ""
+        file("buildSrc/build.gradle.kts").text = """
+            plugins { `kotlin-dsl` }
+            ${mavenCentralRepository(GradleDsl.KOTLIN)}
+        """
+        file("buildSrc/src/main/kotlin/WorkingTask.kt").text = """
+            import org.gradle.api.DefaultTask
+            import org.gradle.api.file.FileCollection
+            import org.gradle.api.tasks.Internal
+            import org.gradle.api.tasks.TaskAction
+            import kotlin.properties.Delegates
+
+            open class WorkingTask : DefaultTask() {
+                $delegateDeclaration
+
+                @TaskAction
+                fun run() {
+                    println("classPath files: " + classPath.files)
+                }
+            }
+        """.stripIndent()
+        buildFile << """
+            tasks.register("working", WorkingTask) {
+                println("configured classPath type: " + classPath.class.name)
+            }
+        """
+
+        when: "first run stores to configuration cache"
+        configurationCacheRun "working"
+
+        then:
+        outputContains("classPath files: []")
+
+        when: "second run loads from cache and succeeds"
+        configurationCacheRun "working"
+
+        then: "no error because FileCollection checkcast succeeds"
+        outputContains("classPath files: []")
+
+        where:
+        delegateKind | configSource   | delegateDeclaration
+        "lazy"       | "detached"     | '@get:Internal val classPath: FileCollection by lazy { project.configurations.detachedConfiguration() }'
+        "lazy"       | "created"      | '@get:Internal val classPath: FileCollection by lazy { project.configurations.create("myConf") }'
+        "observable" | "detached"     | '@get:Internal var classPath: FileCollection by Delegates.observable(project.configurations.detachedConfiguration()) { _, _, _ -> }'
+        "observable" | "created"      | '@get:Internal var classPath: FileCollection by Delegates.observable(project.configurations.create("myConf")) { _, _, _ -> }'
+        "vetoable"   | "detached"     | '@get:Internal var classPath: FileCollection by Delegates.vetoable(project.configurations.detachedConfiguration()) { _, _, _ -> true }'
+        "vetoable"   | "created"      | '@get:Internal var classPath: FileCollection by Delegates.vetoable(project.configurations.create("myConf")) { _, _, _ -> true }'
+    }
+
+    @Requires(JdkVersionTestPreconditions.KotlinSupportedJdk)
+    @Issue("https://github.com/gradle/gradle/issues/16177")
+    def "Kotlin #delegateKind fails sensibly with explicit Configuration type with configuration cache (#configSource)"() {
+        given:
+        file("buildSrc/settings.gradle.kts").text = ""
+        file("buildSrc/build.gradle.kts").text = """
+            plugins { `kotlin-dsl` }
+            ${mavenCentralRepository(GradleDsl.KOTLIN)}
+        """
+        file("buildSrc/src/main/kotlin/FailingTask.kt").text = """
+            import org.gradle.api.DefaultTask
+            import org.gradle.api.artifacts.Configuration
+            import org.gradle.api.file.FileCollection
+            import org.gradle.api.tasks.Internal
+            import org.gradle.api.tasks.TaskAction
+            import kotlin.properties.Delegates
+
+            open class FailingTask : DefaultTask() {
+                $delegateDeclaration
+
+                @TaskAction
+                fun run() {
+                    println("classPath files: " + classPath.files)
+                }
+            }
+        """.stripIndent()
+        buildFile << """
+            tasks.register("failing", FailingTask) {
+                println("configured classPath type: " + classPath.class.name)
+            }
+        """
+
+        when:
+        configurationCacheFails "failing"
+
+        then:
+        // NarrowingCodec-driven check reports both the user's declared property type
+        // (Configuration) and the codec's decoded type (FileCollection), so the user
+        // can see the mismatch between what they wrote and what the codec produces.
+        failure.assertHasCause(
+            "Cannot serialize $delegateLabel delegate for property 'classPath: Configuration' in task :failing of type FailingTask. " +
+            "The codec for the delegate's value produces org.gradle.api.file.FileCollection on load, " +
+            "which cannot be assigned to a property of type org.gradle.api.artifacts.Configuration."
+        )
+        failure.assertHasResolution("Use a ConfigurableFileCollection instead.")
+
+        where:
+        delegateKind | configSource | delegateLabel         | delegateDeclaration
+        "lazy"       | "detached"   | "lazy"                | '@get:Internal val classPath: Configuration by lazy { project.configurations.detachedConfiguration() }'
+        "lazy"       | "created"    | "lazy"                | '@get:Internal val classPath: Configuration by lazy { project.configurations.create("myConf") }'
+        "observable" | "detached"   | "observable/vetoable" | '@get:Internal var classPath: Configuration by Delegates.observable(project.configurations.detachedConfiguration()) { _, _, _ -> }'
+        "observable" | "created"    | "observable/vetoable" | '@get:Internal var classPath: Configuration by Delegates.observable(project.configurations.create("myConf")) { _, _, _ -> }'
+        "vetoable"   | "detached"   | "observable/vetoable" | '@get:Internal var classPath: Configuration by Delegates.vetoable(project.configurations.detachedConfiguration()) { _, _, _ -> true }'
+        "vetoable"   | "created"    | "observable/vetoable" | '@get:Internal var classPath: Configuration by Delegates.vetoable(project.configurations.create("myConf")) { _, _, _ -> true }'
     }
 }

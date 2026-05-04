@@ -36,7 +36,11 @@ import org.gradle.api.internal.provider.PropertyFactory
 import org.gradle.api.internal.provider.ProviderInternal
 import org.gradle.api.internal.provider.ValueSourceProviderFactory
 import org.gradle.api.internal.provider.ValueSupplier
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
+import org.gradle.api.provider.SetProperty
 import org.gradle.api.provider.ValueSourceParameters
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
@@ -47,6 +51,7 @@ import org.gradle.internal.build.BuildStateRegistry
 import org.gradle.internal.cc.base.serialize.IsolateOwners
 import org.gradle.internal.configuration.problems.PropertyTrace
 import org.gradle.internal.extensions.core.serviceOf
+import org.gradle.internal.reflect.UnsupportedTypeException
 import org.gradle.internal.extensions.stdlib.uncheckedCast
 import org.gradle.internal.file.PathToFileResolver
 import org.gradle.internal.flow.services.BuildWorkResultProvider
@@ -56,8 +61,10 @@ import org.gradle.internal.serialize.graph.IsolateContext
 import org.gradle.internal.serialize.graph.MutableIsolateContext
 import org.gradle.internal.serialize.graph.ReadContext
 import org.gradle.internal.serialize.graph.WriteContext
+import org.gradle.internal.serialize.graph.taskDescription
 import org.gradle.internal.serialize.graph.codecs.BeanCodec
 import org.gradle.internal.serialize.graph.codecs.Bindings
+import org.gradle.internal.serialize.graph.codecs.NarrowingCodec
 import org.gradle.internal.serialize.graph.decodeBean
 import org.gradle.internal.serialize.graph.decodePreservingIdentity
 import org.gradle.internal.serialize.graph.decodePreservingSharedIdentity
@@ -385,6 +392,31 @@ abstract class AbstractPropertyCodec<P : AbstractProperty<*, *>>(
 }
 
 
+/**
+ * Throws [UnsupportedTypeException] if the codec registered for [valueType]
+ * is a [NarrowingCodec] that produces a decoded type not assignable to
+ * [valueType]. In that case a `Property<valueType>` cannot survive the
+ * serialization roundtrip: the inner value's codec yields a different type on
+ * load than the property expects.
+ */
+private fun WriteContext.rejectUnsupportedPropertyValueType(propertyKind: Class<*>, valueType: Class<*>) {
+    val narrowing = codecForRuntimeType(valueType) as? NarrowingCodec<*> ?: return
+    if (valueType.isAssignableFrom(narrowing.decodedType)) return
+
+    val resolution = if (MapProperty::class.java.isAssignableFrom(propertyKind)) {
+        "Avoid using ${valueType.simpleName} as a MapProperty key or value."
+    } else {
+        narrowing.narrowingResolution
+    }
+    throw UnsupportedTypeException(
+        "Cannot serialize ${propertyKind.simpleName}<${valueType.simpleName}> in ${trace.taskDescription()}. " +
+            "The value type of this property (${valueType.name}) is not supported with the configuration cache: " +
+            "its codec produces ${narrowing.publicDecodedType.name} on load.",
+        listOf(resolution)
+    )
+}
+
+
 class PropertyCodec(
     private val propertyFactory: PropertyFactory,
     providerCodec: FixedValueReplacingProviderCodec
@@ -392,7 +424,9 @@ class PropertyCodec(
 
     override suspend fun WriteContext.encodeThis(value: DefaultProperty<*>) {
         encodePreservingIdentityOf(value) {
-            writeClass(value.type)
+            val type = value.type
+            rejectUnsupportedPropertyValueType(Property::class.java, type)
+            writeClass(type)
             providerCodec.run { encodeProvider(value.provider) }
         }
     }
@@ -456,6 +490,7 @@ class ListPropertyCodec(
 
     override suspend fun WriteContext.encodeThis(value: DefaultListProperty<*>) {
         encodePreservingIdentityOf(value) {
+            rejectUnsupportedPropertyValueType(ListProperty::class.java, value.elementType)
             writeClass(value.elementType)
             providerCodec.run { encodeValue(value.calculateExecutionTimeValue()) }
         }
@@ -482,6 +517,7 @@ class SetPropertyCodec(
 
     override suspend fun WriteContext.encodeThis(value: DefaultSetProperty<*>) {
         encodePreservingIdentityOf(value) {
+            rejectUnsupportedPropertyValueType(SetProperty::class.java, value.elementType)
             writeClass(value.elementType)
             providerCodec.run { encodeValue(value.calculateExecutionTimeValue()) }
         }
@@ -508,6 +544,8 @@ class MapPropertyCodec(
 
     override suspend fun WriteContext.encodeThis(value: DefaultMapProperty<*, *>) {
         encodePreservingIdentityOf(value) {
+            rejectUnsupportedPropertyValueType(MapProperty::class.java, value.keyType)
+            rejectUnsupportedPropertyValueType(MapProperty::class.java, value.valueType)
             writeClass(value.keyType)
             writeClass(value.valueType)
             providerCodec.run { encodeValue(value.calculateExecutionTimeValue()) }
