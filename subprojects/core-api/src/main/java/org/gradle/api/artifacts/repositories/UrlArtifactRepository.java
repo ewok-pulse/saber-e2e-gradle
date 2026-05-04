@@ -17,8 +17,8 @@
 package org.gradle.api.artifacts.repositories;
 
 
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 import java.net.URI;
@@ -33,6 +33,7 @@ public interface UrlArtifactRepository {
     /**
      * The base URL of this repository.
      */
+    @ReplacesEagerProperty
     Property<URI> getUrl();
 
     /**
@@ -67,6 +68,7 @@ public interface UrlArtifactRepository {
      * See also:
      * <a href="https://medium.com/bugbountywriteup/want-to-take-over-the-java-ecosystem-all-you-need-is-a-mitm-1fc329d898fb">Want to take over the Java ecosystem? All you need is a MITM!</a>
      */
+    @ReplacesEagerProperty(originalType = boolean.class)
     Property<Boolean> getAllowInsecureProtocol();
 
     /**

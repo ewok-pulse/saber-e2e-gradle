@@ -15,11 +15,12 @@
  */
 package org.gradle.api.tasks.testing;
 
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.SetProperty;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 import java.util.Arrays;
 
@@ -107,6 +108,7 @@ public interface TestFilter {
      * @return included test name patterns
      */
     @Input
+    @ReplacesEagerProperty(adapter = TestFilterAdapters.IncludePatternsAdapter.class)
     SetProperty<String> getIncludePatterns();
 
     /**
@@ -128,6 +130,7 @@ public interface TestFilter {
      * @since 5.0
      */
     @Input
+    @ReplacesEagerProperty(adapter = TestFilterAdapters.ExcludePatternsAdapter.class)
     SetProperty<String> getExcludePatterns();
 
     /**
@@ -167,6 +170,7 @@ public interface TestFilter {
      * The default is true.
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     Property<Boolean> getFailOnNoMatchingTests();
 
     /**

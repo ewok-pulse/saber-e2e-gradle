@@ -19,7 +19,6 @@ import com.google.common.collect.ImmutableList;
 import org.gradle.api.Action;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.RegularFileProperty;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.MapProperty;
@@ -33,6 +32,8 @@ import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -66,6 +67,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Tells whether the compilation task should fail if compile errors occurred. Defaults to {@code true}.
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getFailOnError();
 
     /**
@@ -85,6 +87,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Tells whether to turn on verbose output. Defaults to {@code false}.
      */
     @Console
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getVerbose();
 
     /**
@@ -104,6 +107,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Tells whether to print which source files are to be compiled. Defaults to {@code false}.
      */
     @Console
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getListFiles();
 
     /**
@@ -123,6 +127,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Tells the source encoding. Defaults to {@code UTF-8}.
      */
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getEncoding();
 
     /**
@@ -137,6 +142,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Tells whether to run the Groovy compiler in a separate process. Defaults to {@code true}.
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getFork();
 
     /**
@@ -193,6 +199,7 @@ public abstract class GroovyCompileOptions implements Serializable {
     @Optional
     @PathSensitive(PathSensitivity.NONE)
     @InputFile
+    @ReplacesEagerProperty
     public abstract RegularFileProperty getConfigurationScript();
 
     /**
@@ -218,6 +225,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * No annotation processing will be performed regardless, on Java or Groovy source.
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getJavaAnnotationProcessing();
 
     /**
@@ -241,6 +249,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * @since 6.1
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getParameters();
 
     /**
@@ -292,6 +301,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      */
     @Input
     @Optional
+    @ReplacesEagerProperty
     public abstract MapProperty<String, Boolean> getOptimizationOptions();
 
     /**
@@ -318,6 +328,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      */
     @Internal
     // TOOD:LPTR Should be just a relative path
+    @ReplacesEagerProperty
     public abstract DirectoryProperty getStubDir();
 
     /**
@@ -334,6 +345,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Groovy 1.7 or higher. Defaults to {@code ImmutableList.of("java", "groovy")}.
      */
     @Input
+    @ReplacesEagerProperty
     public abstract ListProperty<String> getFileExtensions();
 
     /**
@@ -351,6 +363,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Defaults to {@code false}.
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getKeepStubs();
 
     /**

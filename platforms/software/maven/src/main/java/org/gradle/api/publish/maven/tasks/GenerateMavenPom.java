@@ -19,8 +19,6 @@ package org.gradle.api.publish.maven.tasks;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.internal.file.FileResolver;
-import org.gradle.api.internal.provider.ProviderApiDeprecationLogger;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.publish.maven.MavenPom;
 import org.gradle.api.publish.maven.internal.publication.MavenPomInternal;
@@ -30,7 +28,9 @@ import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.UntrackedTask;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.serialization.Cached;
 import org.gradle.internal.serialization.Transient;
 
@@ -75,6 +75,7 @@ public abstract class GenerateMavenPom extends DefaultTask {
      * The file the POM will be written to.
      */
     @OutputFile
+    @ReplacesEagerProperty(adapter = GenerateMavenPomAdapter.class)
     public abstract RegularFileProperty getDestination();
 
     /**
@@ -99,15 +100,6 @@ public abstract class GenerateMavenPom extends DefaultTask {
             return self.getDestination().getAsFile().getOrNull();
         }
 
-        @BytecodeUpgrade
-        static void setDestination(GenerateMavenPom self, File destination) {
-            self.getDestination().fileValue(destination);
-        }
 
-        @BytecodeUpgrade
-        static void setDestination(GenerateMavenPom self, Object destination) {
-            ProviderApiDeprecationLogger.logDeprecation(GenerateMavenPom.class, "setDestination(Object)", "getDestination()");
-            self.getDestination().fileValue(self.getFileResolver().resolve(destination));
-        }
     }
 }

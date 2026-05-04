@@ -18,12 +18,12 @@ package org.gradle.api.tasks.compile;
 
 import com.google.common.collect.ImmutableList;
 import org.gradle.api.Incubating;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty.BinaryCompatibility;
 import org.gradle.process.CommandLineArgumentProvider;
@@ -48,6 +48,7 @@ public abstract class ProviderAwareCompilerDaemonForkOptions extends BaseForkOpt
     @Optional
     @Nested
     // Marked as ACCESSORS_KEPT since incubating methods are not reported as removed
+    @ReplacesEagerProperty(binaryCompatibility = BinaryCompatibility.ACCESSORS_KEPT)
     public abstract ListProperty<CommandLineArgumentProvider> getJvmArgumentProviders();
 
     /** Eager forwarder; see {@link #getJvmArgumentProviders()}. */

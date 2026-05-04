@@ -22,7 +22,6 @@ import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileSystemOperations;
 import org.gradle.api.file.FileTree;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.internal.tasks.GroovydocAntAction;
 import org.gradle.api.internal.tasks.GroovydocParameters;
 import org.gradle.api.provider.Property;
@@ -41,6 +40,8 @@ import org.gradle.api.tasks.SourceTask;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.file.Deleter;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.workers.WorkerExecutor;
 import org.jspecify.annotations.Nullable;
@@ -151,6 +152,7 @@ public abstract class Groovydoc extends SourceTask {
      * @return The directory to generate the documentation into
      */
     @OutputDirectory
+    @ReplacesEagerProperty
     public abstract DirectoryProperty getDestinationDir();
 
     /**
@@ -167,6 +169,7 @@ public abstract class Groovydoc extends SourceTask {
      * @return The classpath containing the Groovy library to be used
      */
     @Classpath
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getGroovyClasspath();
 
     /**
@@ -181,6 +184,7 @@ public abstract class Groovydoc extends SourceTask {
      * The classpath used to locate classes referenced by the documented sources.
      */
     @Classpath
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getClasspath();
 
     /**
@@ -195,6 +199,7 @@ public abstract class Groovydoc extends SourceTask {
      * Returns whether to create class and package usage pages.
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getUse();
 
     /**
@@ -214,6 +219,7 @@ public abstract class Groovydoc extends SourceTask {
      * Returns whether to include timestamp within hidden comment in generated HTML (Groovy &gt;= 2.4.6).
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getNoTimestamp();
 
     /**
@@ -233,6 +239,7 @@ public abstract class Groovydoc extends SourceTask {
      * Returns whether to include version stamp within hidden comment in generated HTML (Groovy &gt;= 2.4.6).
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getNoVersionStamp();
 
     /**
@@ -253,6 +260,7 @@ public abstract class Groovydoc extends SourceTask {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getWindowTitle();
 
     /**
@@ -270,6 +278,7 @@ public abstract class Groovydoc extends SourceTask {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getDocTitle();
 
     /**
@@ -287,6 +296,7 @@ public abstract class Groovydoc extends SourceTask {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getHeader();
 
     /**
@@ -304,6 +314,7 @@ public abstract class Groovydoc extends SourceTask {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getFooter();
 
     /**
@@ -376,6 +387,7 @@ public abstract class Groovydoc extends SourceTask {
      * Returns the links to groovydoc/javadoc output at the given URL.
      */
     @Input
+    @ReplacesEagerProperty
     public abstract SetProperty<Link> getLinks();
 
     /**

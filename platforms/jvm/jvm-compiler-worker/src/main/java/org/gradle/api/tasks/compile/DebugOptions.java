@@ -16,10 +16,11 @@
 
 package org.gradle.api.tasks.compile;
 
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Optional;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 import java.io.Serializable;
 
@@ -47,6 +48,7 @@ public abstract class DebugOptions implements Serializable {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getDebugLevel();
 
     /**

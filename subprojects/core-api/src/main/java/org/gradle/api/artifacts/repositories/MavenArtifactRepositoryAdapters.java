@@ -16,7 +16,6 @@
 
 package org.gradle.api.artifacts.repositories;
 
-import com.google.common.collect.Lists;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
 
 import java.net.URI;
@@ -30,14 +29,6 @@ class MavenArtifactRepositoryAdapters {
             return repository.getArtifactUrls().get();
         }
 
-        @BytecodeUpgrade
-        static void setArtifactUrls(MavenArtifactRepository repository, Set<URI> urls) {
-            repository.getArtifactUrls().set(urls);
-        }
 
-        @BytecodeUpgrade
-        static void setArtifactUrls(MavenArtifactRepository repository, Iterable<?> urls) {
-            repository.artifactUrls(Lists.newArrayList(urls).toArray());
-        }
     }
 }

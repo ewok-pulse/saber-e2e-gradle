@@ -24,7 +24,6 @@ import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.internal.file.FileLookup;
 import org.gradle.api.internal.file.FileOperations;
 import org.gradle.api.internal.file.FileResolver;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
@@ -39,6 +38,7 @@ import org.gradle.api.tasks.wrapper.internal.WrapperDefaults;
 import org.gradle.api.tasks.wrapper.internal.WrapperGenerator;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.deprecation.DeprecationLogger;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.util.GradleVersion;
 import org.gradle.util.internal.GUtil;
@@ -216,6 +216,7 @@ public abstract class Wrapper extends DefaultTask {
      * Returns the file to write the wrapper script to.
      */
     @OutputFile
+    @ReplacesEagerProperty
     public abstract RegularFileProperty getScriptFile();
 
     /**
@@ -251,6 +252,7 @@ public abstract class Wrapper extends DefaultTask {
      * Returns the file to write the wrapper jar file to.
      */
     @OutputFile
+    @ReplacesEagerProperty
     public abstract RegularFileProperty getJarFile();
 
     /**
@@ -287,6 +289,7 @@ public abstract class Wrapper extends DefaultTask {
      * distribution base directory
      */
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getDistributionPath();
 
     /**
@@ -310,6 +313,7 @@ public abstract class Wrapper extends DefaultTask {
     @Input
     @Option(option = "gradle-version", description = "The version of the Gradle distribution required by the wrapper. " +
         "The following labels are allowed: latest, release-candidate, release-milestone, release-nightly, and nightly.")
+    @ReplacesEagerProperty
     public abstract Property<String> getGradleVersion();
 
     /**
@@ -326,6 +330,7 @@ public abstract class Wrapper extends DefaultTask {
      */
     @Input
     @Option(option = "distribution-type", description = "The type of the Gradle distribution to be used by the wrapper.")
+    @ReplacesEagerProperty
     public abstract Property<DistributionType> getDistributionType();
 
     /**
@@ -370,6 +375,7 @@ public abstract class Wrapper extends DefaultTask {
      */
     @Input
     @Option(option = "gradle-distribution-url", description = "The URL to download the Gradle distribution from.")
+    @ReplacesEagerProperty
     public abstract Property<String> getDistributionUrl();
 
     /**
@@ -394,6 +400,7 @@ public abstract class Wrapper extends DefaultTask {
     @Input
     @Optional
     @Option(option = "gradle-distribution-sha256-sum", description = "The SHA-256 hash sum of the gradle distribution.")
+    @ReplacesEagerProperty
     public abstract Property<String> getDistributionSha256Sum();
 
     /**
@@ -417,6 +424,7 @@ public abstract class Wrapper extends DefaultTask {
      * the gradle user home dir.
      */
     @Input
+    @ReplacesEagerProperty
     public abstract Property<PathBase> getDistributionBase();
 
     /**
@@ -433,6 +441,7 @@ public abstract class Wrapper extends DefaultTask {
      * relative to the archive base directory.
      */
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getArchivePath();
 
     /**
@@ -449,6 +458,7 @@ public abstract class Wrapper extends DefaultTask {
      * gradle user home dir.
      */
     @Input
+    @ReplacesEagerProperty
     public abstract Property<PathBase> getArchiveBase();
 
     /**

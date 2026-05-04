@@ -24,7 +24,6 @@ import org.gradle.api.Incubating;
 import org.gradle.api.file.Directory;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.ProjectLayout;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.internal.tasks.userinput.NonInteractiveUserInputHandler;
 import org.gradle.api.internal.tasks.userinput.UserInputHandler;
 import org.gradle.api.internal.tasks.userinput.UserQuestions;
@@ -59,6 +58,7 @@ import org.gradle.buildinit.specs.BuildInitGenerator;
 import org.gradle.buildinit.specs.BuildInitParameter;
 import org.gradle.buildinit.specs.BuildInitSpec;
 import org.gradle.buildinit.specs.internal.BuildInitSpecRegistry;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.logging.text.TreeFormatter;
@@ -138,6 +138,7 @@ public abstract class InitBuild extends DefaultTask {
     @Input
     @Optional
     @Option(option = "type", description = "Set the type of project to generate.")
+    @ReplacesEagerProperty
     public abstract Property<String> getType();
 
     /** Eager forwarder; see {@link #getType()}. */
@@ -167,6 +168,7 @@ public abstract class InitBuild extends DefaultTask {
     @Optional
     @Input
     @Option(option = "dsl", description = "Set the build script DSL to be used in generated scripts.")
+    @ReplacesEagerProperty
     public abstract Property<String> getDsl();
 
     /**
@@ -229,6 +231,7 @@ public abstract class InitBuild extends DefaultTask {
     @Input
     @Optional
     @Option(option = "project-name", description = "Set the project name.")
+    @ReplacesEagerProperty
     public abstract Property<String> getProjectName();
 
     /**
@@ -249,6 +252,7 @@ public abstract class InitBuild extends DefaultTask {
     @Input
     @Optional
     @Option(option = "package", description = "Set the package for source files.")
+    @ReplacesEagerProperty
     public abstract Property<String> getPackageName();
 
     /**
@@ -267,6 +271,7 @@ public abstract class InitBuild extends DefaultTask {
     @Input
     @Optional
     @Option(option = "test-framework", description = "Set the test framework to be used.")
+    @ReplacesEagerProperty
     public abstract Property<String> getTestFramework();
 
     /**

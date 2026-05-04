@@ -20,13 +20,13 @@ import com.google.common.base.Preconditions;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.internal.provider.ProviderApiDeprecationLogger;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.MapProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.provider.ProviderFactory;
 import org.gradle.internal.IoActions;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.util.PropertiesUtils;
 import org.gradle.util.internal.DeferredUtil;
@@ -72,6 +72,7 @@ public abstract class WriteProperties extends DefaultTask {
      * Returns an immutable view of properties to be written to the properties file.
      */
     @Input
+    @ReplacesEagerProperty(adapter = PropertiesAdapter.class)
     public abstract MapProperty<String, Object> getProperties();
 
     /**
@@ -140,6 +141,7 @@ public abstract class WriteProperties extends DefaultTask {
      * Defaults to {@literal `\n`}.
      */
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getLineSeparator();
 
     /**
@@ -155,6 +157,7 @@ public abstract class WriteProperties extends DefaultTask {
      */
     @Input
     @Optional
+    @ReplacesEagerProperty
     public abstract Property<String> getComment();
 
     /**
@@ -170,6 +173,7 @@ public abstract class WriteProperties extends DefaultTask {
      * If set to anything different, unicode escaping is turned off.
      */
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getEncoding();
 
     /**
@@ -225,16 +229,5 @@ public abstract class WriteProperties extends DefaultTask {
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> String.valueOf(e.getValue())));
         }
 
-        /**
-         * Sets all properties to be written to the properties file replacing any existing properties.
-         *
-         * @see #properties(Map)
-         * @see #property(String, Object)
-         */
-        @BytecodeUpgrade
-        static void setProperties(WriteProperties task, Map<String, Object> properties) {
-            task.getProperties().empty();
-            properties.forEach(task::property);
-        }
     }
 }

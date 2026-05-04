@@ -16,8 +16,9 @@
 package org.gradle.plugins.ear.descriptor;
 
 import groovy.util.Node;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 /**
  * A module element in a deployment descriptor like application.xml.
@@ -27,6 +28,7 @@ public interface EarModule {
     /**
      * The connector element specifies the URI of an archive file, relative to the top level of the application package.
      */
+    @ReplacesEagerProperty
     Property<String> getPath();
 
     /** Eager forwarder; see {@link #getPath()}. */
@@ -41,6 +43,7 @@ public interface EarModule {
      * the application's root directory. If alt-dd is not specified, the deployer must read the deployment descriptor
      * from the default location and file name required by the respective component specification.
      */
+    @ReplacesEagerProperty
     Property<String> getAltDeployDescriptor();
 
     /** Eager forwarder; see {@link #getAltDeployDescriptor()}. */

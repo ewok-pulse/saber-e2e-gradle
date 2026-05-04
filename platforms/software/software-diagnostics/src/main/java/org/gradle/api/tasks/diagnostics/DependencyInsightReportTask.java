@@ -38,7 +38,6 @@ import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.strategy.VersionS
 import org.gradle.api.internal.attributes.AttributeContainerInternal;
 import org.gradle.api.internal.attributes.AttributesFactory;
 import org.gradle.api.internal.provider.ProviderApiDeprecationLogger;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
@@ -64,7 +63,8 @@ import org.gradle.api.tasks.options.Option;
 import org.gradle.initialization.StartParameterBuildOptions;
 import org.gradle.internal.deprecation.DeprecationLogger;
 import org.gradle.internal.graph.GraphRenderer;
-import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.logging.text.StyledTextOutput;
 import org.gradle.internal.logging.text.StyledTextOutputFactory;
 import org.gradle.internal.serialization.Transient;
@@ -220,6 +220,7 @@ public abstract class DependencyInsightReportTask extends DefaultTask {
     @Input
     @Optional
     @Option(option = "dependency", description = "Shows the details of given dependency.")
+    @ReplacesEagerProperty(adapter = DependencyInsightReportTaskAdapter.class)
     public abstract Property<String> getDependencyNotation();
 
     /** Eager forwarder; see {@link #getDependencyNotation()}. */
@@ -232,6 +233,7 @@ public abstract class DependencyInsightReportTask extends DefaultTask {
      * Configuration to look the dependency in
      */
     @Internal
+    @ReplacesEagerProperty
     public Property<Configuration> getConfiguration() {
         return Objects.requireNonNull(configurationProp.get());
     }
@@ -277,6 +279,7 @@ public abstract class DependencyInsightReportTask extends DefaultTask {
      */
     @Internal
     @Option(option = "single-path", description = "Show at most one path to each dependency")
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getShowSinglePathToDependency();
 
     /**
@@ -743,15 +746,5 @@ public abstract class DependencyInsightReportTask extends DefaultTask {
     }
 
     static class DependencyInsightReportTaskAdapter {
-        @BytecodeUpgrade
-        static void setDependencySpec(DependencyInsightReportTask task, @Nullable Object notation) {
-            if (notation == null) {
-                task.getDependencyNotation().unset();
-            } else if (notation instanceof CharSequence) {
-                task.getDependencyNotation().set(notation.toString());
-            } else {
-                throw new IllegalArgumentException("Unsupported notation type: " + notation.getClass() + ". Only String and CharSequence notation are supported.");
-            }
-        }
     }
 }

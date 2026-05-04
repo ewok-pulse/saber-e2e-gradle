@@ -18,11 +18,12 @@ package org.gradle.api.publish.ivy;
 
 import org.gradle.api.Action;
 import org.gradle.api.XmlProvider;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
 import org.gradle.internal.HasInternalProtocol;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 /**
  * The descriptor of any Ivy publication.
@@ -79,6 +80,7 @@ public interface IvyModuleDescriptorSpec {
      * The status for this publication.
      */
     @Optional
+    @ReplacesEagerProperty
     Property<String> getStatus();
 
     /**
@@ -93,6 +95,7 @@ public interface IvyModuleDescriptorSpec {
      * The branch for this publication
      */
     @Optional
+    @ReplacesEagerProperty
     Property<String> getBranch();
 
     /**

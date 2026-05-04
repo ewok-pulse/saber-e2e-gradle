@@ -20,7 +20,6 @@ import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.ClassPathRegistry;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.internal.tasks.compile.daemon.ProcessIsolatedCompilerWorkerExecutor;
 import org.gradle.api.internal.tasks.scala.ScalaCompilerFactory;
 import org.gradle.api.internal.tasks.scala.ScalaJavaJointCompileSpec;
@@ -31,6 +30,8 @@ import org.gradle.api.tasks.scala.internal.ScalaCompileOptionsConfigurer;
 import org.gradle.initialization.ClassLoaderRegistry;
 import org.gradle.initialization.layout.ProjectCacheDir;
 import org.gradle.internal.classloader.ClasspathHasher;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.language.scala.tasks.AbstractScalaCompile;
 import org.gradle.process.internal.JavaForkOptionsFactory;
 import org.gradle.process.internal.worker.child.WorkerDirectoryProvider;
@@ -55,6 +56,7 @@ public abstract class ScalaCompile extends AbstractScalaCompile {
      * Returns the classpath to use to load the Scala compiler.
      */
     @Classpath
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getScalaClasspath();
 
     /** Eager forwarder; see {@link #getScalaClasspath()}. */
@@ -69,6 +71,7 @@ public abstract class ScalaCompile extends AbstractScalaCompile {
      * @since 6.4
      */
     @Classpath
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getScalaCompilerPlugins();
 
     /**
@@ -101,6 +104,7 @@ public abstract class ScalaCompile extends AbstractScalaCompile {
      * Returns the classpath to use to load the Zinc incremental compiler. This compiler in turn loads the Scala compiler.
      */
     @Classpath
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getZincClasspath();
 
     /** Eager forwarder; see {@link #getZincClasspath()}. */

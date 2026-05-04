@@ -25,12 +25,12 @@ import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.tasks.IgnoreEmptyDirectories;
 import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.Internal;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.SkipWhenEmpty;
 import org.gradle.api.tasks.TaskAction;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedDeprecation;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedDeprecation.RemovedIn;
@@ -46,7 +46,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.SETTER;
 
 /**
  * Generates an HTML test report from the results of one or more {@link Test} tasks.
@@ -83,6 +82,7 @@ public abstract class TestReport extends DefaultTask {
      * @since 7.4
      */
     @OutputDirectory
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDestinationDir"), deprecation = @ReplacedDeprecation(removedIn = RemovedIn.GRADLE9))
     public abstract DirectoryProperty getDestinationDirectory();
 
     /**

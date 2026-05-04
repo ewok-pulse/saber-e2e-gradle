@@ -16,10 +16,10 @@
 package org.gradle.api.artifacts.repositories;
 
 import org.gradle.api.Action;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.SetProperty;
 import org.gradle.declarative.dsl.model.annotations.HiddenInDefinition;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
@@ -59,6 +59,7 @@ public interface MavenArtifactRepository extends ArtifactRepository, UrlArtifact
      * @return The additional URLs. Returns an empty list if there are no such URLs.
      */
     @HiddenInDefinition
+    @ReplacesEagerProperty(adapter = MavenArtifactRepositoryAdapters.ArtifactUrlsAdapter.class)
     SetProperty<URI> getArtifactUrls();
 
     /**

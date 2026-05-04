@@ -18,10 +18,11 @@ package org.gradle.api.publish.maven;
 
 import org.gradle.api.Action;
 import org.gradle.api.XmlProvider;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.MapProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.internal.HasInternalProtocol;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 /**
  * The POM for a Maven publication.
@@ -42,6 +43,7 @@ public interface MavenPom {
     /**
      * Returns the packaging (for example: jar, war) for the publication represented by this POM.
      */
+    @ReplacesEagerProperty
     Property<String> getPackaging();
 
     /**

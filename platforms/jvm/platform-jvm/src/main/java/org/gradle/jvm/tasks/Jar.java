@@ -31,11 +31,11 @@ import org.gradle.api.java.archives.internal.CustomManifestInternalWrapper;
 import org.gradle.api.java.archives.internal.DefaultManifest;
 import org.gradle.api.java.archives.internal.ManifestInternal;
 import org.gradle.api.provider.Property;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.bundling.Zip;
 import org.gradle.internal.execution.OutputChangeListener;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.internal.serialization.Cached;
@@ -133,6 +133,7 @@ public abstract class Jar extends Zip {
      * @since 2.14
      */
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getManifestContentCharset();
 
     /**

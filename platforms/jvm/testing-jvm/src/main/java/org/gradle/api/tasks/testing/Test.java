@@ -32,7 +32,6 @@ import org.gradle.api.file.FileTree;
 import org.gradle.api.file.FileTreeElement;
 import org.gradle.api.internal.classpath.ModuleRegistry;
 import org.gradle.api.internal.provider.PropertyFactory;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.internal.tasks.testing.JvmTestExecutionSpec;
 import org.gradle.api.internal.tasks.testing.TestExecutableUtils;
 import org.gradle.api.internal.tasks.testing.TestExecuter;
@@ -76,6 +75,7 @@ import org.gradle.internal.actor.ActorFactory;
 import org.gradle.internal.concurrent.CompositeStoppable;
 import org.gradle.internal.deprecation.DeprecationLogger;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
@@ -775,6 +775,7 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      * @since 4.0
      */
     @Internal
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getTestClassesDirs();
 
     /**
@@ -875,6 +876,7 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      * @since 7.3
      */
     @Nested
+    @ReplacesEagerProperty(adapter = TestFrameworkAdapter.class)
     public abstract Property<TestFramework> getTestFramework();
 
     /** Eager forwarder; see {@link #getTestFramework()}. */
@@ -1066,6 +1068,7 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      * Returns the classpath to use to execute the tests.
      */
     @Internal("captured by stableClasspath")
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getClasspath();
 
     /** Eager forwarder; see {@link #getClasspath()}. */
@@ -1079,6 +1082,7 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      * {@code false} the classes which match the include and exclude patterns are executed.
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getScanForTestClasses();
 
     /** Eager forwarder; see {@link #getScanForTestClasses()}. */
@@ -1110,6 +1114,7 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      * @return The maximum number of test classes to execute in a test process. Returns 0 when there is no maximum.
      */
     @Internal
+    @ReplacesEagerProperty(adapter = ForkEveryAdapter.class)
     public abstract Property<Long> getForkEvery();
 
     /**
@@ -1141,6 +1146,7 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      * @return The maximum number of forked test processes.
      */
     @Internal
+    @ReplacesEagerProperty(adapter = MaxParallelForks.class)
     public abstract Property<Integer> getMaxParallelForks();
 
     /**
@@ -1272,10 +1278,6 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
             return test.getDebug().get() ? 0 : test.getForkEvery().get();
         }
 
-        @BytecodeUpgrade
-        static void setForkEvery(Test test, long forkEvery) {
-            test.getForkEvery().set(forkEvery);
-        }
     }
 
     static class MaxParallelForks {
@@ -1284,9 +1286,5 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
             return test.getDebug().get() ? 1 : test.getMaxParallelForks().get();
         }
 
-        @BytecodeUpgrade
-        static void setMaxParallelForks(Test test, int maxParallelForks) {
-            test.getMaxParallelForks().set(maxParallelForks);
-        }
     }
 }

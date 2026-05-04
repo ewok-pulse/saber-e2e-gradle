@@ -18,12 +18,13 @@ package org.gradle.api.plugins.quality;
 import org.gradle.api.Project;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.FileCollection;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.resources.TextResource;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Arrays;
@@ -56,6 +57,7 @@ public abstract class PmdExtension extends CodeQualityExtension {
      *     ruleSets = ["category/java/errorprone.xml", "category/java/bestpractices.xml"]
      * </pre>
      */
+    @ReplacesEagerProperty
     public abstract ListProperty<String> getRuleSets();
 
     /**
@@ -86,6 +88,7 @@ public abstract class PmdExtension extends CodeQualityExtension {
     /**
      * The target jdk to use with pmd, 1.3, 1.4, 1.5, 1.6, 1.7 or jsp
      */
+    @ReplacesEagerProperty(adapter = TargetJdkAdapter.class)
     public abstract Property<TargetJdk> getTargetJdk();
 
     /**
@@ -172,6 +175,7 @@ public abstract class PmdExtension extends CodeQualityExtension {
      *     ruleSetFiles = files("config/pmd/myRuleSet.xml")
      * </pre>
      */
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getRuleSetFiles();
 
     /**
@@ -203,6 +207,7 @@ public abstract class PmdExtension extends CodeQualityExtension {
     /**
      * Whether or not to write PMD results to {@code System.out}.
      */
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getConsoleOutput();
 
     /**
@@ -240,14 +245,6 @@ public abstract class PmdExtension extends CodeQualityExtension {
             return extension.getTargetJdk().getOrNull();
         }
 
-        @BytecodeUpgrade
-        static void setTargetJdk(PmdExtension extension, TargetJdk targetJdk) {
-            extension.getTargetJdk().set(targetJdk);
-        }
 
-        @BytecodeUpgrade
-        static void setTargetJdk(PmdExtension extension, Object value) {
-            extension.getTargetJdk().set(TargetJdk.toVersion(value));
-        }
     }
 }

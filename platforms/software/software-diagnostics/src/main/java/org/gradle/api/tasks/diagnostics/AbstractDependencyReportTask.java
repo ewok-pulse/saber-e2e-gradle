@@ -21,7 +21,6 @@ import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ConfigurationContainer;
 import org.gradle.api.internal.artifacts.configurations.ConfigurationInternal;
 import org.gradle.api.internal.provider.ProviderApiDeprecationLogger;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.SetProperty;
 import org.gradle.api.tasks.Input;
@@ -33,6 +32,8 @@ import org.gradle.api.tasks.diagnostics.internal.DependencyReportRenderer;
 import org.gradle.api.tasks.diagnostics.internal.ProjectDetails;
 import org.gradle.api.tasks.diagnostics.internal.dependencies.AsciiDependencyReportRenderer;
 import org.gradle.api.tasks.options.Option;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.serialization.Transient;
 import org.gradle.work.DisableCachingByDefault;
 
@@ -111,6 +112,7 @@ public abstract class AbstractDependencyReportTask extends AbstractProjectBasedR
      * @return the configurations.
      */
     @Internal
+    @ReplacesEagerProperty
     public SetProperty<Configuration> getConfigurations() {
         return Objects.requireNonNull(configurations.get());
     }

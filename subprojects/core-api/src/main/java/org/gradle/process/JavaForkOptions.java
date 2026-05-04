@@ -19,7 +19,6 @@ package org.gradle.process;
 import org.gradle.api.Action;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.FileCollection;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.MapProperty;
 import org.gradle.api.provider.Property;
@@ -30,6 +29,7 @@ import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
 import org.gradle.internal.HasInternalProtocol;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
@@ -50,6 +50,7 @@ public interface JavaForkOptions extends ProcessForkOptions {
      * @return The system properties. Returns an empty map when there are no system properties.
      */
     @Input
+    @ReplacesEagerProperty
     MapProperty<String, Object> getSystemProperties();
 
     /**
@@ -86,6 +87,7 @@ public interface JavaForkOptions extends ProcessForkOptions {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     Property<String> getDefaultCharacterEncoding();
 
     /**
@@ -110,6 +112,7 @@ public interface JavaForkOptions extends ProcessForkOptions {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     Property<String> getMinHeapSize();
 
     /**
@@ -131,6 +134,7 @@ public interface JavaForkOptions extends ProcessForkOptions {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     Property<String> getMaxHeapSize();
 
     /**
@@ -151,6 +155,7 @@ public interface JavaForkOptions extends ProcessForkOptions {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty(adapter = JavaForkOptionsAdapters.JvmArgsAdapter.class)
     ListProperty<String> getJvmArgs();
 
     /**
@@ -198,6 +203,7 @@ public interface JavaForkOptions extends ProcessForkOptions {
      * @since 4.6
      */
     @Nested
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = AccessorType.GETTER, name = "getJvmArgumentProviders"))
     ListProperty<CommandLineArgumentProvider> getJvmArgumentProviders();
 
     /** Eager forwarder; see {@link #getJvmArgumentProviders()}. */
@@ -213,6 +219,7 @@ public interface JavaForkOptions extends ProcessForkOptions {
      * @return The bootstrap classpath. Never returns null.
      */
     @Classpath
+    @ReplacesEagerProperty
     ConfigurableFileCollection getBootstrapClasspath();
 
     /**
@@ -239,6 +246,7 @@ public interface JavaForkOptions extends ProcessForkOptions {
      */
     @Input
     @Optional
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = AccessorType.GETTER, name = "getEnableAssertions", originalType = boolean.class))
     Property<Boolean> getEnableAssertions();
 
     /**
@@ -261,6 +269,7 @@ public interface JavaForkOptions extends ProcessForkOptions {
      * {@link #debugOptions(Action)}.
      */
     @Input
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = AccessorType.GETTER, name = "getDebug", originalType = boolean.class))
     Property<Boolean> getDebug();
 
     /**
@@ -301,6 +310,7 @@ public interface JavaForkOptions extends ProcessForkOptions {
      * @return The immutable list of arguments. Returns an empty list if there are no arguments.
      */
     @Internal
+    @ReplacesEagerProperty(adapter = JavaForkOptionsAdapters.AllJvmArgsAdapter.class)
     Provider<List<String>> getAllJvmArgs();
 
     /**

@@ -24,7 +24,6 @@ import org.gradle.api.internal.project.ProjectIdentity;
 import org.gradle.api.internal.project.ProjectInternal;
 import org.gradle.api.internal.project.ProjectTaskLister;
 import org.gradle.api.internal.project.taskfactory.TaskIdentity;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Console;
@@ -41,6 +40,9 @@ import org.gradle.api.tasks.diagnostics.internal.TaskReportModel;
 import org.gradle.api.tasks.diagnostics.internal.TaskReportRenderer;
 import org.gradle.api.tasks.options.Option;
 import org.gradle.internal.Try;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.serialization.Cached;
 import org.gradle.util.Path;
 import org.gradle.work.DisableCachingByDefault;
@@ -89,6 +91,7 @@ public abstract class TaskReportTask extends ConventionReportTask {
      */
     @Input
     @Option(option = "all", description = "Show additional tasks and detail.")
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = ReplacedAccessor.AccessorType.GETTER, name = "isDetail", originalType = boolean.class))
     public abstract Property<Boolean> getShowDetail();
 
     /**
@@ -112,6 +115,7 @@ public abstract class TaskReportTask extends ConventionReportTask {
      */
     @Console
     @Option(option = "group", description = "Show tasks for a specific group.")
+    @ReplacesEagerProperty
     public abstract Property<String> getDisplayGroup();
 
     /**

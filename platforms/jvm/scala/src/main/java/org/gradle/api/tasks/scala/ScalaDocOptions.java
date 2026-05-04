@@ -16,12 +16,13 @@
 package org.gradle.api.tasks.scala;
 
 
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 import javax.inject.Inject;
 import java.io.Serializable;
@@ -42,6 +43,7 @@ public abstract class ScalaDocOptions implements Serializable {
      * Tells whether to generate deprecation information.
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getDeprecation();
 
     /**
@@ -61,6 +63,7 @@ public abstract class ScalaDocOptions implements Serializable {
      * Tells whether to generate unchecked information.
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getUnchecked();
 
     /**
@@ -81,6 +84,7 @@ public abstract class ScalaDocOptions implements Serializable {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getWindowTitle();
 
     /**
@@ -96,6 +100,7 @@ public abstract class ScalaDocOptions implements Serializable {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getDocTitle();
 
     /**
@@ -111,6 +116,7 @@ public abstract class ScalaDocOptions implements Serializable {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getHeader();
 
     /**
@@ -126,6 +132,7 @@ public abstract class ScalaDocOptions implements Serializable {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getFooter();
 
     /**
@@ -141,6 +148,7 @@ public abstract class ScalaDocOptions implements Serializable {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getTop();
 
     /**
@@ -156,6 +164,7 @@ public abstract class ScalaDocOptions implements Serializable {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getBottom();
 
     /**
@@ -172,6 +181,7 @@ public abstract class ScalaDocOptions implements Serializable {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract ListProperty<String> getAdditionalParameters();
 
     /**

@@ -21,6 +21,8 @@ import org.gradle.api.provider.SetProperty;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.testing.TestFilter;
 import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty.BinaryCompatibility;
 import org.gradle.internal.scan.UsedByScanPlugin;
 
 import java.util.Collection;
@@ -82,6 +84,9 @@ public abstract class DefaultTestFilter implements TestFilter {
      * since some plugins, e.g. KGP, use it.
      */
     @Input
+    @ReplacesEagerProperty(fluentSetter = true, // Kept, since internal classes are not reported in binary checks
+        // so the upgrade check reports an error that original methods was not removed
+        binaryCompatibility = BinaryCompatibility.ACCESSORS_KEPT)
     public abstract SetProperty<String> getCommandLineIncludePatterns();
 
     /**

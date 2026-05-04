@@ -16,11 +16,12 @@
 
 package org.gradle.api.tasks.compile;
 
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.jspecify.annotations.Nullable;
 
@@ -43,6 +44,7 @@ public abstract class ForkOptions extends ProviderAwareCompilerDaemonForkOptions
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getExecutable();
 
     /**
@@ -88,6 +90,7 @@ public abstract class ForkOptions extends ProviderAwareCompilerDaemonForkOptions
      * in which case the directory will be chosen automatically.
      */
     @Internal
+    @ReplacesEagerProperty
     public abstract Property<String> getTempDir();
 
     /**

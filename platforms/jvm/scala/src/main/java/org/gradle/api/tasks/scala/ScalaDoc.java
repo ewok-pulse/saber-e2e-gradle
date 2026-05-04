@@ -20,7 +20,6 @@ import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileTree;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.CacheableTask;
@@ -38,6 +37,8 @@ import org.gradle.api.tasks.SourceTask;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.scala.internal.GenerateScaladoc;
 import org.gradle.api.tasks.scala.internal.ScalaRuntimeHelper;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.jvm.toolchain.JavaLauncher;
 import org.gradle.jvm.toolchain.JavaToolchainService;
@@ -65,6 +66,7 @@ public abstract class ScalaDoc extends SourceTask {
      * Returns the directory to generate the API documentation into.
      */
     @OutputDirectory
+    @ReplacesEagerProperty
     public abstract DirectoryProperty getDestinationDir();
 
     /** Eager forwarder; see {@link #getDestinationDir()}. */
@@ -119,6 +121,7 @@ public abstract class ScalaDoc extends SourceTask {
      * @return The classpath.
      */
     @Classpath
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getClasspath();
 
     /** Eager forwarder; see {@link #getClasspath()}. */
@@ -131,6 +134,7 @@ public abstract class ScalaDoc extends SourceTask {
      * Returns the classpath to use to load the ScalaDoc tool.
      */
     @Classpath
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getScalaClasspath();
 
     /** Eager forwarder; see {@link #getScalaClasspath()}. */
@@ -159,6 +163,7 @@ public abstract class ScalaDoc extends SourceTask {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getTitle();
 
     /** Eager forwarder; see {@link #getTitle()}. */

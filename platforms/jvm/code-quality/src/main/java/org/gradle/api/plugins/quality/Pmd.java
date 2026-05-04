@@ -24,7 +24,6 @@ import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileTree;
 import org.gradle.api.file.RegularFile;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.plugins.quality.internal.PmdAction;
 import org.gradle.api.plugins.quality.internal.PmdActionParameters;
@@ -46,6 +45,7 @@ import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.Describables;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.internal.nativeintegration.console.ConsoleDetector;
@@ -183,6 +183,7 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
      * The class path containing the PMD library to be used.
      */
     @Classpath
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getPmdClasspath();
 
     /**
@@ -201,6 +202,7 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
      * </pre>
      */
     @Input
+    @ReplacesEagerProperty
     public abstract ListProperty<String> getRuleSets();
 
     /**
@@ -219,6 +221,7 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
      * The target JDK to use with PMD.
      */
     @Input
+    @ReplacesEagerProperty
     public abstract Property<TargetJdk> getTargetJdk();
 
     /**
@@ -272,6 +275,7 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
      */
     @InputFiles
     @PathSensitive(PathSensitivity.NONE)
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getRuleSetFiles();
 
     /**
@@ -323,6 +327,7 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
      * @since 2.1
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getConsoleOutput();
 
     /**
@@ -351,6 +356,7 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
      */
     @Optional
     @Classpath
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getClasspath();
 
     /**

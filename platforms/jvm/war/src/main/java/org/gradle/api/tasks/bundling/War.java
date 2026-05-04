@@ -26,7 +26,6 @@ import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.internal.file.copy.CopySpecInternal;
 import org.gradle.api.internal.file.copy.DefaultCopySpec;
 import org.gradle.api.internal.file.copy.RenamingCopyAction;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.InputFile;
@@ -36,7 +35,9 @@ import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.internal.Transformers;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.util.internal.ConfigureUtil;
 import org.gradle.work.DisableCachingByDefault;
 import org.jspecify.annotations.Nullable;
@@ -121,6 +122,7 @@ public abstract class War extends Jar {
      * Any directories in this classpath are included in the {@code WEB-INF/classes} directory.
      */
     @Classpath
+    @ReplacesEagerProperty(adapter = ClasspathAdapter.class)
     public abstract ConfigurableFileCollection getClasspath();
 
     /**
@@ -161,6 +163,7 @@ public abstract class War extends Jar {
     @Optional
     @PathSensitive(PathSensitivity.NONE)
     @InputFile
+    @ReplacesEagerProperty
     public abstract RegularFileProperty getWebXml();
 
     /**
@@ -192,14 +195,6 @@ public abstract class War extends Jar {
             return task.getClasspath();
         }
 
-        @BytecodeUpgrade
-        static void setClasspath(War task, Object classpath) {
-            task.getClasspath().setFrom(classpath);
-        }
 
-        @BytecodeUpgrade
-        static void setClasspath(War task, FileCollection classpath) {
-            setClasspath(task, (Object) classpath);
-        }
     }
 }

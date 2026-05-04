@@ -16,16 +16,17 @@
 
 package org.gradle.api.tasks.testing.logging;
 
-import java.util.EnumSet;
-import java.util.Set;
-
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.SetProperty;
 import org.gradle.api.tasks.Internal;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.util.internal.GUtil;
+
+import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * Options that determine which test events get logged, and at which detail.
@@ -38,6 +39,7 @@ public interface TestLogging {
      * @return the events to be logged
      */
     @Internal
+    @ReplacesEagerProperty(adapter = TestLoggingAdapters.EventsAdapter.class)
     SetProperty<TestLogEvent> getEvents();
 
     /**
@@ -83,6 +85,7 @@ public interface TestLogging {
      * @return the minimum granularity of the events to be logged
      */
     @Internal
+    @ReplacesEagerProperty(originalType = int.class)
     Property<Integer> getMinGranularity();
 
     /**
@@ -111,6 +114,7 @@ public interface TestLogging {
      * @return the maximum granularity of the events to be logged
      */
     @Internal
+    @ReplacesEagerProperty(originalType = int.class)
     Property<Integer> getMaxGranularity();
 
     /**
@@ -137,6 +141,7 @@ public interface TestLogging {
      * @return the display granularity of the events to be logged
      */
     @Internal
+    @ReplacesEagerProperty(originalType = int.class)
     Property<Integer> getDisplayGranularity();
 
     /**
@@ -156,6 +161,7 @@ public interface TestLogging {
      * @return whether exceptions that occur during test execution will be logged
      */
     @Internal
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = AccessorType.GETTER, name = "getShowExceptions", originalType = boolean.class))
     Property<Boolean> getShowExceptions();
 
     /**
@@ -174,6 +180,7 @@ public interface TestLogging {
      * @return whether causes of exceptions that occur during test execution will be logged
      */
     @Internal
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = AccessorType.GETTER, name = "getShowCauses", originalType = boolean.class))
     Property<Boolean> getShowCauses();
 
     /**
@@ -192,6 +199,7 @@ public interface TestLogging {
      * @return whether stack traces of exceptions that occur during test execution will be logged
      */
     @Internal
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = AccessorType.GETTER, name = "getShowStackTraces", originalType = boolean.class))
     Property<Boolean> getShowStackTraces();
 
     /**
@@ -211,6 +219,7 @@ public interface TestLogging {
      * @return the format to be used for logging test exceptions
      */
     @Internal
+    @ReplacesEagerProperty(adapter = TestLoggingAdapters.ExceptionFormatAdapter.class)
     Property<TestExceptionFormat> getExceptionFormat();
 
     /**
@@ -242,6 +251,7 @@ public interface TestLogging {
      * @return the set of filters to be used for sanitizing test stack traces
      */
     @Internal
+    @ReplacesEagerProperty(adapter = TestLoggingAdapters.StackTraceFiltersAdapter.class)
     SetProperty<TestStackTraceFilter> getStackTraceFilters();
 
     /**
@@ -279,6 +289,7 @@ public interface TestLogging {
      * set.
      */
     @Internal
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = AccessorType.GETTER, name = "getShowStandardStreams", originalType = boolean.class))
     Property<Boolean> getShowStandardStreams();
 
     /**

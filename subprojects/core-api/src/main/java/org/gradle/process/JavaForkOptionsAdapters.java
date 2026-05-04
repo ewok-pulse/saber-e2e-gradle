@@ -39,13 +39,11 @@ class JavaForkOptionsAdapters {
             return options.getAllJvmArgs().get();
         }
 
-        @BytecodeUpgrade
         static void setAllJvmArgs(JavaForkOptions options, List<String> arguments) {
             unsetOptions(options);
             addExtraJvmArgs(options, arguments);
         }
 
-        @BytecodeUpgrade
         static void setAllJvmArgs(JavaForkOptions options, Iterable<?> arguments) {
             unsetOptions(options);
             addExtraJvmArgs(options, arguments);
@@ -108,14 +106,6 @@ class JavaForkOptionsAdapters {
             return options.getJvmArgs().get();
         }
 
-        @BytecodeUpgrade
-        static void setJvmArgs(JavaForkOptions options, List<String> arguments) {
-            options.jvmArgs(arguments);
-        }
 
-        @BytecodeUpgrade
-        static void setJvmArgs(JavaForkOptions options, Iterable<?> arguments) {
-            options.jvmArgs(arguments);
-        }
     }
 }

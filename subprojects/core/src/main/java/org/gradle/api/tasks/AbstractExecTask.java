@@ -17,15 +17,14 @@ package org.gradle.api.tasks;
 
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.internal.ConventionTask;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
-
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.MapProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
-import org.gradle.process.BaseExecSpec;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.process.CommandLineArgumentProvider;
 import org.gradle.process.ExecResult;
 import org.gradle.process.ExecSpec;
@@ -114,6 +113,7 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
     @Optional
     @Input
     @Override
+    @ReplacesEagerProperty(adapter = AbstractExecTask.ArgsAdapter.class)
     public ListProperty<String> getArgs() {
         return execSpec.getArgs();
     }
@@ -235,6 +235,7 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
      */
     @Internal
     @Override
+    @ReplacesEagerProperty(adapter = StandardInputAdapter.class)
     public Property<InputStream> getStandardInput() {
         return execSpec.getStandardInput();
     }
@@ -254,6 +255,7 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
      */
     @Internal
     @Override
+    @ReplacesEagerProperty(adapter = StandardOutputAdapter.class)
     public Property<OutputStream> getStandardOutput() {
         return execSpec.getStandardOutput();
     }
@@ -273,6 +275,7 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
      */
     @Internal
     @Override
+    @ReplacesEagerProperty(adapter = ErrorOutputAdapter.class)
     public Property<OutputStream> getErrorOutput() {
         return execSpec.getErrorOutput();
     }
@@ -292,6 +295,7 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
      */
     @Input
     @Override
+    @ReplacesEagerProperty(adapter = IgnoreExitValueAdapter.class)
     public Property<Boolean> getIgnoreExitValue() {
         return execSpec.getIgnoreExitValue();
     }
@@ -330,12 +334,6 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
      * No need to upgrade getter since it's already upgraded via BaseExecSpec
      */
     static class IgnoreExitValueAdapter {
-        @SuppressWarnings("rawtypes")
-        @BytecodeUpgrade
-        static AbstractExecTask setIgnoreExitValue(AbstractExecTask task, boolean value) {
-            ((BaseExecSpec) task).getIgnoreExitValue().set(value);
-            return task;
-        }
     }
 
     /**
@@ -361,35 +359,17 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
      * No need to upgrade getter since it's already upgraded via BaseExecSpec
      */
     static class StandardInputAdapter {
-        @SuppressWarnings({"rawtypes", "unchecked"})
-        @BytecodeUpgrade
-        static AbstractExecTask setStandardInput(AbstractExecTask task, InputStream inputStream) {
-            task.getStandardInput().set(inputStream);
-            return task;
-        }
     }
 
     /**
      * No need to upgrade getter since it's already upgraded via BaseExecSpec
      */
     static class StandardOutputAdapter {
-        @SuppressWarnings({"rawtypes", "unchecked"})
-        @BytecodeUpgrade
-        static AbstractExecTask setStandardOutput(AbstractExecTask task, OutputStream outputStream) {
-            task.getStandardOutput().set(outputStream);
-            return task;
-        }
     }
 
     /**
      * No need to upgrade getter since it's already upgraded via BaseExecSpec
      */
     static class ErrorOutputAdapter {
-        @SuppressWarnings({"rawtypes", "unchecked"})
-        @BytecodeUpgrade
-        static AbstractExecTask setErrorOutput(AbstractExecTask task, OutputStream outputStream) {
-            task.getErrorOutput().set(outputStream);
-            return task;
-        }
     }
 }

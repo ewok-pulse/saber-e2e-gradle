@@ -16,9 +16,9 @@
 package org.gradle.api.plugins.quality;
 
 import org.gradle.api.Project;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.resources.TextResource;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 
@@ -79,6 +79,7 @@ public abstract class CodeNarcExtension extends CodeQualityExtension {
     /**
      * The maximum number of priority 1 violations allowed before failing the build.
      */
+    @ReplacesEagerProperty(originalType = int.class)
     public abstract Property<Integer> getMaxPriority1Violations();
 
     /**
@@ -92,6 +93,7 @@ public abstract class CodeNarcExtension extends CodeQualityExtension {
     /**
      * The maximum number of priority 2 violations allowed before failing the build.
      */
+    @ReplacesEagerProperty(originalType = int.class)
     public abstract Property<Integer> getMaxPriority2Violations();
 
     /**
@@ -105,6 +107,7 @@ public abstract class CodeNarcExtension extends CodeQualityExtension {
     /**
      * The maximum number of priority 3 violations allowed before failing the build.
      */
+    @ReplacesEagerProperty(originalType = int.class)
     public abstract Property<Integer> getMaxPriority3Violations();
 
     /**
@@ -118,6 +121,7 @@ public abstract class CodeNarcExtension extends CodeQualityExtension {
     /**
      * The format type of the CodeNarc report. One of <code>html</code>, <code>xml</code>, <code>text</code>, <code>console</code>.
      */
+    @ReplacesEagerProperty
     public abstract Property<String> getReportFormat();
 
     /**

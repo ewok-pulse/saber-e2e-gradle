@@ -15,9 +15,9 @@
  */
 package org.gradle.process;
 
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Provider;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
@@ -33,6 +33,7 @@ public interface ExecSpec extends BaseExecSpec {
      * {@inheritDoc}
      */
     @Override
+    @ReplacesEagerProperty(adapter = ExecSpecAdapters.CommandLineAdapter.class)
     Provider<List<String>> getCommandLine();
 
     /**
@@ -101,6 +102,7 @@ public interface ExecSpec extends BaseExecSpec {
     /**
      * Returns the arguments for the command to be executed. Defaults to an empty list.
      */
+    @ReplacesEagerProperty(adapter = ExecSpecAdapters.ArgsAdapter.class)
     ListProperty<String> getArgs();
 
     /**
@@ -133,6 +135,7 @@ public interface ExecSpec extends BaseExecSpec {
      *
      * @since 4.6
      */
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = AccessorType.GETTER, name = "getArgumentProviders"))
     ListProperty<CommandLineArgumentProvider> getArgumentProviders();
 
     /** Eager forwarder; see {@link #getArgumentProviders()}. */

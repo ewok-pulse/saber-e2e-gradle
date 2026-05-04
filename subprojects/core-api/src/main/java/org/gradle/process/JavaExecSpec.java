@@ -15,12 +15,9 @@
  */
 package org.gradle.process;
 
-import java.util.List;
-
 import org.gradle.api.Incubating;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.FileCollection;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.jvm.ModularitySpec;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
@@ -29,12 +26,13 @@ import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedDeprecation;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedDeprecation.RemovedIn;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.jspecify.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * Specifies the options for executing a Java application.
@@ -84,6 +82,7 @@ public interface JavaExecSpec extends JavaForkOptions, BaseExecSpec {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty(adapter = JavaExecSpecAdapters.ArgsAdapter.class)
     ListProperty<String> getArgs();
 
     /**
@@ -137,6 +136,7 @@ public interface JavaExecSpec extends JavaForkOptions, BaseExecSpec {
      * @since 4.6
      */
     @Nested
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = AccessorType.GETTER, name = "getArgumentProviders"))
     ListProperty<CommandLineArgumentProvider> getArgumentProviders();
 
     /** Eager forwarder; see {@link #getArgumentProviders()}. */
@@ -158,6 +158,7 @@ public interface JavaExecSpec extends JavaForkOptions, BaseExecSpec {
      * Returns the classpath for executing the main class.
      */
     @Classpath
+    @ReplacesEagerProperty(fluentSetter = true)
     ConfigurableFileCollection getClasspath();
 
     /**

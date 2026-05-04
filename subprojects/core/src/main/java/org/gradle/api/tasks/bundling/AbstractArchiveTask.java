@@ -24,8 +24,6 @@ import org.gradle.api.file.FileSystemOperations;
 import org.gradle.api.file.RegularFile;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.internal.file.copy.CopyActionExecuter;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
-
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
@@ -33,6 +31,7 @@ import org.gradle.api.tasks.AbstractCopyTask;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.OutputFile;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.nativeintegration.filesystem.FileSystem;
 import org.gradle.internal.reflect.Instantiator;
@@ -249,6 +248,7 @@ public abstract class AbstractArchiveTask extends AbstractCopyTask {
      * @since 3.4
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getPreserveFileTimestamps();
 
     /**
@@ -285,6 +285,7 @@ public abstract class AbstractArchiveTask extends AbstractCopyTask {
      * @since 3.4
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getReproducibleFileOrder();
 
     /**

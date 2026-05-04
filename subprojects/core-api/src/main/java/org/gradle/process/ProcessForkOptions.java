@@ -16,9 +16,9 @@
 package org.gradle.process;
 
 import org.gradle.api.file.DirectoryProperty;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.MapProperty;
 import org.gradle.api.provider.Property;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 import java.io.File;
@@ -33,6 +33,7 @@ public interface ProcessForkOptions {
      *
      * @return The executable.
      */
+    @ReplacesEagerProperty(adapter = ProcessForkOptionsAdapters.ExecutableAdapter.class)
     Property<String> getExecutable();
 
     /**
@@ -69,6 +70,7 @@ public interface ProcessForkOptions {
      *
      * @return The working directory. Never returns null.
      */
+    @ReplacesEagerProperty(adapter = ProcessForkOptionsAdapters.WorkingDirAdapter.class)
     DirectoryProperty getWorkingDir();
 
     /**
@@ -107,6 +109,7 @@ public interface ProcessForkOptions {
      *
      * @return The environment. Returns an empty map when there are no environment variables.
      */
+    @ReplacesEagerProperty
     MapProperty<String, Object> getEnvironment();
 
     /**

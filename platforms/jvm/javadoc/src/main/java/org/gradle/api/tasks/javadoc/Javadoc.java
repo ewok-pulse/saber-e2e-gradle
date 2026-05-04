@@ -28,7 +28,6 @@ import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.file.RegularFile;
 import org.gradle.api.internal.file.FileTreeInternal;
 import org.gradle.api.internal.provider.PropertyFactory;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.internal.tasks.compile.CompilationSourceDirs;
 import org.gradle.api.jvm.ModularitySpec;
 import org.gradle.api.model.ObjectFactory;
@@ -55,6 +54,7 @@ import org.gradle.external.javadoc.StandardJavadocDocletOptions;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.file.Deleter;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.internal.jvm.DefaultModularitySpec;
@@ -248,6 +248,7 @@ public abstract class Javadoc extends SourceTask {
      * @return The directory.
      */
     @Internal
+    @ReplacesEagerProperty
     public abstract DirectoryProperty getDestinationDir();
 
     /**
@@ -268,6 +269,7 @@ public abstract class Javadoc extends SourceTask {
      * Returns the amount of memory allocated to this task.
      */
     @Internal
+    @ReplacesEagerProperty
     public abstract Property<String> getMaxMemory();
 
     /**
@@ -287,6 +289,7 @@ public abstract class Javadoc extends SourceTask {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getTitle();
 
     /**
@@ -303,6 +306,7 @@ public abstract class Javadoc extends SourceTask {
      * @return The classpath.
      */
     @Classpath
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getClasspath();
 
     /**
@@ -359,6 +363,7 @@ public abstract class Javadoc extends SourceTask {
      * this task will fail on Javadoc error. When {@code false}, this task will ignore Javadoc errors.
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getFailOnError();
 
     /** Eager forwarder; see {@link #getFailOnError()}. */
@@ -387,6 +392,7 @@ public abstract class Javadoc extends SourceTask {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getExecutable();
 
     /** Eager forwarder; see {@link #getExecutable()}. */

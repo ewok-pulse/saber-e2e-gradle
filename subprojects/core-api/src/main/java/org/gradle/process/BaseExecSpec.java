@@ -15,9 +15,9 @@
  */
 package org.gradle.process;
 
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 import java.io.InputStream;
@@ -33,6 +33,7 @@ public interface BaseExecSpec extends ProcessForkOptions {
      *
      * @return whether a non-zero exit value is ignored, or an exception thrown
      */
+    @ReplacesEagerProperty(originalType = boolean.class, fluentSetter = true)
     Property<Boolean> getIgnoreExitValue();
 
     /**
@@ -60,6 +61,7 @@ public interface BaseExecSpec extends ProcessForkOptions {
      *
      * @return The standard input stream.
      */
+    @ReplacesEagerProperty(fluentSetter = true)
     Property<InputStream> getStandardInput();
 
     /**
@@ -81,6 +83,7 @@ public interface BaseExecSpec extends ProcessForkOptions {
      *
      * @return The output stream
      */
+    @ReplacesEagerProperty(fluentSetter = true)
     Property<OutputStream> getStandardOutput();
 
     /**
@@ -102,6 +105,7 @@ public interface BaseExecSpec extends ProcessForkOptions {
      *
      * @return The error output stream.
      */
+    @ReplacesEagerProperty(fluentSetter = true)
     Property<OutputStream> getErrorOutput();
 
     /**

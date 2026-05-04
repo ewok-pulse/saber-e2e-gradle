@@ -16,10 +16,11 @@
 
 package org.gradle.api.publish.ivy;
 
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.publish.PublicationArtifact;
 import org.gradle.api.tasks.Optional;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 /**
  * An artifact published as part of a {@link IvyPublication}.
@@ -29,6 +30,7 @@ public interface IvyArtifact extends PublicationArtifact {
      * The name used to publish the artifact file.
      * Defaults to the name of the module that this artifact belongs to.
      */
+    @ReplacesEagerProperty
     Property<String> getName();
 
     /**
@@ -43,6 +45,7 @@ public interface IvyArtifact extends PublicationArtifact {
     /**
      * The type used to publish the artifact file.
      */
+    @ReplacesEagerProperty
     Property<String> getType();
 
     /**
@@ -58,6 +61,7 @@ public interface IvyArtifact extends PublicationArtifact {
      * The extension used to publish the artifact file.
      * For an artifact without an extension, this value will be an empty String.
      */
+    @ReplacesEagerProperty
     Property<String> getExtension();
 
     /**
@@ -74,6 +78,7 @@ public interface IvyArtifact extends PublicationArtifact {
      * An absent value (the default) indicates that this artifact will be published without a classifier.
      */
     @Optional
+    @ReplacesEagerProperty
     Property<String> getClassifier();
 
     /**
@@ -91,6 +96,7 @@ public interface IvyArtifact extends PublicationArtifact {
      * An optional value (the default) indicates that this artifact will be published without a conf attribute.
      */
     @Optional
+    @ReplacesEagerProperty
     Property<String> getConf();
 
     /**

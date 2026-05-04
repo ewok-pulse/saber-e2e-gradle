@@ -18,7 +18,6 @@ package org.gradle.external.javadoc;
 
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.DirectoryProperty;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
@@ -31,6 +30,7 @@ import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.process.ExecSpec;
 
@@ -44,6 +44,7 @@ import java.util.List;
 public interface MinimalJavadocOptions {
     @Input
     @Optional
+    @ReplacesEagerProperty
     Property<String> getOverview();
 
     /** Eager forwarder; see {@link #getOverview()}. */
@@ -56,6 +57,7 @@ public interface MinimalJavadocOptions {
 
     @Input
     @Optional
+    @ReplacesEagerProperty
     Property<JavadocMemberLevel> getMemberLevel();
 
     /** Eager forwarder; see {@link #getMemberLevel()}. */
@@ -76,6 +78,7 @@ public interface MinimalJavadocOptions {
 
     @Input
     @Optional
+    @ReplacesEagerProperty
     Property<String> getDoclet();
 
     /** Eager forwarder; see {@link #getDoclet()}. */
@@ -87,6 +90,7 @@ public interface MinimalJavadocOptions {
     MinimalJavadocOptions doclet(String docletClass);
 
     @Classpath
+    @ReplacesEagerProperty(adapter = MinimalJavadocOptionsAdapters.DocletpathAdapter.class)
     ConfigurableFileCollection getDocletpath();
 
     /** Eager forwarder; see {@link #getDocletpath()}. */
@@ -99,6 +103,7 @@ public interface MinimalJavadocOptions {
 
     @Input
     @Optional
+    @ReplacesEagerProperty
     Property<String> getSource();
 
     /** Eager forwarder; see {@link #getSource()}. */
@@ -110,6 +115,7 @@ public interface MinimalJavadocOptions {
     MinimalJavadocOptions source(String source);
 
     @Internal
+    @ReplacesEagerProperty(adapter = MinimalJavadocOptionsAdapters.ClasspathAdapter.class)
     ConfigurableFileCollection getClasspath();
 
     /** Eager forwarder; see {@link #getClasspath()}. */
@@ -124,6 +130,7 @@ public interface MinimalJavadocOptions {
      * @since 6.4
      */
     @Internal
+    @ReplacesEagerProperty(adapter = MinimalJavadocOptionsAdapters.ModulePath.class)
     ConfigurableFileCollection getModulePath();
 
     /**
@@ -148,6 +155,7 @@ public interface MinimalJavadocOptions {
     MinimalJavadocOptions classpath(File... classpath);
 
     @Classpath
+    @ReplacesEagerProperty(adapter = MinimalJavadocOptionsAdapters.BootclasspathAdapter.class)
     ConfigurableFileCollection getBootClasspath();
 
     /** Eager forwarder; see {@link #getBootClasspath()}. */
@@ -162,6 +170,7 @@ public interface MinimalJavadocOptions {
     @Optional
     @IgnoreEmptyDirectories
     @PathSensitive(PathSensitivity.RELATIVE)
+    @ReplacesEagerProperty(adapter = MinimalJavadocOptionsAdapters.ExtDirsAdapter.class)
     ConfigurableFileCollection getExtDirs();
 
     /** Eager forwarder; see {@link #getExtDirs()}. */
@@ -173,6 +182,7 @@ public interface MinimalJavadocOptions {
     MinimalJavadocOptions extDirs(File... extDirs);
 
     @Console
+    @ReplacesEagerProperty
     Property<JavadocOutputLevel> getOutputLevel();
 
     /** Eager forwarder; see {@link #getOutputLevel()}. */
@@ -196,6 +206,7 @@ public interface MinimalJavadocOptions {
     MinimalJavadocOptions quiet();
 
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     Property<Boolean> getBreakIterator();
 
     /** Eager forwarder; see {@link #getBreakIterator()}. */
@@ -216,6 +227,7 @@ public interface MinimalJavadocOptions {
 
     @Input
     @Optional
+    @ReplacesEagerProperty
     Property<String> getLocale();
 
     /** Eager forwarder; see {@link #getLocale()}. */
@@ -228,6 +240,7 @@ public interface MinimalJavadocOptions {
 
     @Input
     @Optional
+    @ReplacesEagerProperty
     Property<String> getEncoding();
 
     /** Eager forwarder; see {@link #getEncoding()}. */
@@ -240,6 +253,7 @@ public interface MinimalJavadocOptions {
 
     @Input
     @Optional
+    @ReplacesEagerProperty
     ListProperty<String> getJFlags();
 
     /** Eager forwarder; see {@link #getJFlags()}. */
@@ -253,6 +267,7 @@ public interface MinimalJavadocOptions {
     @InputFiles
     @Optional
     @PathSensitive(PathSensitivity.NONE)
+    @ReplacesEagerProperty(adapter = MinimalJavadocOptionsAdapters.OptionFilesAdapter.class)
     ConfigurableFileCollection getOptionFiles();
 
     /** Eager forwarder; see {@link #getOptionFiles()}. */
@@ -264,6 +279,7 @@ public interface MinimalJavadocOptions {
     MinimalJavadocOptions optionFiles(File... argumentFiles);
 
     @Internal
+    @ReplacesEagerProperty
     DirectoryProperty getDestinationDirectory();
 
     /** Eager forwarder; see {@link #getDestinationDirectory()}. */
@@ -276,6 +292,7 @@ public interface MinimalJavadocOptions {
 
     @Input
     @Optional
+    @ReplacesEagerProperty
     Property<String> getWindowTitle();
 
     /** Eager forwarder; see {@link #getWindowTitle()}. */
@@ -288,6 +305,7 @@ public interface MinimalJavadocOptions {
 
     @Input
     @Optional
+    @ReplacesEagerProperty
     Property<String> getHeader();
 
     /** Eager forwarder; see {@link #getHeader()}. */
@@ -301,6 +319,7 @@ public interface MinimalJavadocOptions {
     void write(File outputFile) throws IOException;
 
     @Internal
+    @ReplacesEagerProperty
     ListProperty<String> getSourceNames();
 
     /** Eager forwarder; see {@link #getSourceNames()}. */

@@ -21,7 +21,6 @@ import org.gradle.api.Action;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.FileCollection;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.model.ReplacedBy;
 import org.gradle.api.provider.ListProperty;
@@ -39,6 +38,7 @@ import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedDeprecation;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedDeprecation.RemovedIn;
@@ -47,13 +47,11 @@ import org.gradle.process.CommandLineArgumentProvider;
 import org.gradle.util.internal.CollectionUtils;
 
 import javax.inject.Inject;
-
 import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 
 import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.SETTER;
 
 /**
  * Main options for Java compilation.
@@ -78,6 +76,7 @@ public abstract class CompileOptions implements Serializable {
      * Sets whether to fail the build when compilation fails. Defaults to {@code true}.
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getFailOnError();
 
     /**
@@ -97,6 +96,7 @@ public abstract class CompileOptions implements Serializable {
      * Tells whether to produce verbose output. Defaults to {@code false}.
      */
     @Console
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getVerbose();
 
     /**
@@ -116,6 +116,7 @@ public abstract class CompileOptions implements Serializable {
      * Tells whether to log the files to be compiled. Defaults to {@code false}.
      */
     @Console
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getListFiles();
 
     /**
@@ -135,6 +136,7 @@ public abstract class CompileOptions implements Serializable {
      * Tells whether to log details of usage of deprecated members or classes. Defaults to {@code false}.
      */
     @Console
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getDeprecation();
 
     /**
@@ -157,6 +159,7 @@ public abstract class CompileOptions implements Serializable {
      * Tells whether to log warning messages. The default is {@code true}.
      */
     @Console
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getWarnings();
 
     /**
@@ -181,6 +184,7 @@ public abstract class CompileOptions implements Serializable {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getEncoding();
 
     /**
@@ -197,6 +201,7 @@ public abstract class CompileOptions implements Serializable {
      * to {@code true}. See {@link DebugOptions#getDebugLevel()} for which debugging information will be generated.
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getDebug();
 
     /**
@@ -238,6 +243,7 @@ public abstract class CompileOptions implements Serializable {
      * Defaults to {@code false}.
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getFork();
 
     /**
@@ -282,6 +288,7 @@ public abstract class CompileOptions implements Serializable {
      */
     @Optional
     @CompileClasspath
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getBootstrapClasspath();
 
     /**
@@ -299,6 +306,7 @@ public abstract class CompileOptions implements Serializable {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getExtensionDirs();
 
     /**
@@ -322,6 +330,7 @@ public abstract class CompileOptions implements Serializable {
      * are ignored.
      */
     @Input
+    @ReplacesEagerProperty
     public abstract ListProperty<String> getCompilerArgs();
 
     /**
@@ -357,6 +366,7 @@ public abstract class CompileOptions implements Serializable {
      * @since 4.5
      */
     @Nested
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getCompilerArgumentProviders"))
     public abstract ListProperty<CommandLineArgumentProvider> getCompilerArgumentProviders();
 
     /** Eager forwarder; see {@link #getCompilerArgumentProviders()}. */
@@ -370,6 +380,7 @@ public abstract class CompileOptions implements Serializable {
      *
      */
     @Internal
+    @ReplacesEagerProperty(originalType = boolean.class, fluentSetter = true)
     public abstract Property<Boolean> getIncremental();
 
     /**
@@ -422,6 +433,7 @@ public abstract class CompileOptions implements Serializable {
     @IgnoreEmptyDirectories
     @PathSensitive(PathSensitivity.RELATIVE)
     @InputFiles
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getSourcepath();
 
     /**
@@ -442,6 +454,7 @@ public abstract class CompileOptions implements Serializable {
      */
     @Optional
     @Classpath
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getAnnotationProcessorPath();
 
     /**
@@ -495,6 +508,7 @@ public abstract class CompileOptions implements Serializable {
      */
     @Optional
     @OutputDirectory
+    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getAnnotationProcessorGeneratedSourcesDirectory"), deprecation = @ReplacedDeprecation(removedIn = RemovedIn.GRADLE9))
     public abstract DirectoryProperty getGeneratedSourceOutputDirectory();
 
     /**

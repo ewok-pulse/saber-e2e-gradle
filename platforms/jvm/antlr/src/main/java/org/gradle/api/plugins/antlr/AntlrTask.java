@@ -24,7 +24,6 @@ import org.gradle.api.file.FileTree;
 import org.gradle.api.file.FileType;
 import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.file.SourceDirectorySet;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.plugins.antlr.internal.AntlrExecuter;
 import org.gradle.api.plugins.antlr.internal.AntlrResult;
 import org.gradle.api.plugins.antlr.internal.AntlrSourceGenerationException;
@@ -32,7 +31,6 @@ import org.gradle.api.plugins.antlr.internal.AntlrSpec;
 import org.gradle.api.plugins.antlr.internal.AntlrSpecFactory;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
-import org.jspecify.annotations.Nullable;
 import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.IgnoreEmptyDirectories;
@@ -44,11 +42,11 @@ import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.SkipWhenEmpty;
-import java.util.List;
 import org.gradle.api.tasks.SourceTask;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.file.Deleter;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.process.internal.JavaExecHandleBuilder;
@@ -59,11 +57,13 @@ import org.gradle.work.ChangeType;
 import org.gradle.work.FileChange;
 import org.gradle.work.InputChanges;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -87,6 +87,7 @@ public abstract class AntlrTask extends SourceTask {
      * Specifies that all rules call {@code traceIn}/{@code traceOut}.
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getTrace();
 
     /** Eager forwarder; see {@link #getTrace()}. */
@@ -104,6 +105,7 @@ public abstract class AntlrTask extends SourceTask {
      * Specifies that all lexer rules call {@code traceIn}/{@code traceOut}.
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getTraceLexer();
 
     /** Eager forwarder; see {@link #getTraceLexer()}. */
@@ -121,6 +123,7 @@ public abstract class AntlrTask extends SourceTask {
      * Specifies that all parser rules call {@code traceIn}/{@code traceOut}.
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getTraceParser();
 
     /** Eager forwarder; see {@link #getTraceParser()}. */
@@ -138,6 +141,7 @@ public abstract class AntlrTask extends SourceTask {
      * Specifies that all tree walker rules call {@code traceIn}/{@code traceOut}.
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getTraceTreeWalker();
 
     /** Eager forwarder; see {@link #getTraceTreeWalker()}. */
@@ -155,6 +159,7 @@ public abstract class AntlrTask extends SourceTask {
      * The maximum heap size for the forked antlr process (ex: '1g').
      */
     @Internal
+    @ReplacesEagerProperty
     public abstract Property<String> getMaxHeapSize();
 
     /** Eager forwarder; see {@link #getMaxHeapSize()}. */
@@ -169,6 +174,7 @@ public abstract class AntlrTask extends SourceTask {
      * @return The antlr command-line arguments
      */
     @Input
+    @ReplacesEagerProperty
     public abstract ListProperty<String> getArguments();
 
     /**
@@ -188,6 +194,7 @@ public abstract class AntlrTask extends SourceTask {
      * @return The output directory.
      */
     @OutputDirectory
+    @ReplacesEagerProperty
     public abstract DirectoryProperty getOutputDirectory();
 
     /**
@@ -206,6 +213,7 @@ public abstract class AntlrTask extends SourceTask {
      * @return The Ant task implementation classpath.
      */
     @Classpath
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getAntlrClasspath();
 
     /**

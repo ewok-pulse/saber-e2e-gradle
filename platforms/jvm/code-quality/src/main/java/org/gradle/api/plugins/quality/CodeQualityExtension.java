@@ -16,10 +16,11 @@
 package org.gradle.api.plugins.quality;
 
 import org.gradle.api.file.DirectoryProperty;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.SourceSet;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 import java.io.File;
 import java.util.Collection;
@@ -36,6 +37,7 @@ public abstract class CodeQualityExtension {
     /**
      * The version of the code quality tool to be used.
      */
+    @ReplacesEagerProperty
     public abstract Property<String> getToolVersion();
 
     /**
@@ -49,6 +51,7 @@ public abstract class CodeQualityExtension {
     /**
      * The source sets to be analyzed as part of the <code>check</code> and <code>build</code> tasks.
      */
+    @ReplacesEagerProperty(originalType = Collection.class)
     public abstract ListProperty<SourceSet> getSourceSets();
 
     /**
@@ -64,6 +67,7 @@ public abstract class CodeQualityExtension {
      *
      * Example: ignoreFailures = true
      */
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getIgnoreFailures();
 
     /**
@@ -83,6 +87,7 @@ public abstract class CodeQualityExtension {
     /**
      * The directory where reports will be generated.
      */
+    @ReplacesEagerProperty
     public abstract DirectoryProperty getReportsDir();
 
     /**

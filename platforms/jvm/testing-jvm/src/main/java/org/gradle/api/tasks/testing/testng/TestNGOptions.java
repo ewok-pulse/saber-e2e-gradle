@@ -23,7 +23,6 @@ import org.gradle.api.Incubating;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.ProjectLayout;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.internal.tasks.testing.testng.TestNGTestRunner;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
@@ -40,6 +39,7 @@ import org.gradle.api.tasks.testing.TestFrameworkOptions;
 import org.gradle.internal.ErroringAction;
 import org.gradle.internal.IoActions;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
@@ -212,6 +212,7 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
      * @since 1.11
      */
     @OutputDirectory
+    @ReplacesEagerProperty
     public abstract DirectoryProperty getOutputDirectory();
 
     /** Eager forwarder; see {@link #getOutputDirectory()}. */
@@ -224,6 +225,7 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
      * The set of groups to run.
      */
     @Input
+    @ReplacesEagerProperty
     public abstract SetProperty<String> getIncludeGroups();
 
     /** Eager forwarder; see {@link #getIncludeGroups()}. */
@@ -236,6 +238,7 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
      * The set of groups to exclude.
      */
     @Input
+    @ReplacesEagerProperty
     public abstract SetProperty<String> getExcludeGroups();
 
     /** Eager forwarder; see {@link #getExcludeGroups()}. */
@@ -248,6 +251,7 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
      * Option for what to do for other tests that use a configuration step when that step fails. Can be "skip" or "continue", defaults to "skip".
      */
     @Internal
+    @ReplacesEagerProperty
     public abstract Property<String> getConfigFailurePolicy();
 
     /** Eager forwarder; see {@link #getConfigFailurePolicy()}. */
@@ -275,6 +279,7 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
      * </pre>
      */
     @Internal
+    @ReplacesEagerProperty
     public abstract SetProperty<String> getListeners();
 
     /** Eager forwarder; see {@link #getListeners()}. */
@@ -291,6 +296,7 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
      * If not present, parallel mode will not be selected
      */
     @Internal
+    @ReplacesEagerProperty
     public abstract Property<String> getParallel();
 
     /** Eager forwarder; see {@link #getParallel()}. */
@@ -303,6 +309,7 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
      * The number of threads to use for this run. Ignored unless the parallel mode is also specified
      */
     @Internal
+    @ReplacesEagerProperty(originalType = int.class)
     public abstract Property<Integer> getThreadCount();
 
     /** Eager forwarder; see {@link #getThreadCount()}. */
@@ -325,6 +332,8 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
      */
     @Internal
     @Incubating
+    @ReplacesEagerProperty(// Property is marked as incubating, so a change is not reported as a breaking change
+        binaryCompatibility = BinaryCompatibility.ACCESSORS_KEPT)
     public abstract Property<String> getThreadPoolFactoryClass();
 
     /**
@@ -365,6 +374,7 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
      * generate: TestNG variant of HTML results, TestNG variant of XML results in JUnit format, emailable HTML test report, XML results in TestNG format.
      */
     @Internal
+    @ReplacesEagerProperty(replacedAccessors = {@ReplacedAccessor(value = AccessorType.GETTER, name = "getUseDefaultListeners", originalType = boolean.class), @ReplacedAccessor(value = AccessorType.GETTER, name = "isUseDefaultListeners", originalType = boolean.class)})
     public abstract Property<Boolean> getUseDefaultListeners();
 
     /** Eager forwarder; see {@link #getUseDefaultListeners()}. */
@@ -382,6 +392,7 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
      * Sets the default name of the test suite, if one is not specified in a suite XML file or in the source code.
      */
     @Internal
+    @ReplacesEagerProperty
     public abstract Property<String> getSuiteName();
 
     /** Eager forwarder; see {@link #getSuiteName()}. */
@@ -394,6 +405,7 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
      * Sets the default name of the test, if one is not specified in a suite XML file or in the source code.
      */
     @Internal
+    @ReplacesEagerProperty
     public abstract Property<String> getTestName();
 
     /** Eager forwarder; see {@link #getTestName()}. */
@@ -409,6 +421,7 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
      */
     @InputFiles
     @PathSensitive(PathSensitivity.NONE)
+    @ReplacesEagerProperty(adapter = SuiteXmlFilesAdapter.class)
     public abstract ConfigurableFileCollection getSuiteXmlFiles();
 
     /** Eager forwarder; see {@link #getSuiteXmlFiles()}. */
@@ -426,6 +439,7 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
      * If not present, the order will not be preserved.
      */
     @Internal
+    @ReplacesEagerProperty(replacedAccessors = {@ReplacedAccessor(value = AccessorType.GETTER, name = "getPreserveOrder", originalType = boolean.class), @ReplacedAccessor(value = AccessorType.GETTER, name = "isPreserveOrder", originalType = boolean.class)})
     public abstract Property<Boolean> getPreserveOrder();
 
     /** Eager forwarder; see {@link #getPreserveOrder()}. */
@@ -448,6 +462,7 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
      * If not present, the tests will not be grouped by instances.
      */
     @Internal
+    @ReplacesEagerProperty(replacedAccessors = {@ReplacedAccessor(value = AccessorType.GETTER, name = "getGroupByInstances", originalType = boolean.class), @ReplacedAccessor(value = AccessorType.GETTER, name = "isGroupByInstances", originalType = boolean.class)})
     public abstract Property<Boolean> getGroupByInstances();
 
     /** Eager forwarder; see {@link #getGroupByInstances()}. */
@@ -474,6 +489,7 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
     }
 
     @Internal
+    @ReplacesEagerProperty
     public Property<StringWriter> getSuiteXmlWriter() {
         return suiteXmlWriter;
     }
@@ -485,6 +501,7 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
     }
 
     @Internal
+    @ReplacesEagerProperty
     public Property<MarkupBuilder> getSuiteXmlBuilder() {
         return suiteXmlBuilder;
     }
@@ -501,10 +518,6 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
             return new ArrayList<>(options.getSuiteXmlFiles().getFiles());
         }
 
-        @BytecodeUpgrade
-        static void setSuiteXmlFiles(TestNGOptions options, List<File> suiteXmlFiles) {
-            options.getSuiteXmlFiles().setFrom(suiteXmlFiles);
-        }
     }
 
     static class SuiteXmlAdapter {

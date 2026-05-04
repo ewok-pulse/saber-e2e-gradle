@@ -22,7 +22,6 @@ import org.gradle.api.Incubating;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.RegularFileProperty;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
@@ -33,6 +32,7 @@ import org.gradle.api.tasks.LocalState;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.OutputFile;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.jacoco.JacocoAgentJar;
@@ -93,6 +93,7 @@ public abstract class JacocoTaskExtension {
      * Whether or not the task should generate execution data. Defaults to {@code true}.
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getEnabled();
 
     /** Eager forwarder; see {@link #getEnabled()}. */
@@ -113,6 +114,7 @@ public abstract class JacocoTaskExtension {
      * @since 4.0
      */
     @Internal
+    @ReplacesEagerProperty(adapter = DestinationFileAdapter.class)
     public abstract RegularFileProperty getDestinationFile();
 
     /**
@@ -156,6 +158,7 @@ public abstract class JacocoTaskExtension {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract ListProperty<String> getIncludes();
 
     /** Eager forwarder; see {@link #getIncludes()}. */
@@ -169,6 +172,7 @@ public abstract class JacocoTaskExtension {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract ListProperty<String> getExcludes();
 
     /** Eager forwarder; see {@link #getExcludes()}. */
@@ -182,6 +186,7 @@ public abstract class JacocoTaskExtension {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract ListProperty<String> getExcludeClassLoaders();
 
     /** Eager forwarder; see {@link #getExcludeClassLoaders()}. */
@@ -196,6 +201,7 @@ public abstract class JacocoTaskExtension {
      * This property is only taken into account if the used JaCoCo version supports this option (JaCoCo version &gt;= 0.7.6)
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getIncludeNoLocationClasses();
 
     /** Eager forwarder; see {@link #getIncludeNoLocationClasses()}. */
@@ -214,6 +220,7 @@ public abstract class JacocoTaskExtension {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getSessionId();
 
     /** Eager forwarder; see {@link #getSessionId()}. */
@@ -226,6 +233,7 @@ public abstract class JacocoTaskExtension {
      * Whether or not to dump the coverage data at VM shutdown. Defaults to {@code true}.
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getDumpOnExit();
 
     /** Eager forwarder; see {@link #getDumpOnExit()}. */
@@ -243,6 +251,7 @@ public abstract class JacocoTaskExtension {
      * The type of output to generate. Defaults to {@link Output#FILE}.
      */
     @Input
+    @ReplacesEagerProperty
     public abstract Property<Output> getOutput();
 
     /** Eager forwarder; see {@link #getOutput()}. */
@@ -256,6 +265,7 @@ public abstract class JacocoTaskExtension {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract Property<String> getAddress();
 
     /** Eager forwarder; see {@link #getAddress()}. */
@@ -268,6 +278,7 @@ public abstract class JacocoTaskExtension {
      * Port to bind to for {@link Output#TCP_SERVER} or {@link Output#TCP_CLIENT}. Defaults to 6300.
      */
     @Input
+    @ReplacesEagerProperty(originalType = int.class)
     public abstract Property<Integer> getPort();
 
     /** Eager forwarder; see {@link #getPort()}. */
@@ -283,6 +294,7 @@ public abstract class JacocoTaskExtension {
      */
     @Optional
     @LocalState
+    @ReplacesEagerProperty
     public abstract DirectoryProperty getClassDumpDir();
 
     /**
@@ -301,6 +313,7 @@ public abstract class JacocoTaskExtension {
      * The configuration of the jmx property is only taken into account if the used JaCoCo version supports this option (JaCoCo version &gt;= 0.6.2)
      */
     @Input
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getJmx();
 
     /** Eager forwarder; see {@link #getJmx()}. */
@@ -371,15 +384,7 @@ public abstract class JacocoTaskExtension {
             return extension.getDestinationFile().getAsFile().getOrNull();
         }
 
-        @BytecodeUpgrade
-        static void setDestinationFile(JacocoTaskExtension extension, Provider<File> destinationFile) {
-            extension.getDestinationFile().fileProvider(destinationFile);
-        }
 
-        @BytecodeUpgrade
-        static void setDestinationFile(JacocoTaskExtension extension, File destinationFile) {
-            extension.getDestinationFile().set(destinationFile);
-        }
     }
 
     private static class ArgumentAppender {

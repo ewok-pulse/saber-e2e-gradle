@@ -23,7 +23,6 @@ import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileTree;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.plugins.quality.internal.CheckstyleAction;
 import org.gradle.api.plugins.quality.internal.CheckstyleActionParameters;
 import org.gradle.api.plugins.quality.internal.CheckstyleReportsImpl;
@@ -44,6 +43,8 @@ import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.Describables;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.util.internal.ClosureBackedAction;
 import org.gradle.workers.WorkQueue;
@@ -192,6 +193,7 @@ public abstract class Checkstyle extends AbstractCodeQualityTask implements Repo
      * The class path containing the Checkstyle library to be used.
      */
     @Classpath
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getCheckstyleClasspath();
 
     /**
@@ -206,6 +208,7 @@ public abstract class Checkstyle extends AbstractCodeQualityTask implements Repo
      * The class path containing the compiled classes for the source files to be analyzed.
      */
     @Classpath
+    @ReplacesEagerProperty
     public abstract ConfigurableFileCollection getClasspath();
 
     /**
@@ -240,6 +243,7 @@ public abstract class Checkstyle extends AbstractCodeQualityTask implements Repo
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract MapProperty<String, Object> getConfigProperties();
 
     /**
@@ -280,6 +284,7 @@ public abstract class Checkstyle extends AbstractCodeQualityTask implements Repo
      * @since 3.4
      */
     @Input
+    @ReplacesEagerProperty(originalType = int.class)
     public abstract Property<Integer> getMaxErrors();
 
     /**
@@ -301,6 +306,7 @@ public abstract class Checkstyle extends AbstractCodeQualityTask implements Repo
      * @since 3.4
      */
     @Input
+    @ReplacesEagerProperty(originalType = int.class)
     public abstract Property<Integer> getMaxWarnings();
 
     /**
@@ -320,6 +326,7 @@ public abstract class Checkstyle extends AbstractCodeQualityTask implements Repo
      * @return true if violations should be displayed on console
      */
     @Console
+    @ReplacesEagerProperty(originalType = boolean.class)
     public abstract Property<Boolean> getShowViolations();
 
     /**
@@ -354,6 +361,7 @@ public abstract class Checkstyle extends AbstractCodeQualityTask implements Repo
      * @since 9.0
      */
     @Internal
+    @ReplacesEagerProperty(adapter = IsIgnoreFailuresAdapter.class)
     public Property<Boolean> getIsIgnoreFailures() {
         return getIgnoreFailuresProperty();
     }

@@ -16,8 +16,8 @@
 
 package org.gradle.vcs.git;
 
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.vcs.VersionControlSpec;
 
@@ -38,6 +38,7 @@ public interface GitVersionControlSpec extends VersionControlSpec {
      * operations which are both unsuited for simple data specification and
      * allocate additional memory.</p>
      */
+    @ReplacesEagerProperty
     Property<URI> getUrl();
 
     /**

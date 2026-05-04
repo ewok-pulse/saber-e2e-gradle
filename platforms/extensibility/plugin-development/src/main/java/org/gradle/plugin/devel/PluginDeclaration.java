@@ -17,10 +17,11 @@
 package org.gradle.plugin.devel;
 
 import org.gradle.api.Named;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.SetProperty;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 /**
  * Describes a Gradle plugin under development.
@@ -42,6 +43,7 @@ public abstract class PluginDeclaration implements Named {
         return name;
     }
 
+    @ReplacesEagerProperty
     public abstract Property<String> getId();
 
     /** Eager forwarder; see {@link #getId()}. */
@@ -50,6 +52,7 @@ public abstract class PluginDeclaration implements Named {
         getId().set(id);
     }
 
+    @ReplacesEagerProperty
     public abstract Property<String> getImplementationClass();
 
     /** Eager forwarder; see {@link #getImplementationClass()}. */
@@ -66,6 +69,7 @@ public abstract class PluginDeclaration implements Named {
      *
      * @since 4.10
      */
+    @ReplacesEagerProperty
     public abstract Property<String> getDisplayName();
 
     /**
@@ -89,6 +93,7 @@ public abstract class PluginDeclaration implements Named {
      *
      * @since 4.10
      */
+    @ReplacesEagerProperty
     public abstract Property<String> getDescription();
 
     /**

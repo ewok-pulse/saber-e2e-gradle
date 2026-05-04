@@ -15,12 +15,13 @@
  */
 package org.gradle.api.tasks.compile;
 
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
+import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 import java.io.Serializable;
 import java.util.List;
@@ -37,6 +38,7 @@ public abstract class BaseForkOptions implements Serializable {
      * Defaults to {@code null}, in which case the JVM's default will be used.
      */
     @Internal
+    @ReplacesEagerProperty
     public abstract Property<String> getMemoryInitialSize();
 
     /**
@@ -53,6 +55,7 @@ public abstract class BaseForkOptions implements Serializable {
      * Defaults to {@code null}, in which case the JVM's default will be used.
      */
     @Internal
+    @ReplacesEagerProperty
     public abstract Property<String> getMemoryMaximumSize();
 
     /**
@@ -70,6 +73,7 @@ public abstract class BaseForkOptions implements Serializable {
      */
     @Optional
     @Input
+    @ReplacesEagerProperty
     public abstract ListProperty<String> getJvmArgs();
 
     /**
