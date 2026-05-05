@@ -143,7 +143,7 @@ public interface MinimalJavadocOptions {
      */
     @EagerSetter
     default void setModulePath(List<File> modulePath) {
-        getBootClasspath().setFrom(modulePath);
+        getModulePath().setFrom(modulePath);
     }
 
     /**

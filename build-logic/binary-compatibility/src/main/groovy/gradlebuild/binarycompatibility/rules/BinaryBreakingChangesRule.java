@@ -44,7 +44,7 @@ public class BinaryBreakingChangesRule extends AbstractGradleViolationRule {
     );
 
     /**
-     * Change types that japicmp marks {@code isBinaryCompatible=false} but the JLS §13.5.7 considers binary-compatible.
+     * Change types that japicmp marks but the JLS considers binary-compatible.
      */
     private static final Set<JApiCompatibilityChangeType> JLS_BINARY_COMPATIBLE_CHANGES = Set.of(
         // JLS §13.5.7: "Adding a `default` method, or changing a method from `abstract` to `default`,

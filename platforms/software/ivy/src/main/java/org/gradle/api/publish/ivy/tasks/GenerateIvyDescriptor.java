@@ -19,6 +19,7 @@ package org.gradle.api.publish.ivy.tasks;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.file.RegularFileProperty;
+import org.gradle.api.internal.provider.ProviderApiDeprecationLogger;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.publish.ivy.IvyModuleDescriptorSpec;
 import org.gradle.api.publish.ivy.internal.publication.IvyModuleDescriptorSpecInternal;
@@ -87,6 +88,17 @@ public abstract class GenerateIvyDescriptor extends DefaultTask {
     @EagerSetter
     public void setDestination(File destination) {
         getDestination().fileValue(destination);
+    }
+
+    /**
+     * Sets the destination the descriptor will be written to.
+     *
+     * <p>The argument is evaluated as per {@link org.gradle.api.Project#file(Object)}.
+     */
+    @EagerSetter
+    public void setDestination(Object destination) {
+        ProviderApiDeprecationLogger.logDeprecation(GenerateIvyDescriptor.class, "setDestination(Object)", "getDestination()");
+        getDestination().fileValue(getFileResolver().resolve(destination));
     }
 
     @TaskAction
