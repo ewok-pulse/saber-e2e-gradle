@@ -16,7 +16,6 @@
 package org.gradle.ide.sync
 
 import com.google.common.collect.ImmutableList
-import org.apache.commons.io.FilenameUtils
 import org.gradle.ide.starter.IdeScenario
 import org.gradle.ide.sync.fixtures.IsolatedProjectsIdeSyncFixture
 import org.gradle.integtests.fixtures.executer.GradleDistribution
