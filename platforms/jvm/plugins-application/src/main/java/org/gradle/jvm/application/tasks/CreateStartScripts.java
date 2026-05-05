@@ -206,7 +206,7 @@ public abstract class CreateStartScripts extends ConventionTask {
     @Internal
     public RegularFileProperty getUnixScriptFile() {
         return getObjectFactory().fileProperty().value(
-            getOutputDir().zip(getApplicationName(), Directory::file)
+            getOutputDirectory().zip(getApplicationName(), Directory::file)
         );
     }
 
@@ -227,7 +227,7 @@ public abstract class CreateStartScripts extends ConventionTask {
     @Internal
     public RegularFileProperty getWindowsScriptFile() {
         return getObjectFactory().fileProperty().value(
-            getOutputDir().zip(getApplicationName(), (outputDir, applicationName) -> outputDir.file(applicationName + ".bat"))
+            getOutputDirectory().zip(getApplicationName(), (outputDir, applicationName) -> outputDir.file(applicationName + ".bat"))
         );
     }
 
@@ -241,11 +241,28 @@ public abstract class CreateStartScripts extends ConventionTask {
 
     /**
      * The directory to write the scripts into.
+     *
+     * @since 9.6.0
      */
     @OutputDirectory
-    @ReplacesEagerProperty
-    public DirectoryProperty getOutputDir() {
+    public DirectoryProperty getOutputDirectory() {
         return outputDir;
+    }
+
+    /**
+     * The directory to write the scripts into.
+     */
+    @Internal
+    @Nullable
+    public File getOutputDir() {
+        return getOutputDirectory().getAsFile().getOrNull();
+    }
+
+    /**
+     * Sets the directory to write the scripts into.
+     */
+    public void setOutputDir(@Nullable File outputDir) {
+        getOutputDirectory().set(outputDir);
     }
 
     /**
