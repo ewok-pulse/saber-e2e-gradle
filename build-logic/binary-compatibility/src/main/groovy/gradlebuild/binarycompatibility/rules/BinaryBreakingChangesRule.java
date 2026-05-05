@@ -17,7 +17,6 @@
 package gradlebuild.binarycompatibility.rules;
 
 import com.google.common.collect.ImmutableList;
-import japicmp.model.JApiClass;
 import japicmp.model.JApiCompatibility;
 import japicmp.model.JApiCompatibilityChange;
 import japicmp.model.JApiCompatibilityChangeType;
@@ -44,20 +43,31 @@ public class BinaryBreakingChangesRule extends AbstractGradleViolationRule {
         JApiCompatibilityChangeType.ANNOTATION_ADDED
     );
 
+    /**
+     * Change types that japicmp marks {@code isBinaryCompatible=false} but the JLS §13.5.7 considers binary-compatible.
+     */
+    private static final Set<JApiCompatibilityChangeType> JLS_BINARY_COMPATIBLE_CHANGES = Set.of(
+        // JLS §13.5.7: "Adding a `default` method, or changing a method from `abstract` to `default`,
+        // does not break compatibility with pre-existing binaries."
+        JApiCompatibilityChangeType.METHOD_ABSTRACT_NOW_DEFAULT
+    );
+
     public BinaryBreakingChangesRule(Map<String, Object> params) {
         super(params);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Violation maybeViolation(final JApiCompatibility member) {
         if (!member.isBinaryCompatible()) {
 
             removeAnnotationChanges(member);
+            removeJlsCompatibleChanges(member);
 
-            if ((member instanceof JApiClass) && member.getCompatibilityChanges().isEmpty()) {
-                // A member of the class breaks binary compatibility.
-                // That will be handled when the member is passed to `maybeViolation`.
+            if (member.getCompatibilityChanges().isEmpty()) {
+                // Either:
+                //   - the member is a class whose break is reported on the offending member, or
+                //   - the only remaining changes are spuriously flagged by japicmp
+                //     (e.g. abstract→default on an interface, per JLS §13.5.7).
                 return null;
             }
             if (member instanceof JApiImplementedInterface) {
@@ -87,8 +97,12 @@ public class BinaryBreakingChangesRule extends AbstractGradleViolationRule {
 
     // Annotation-related violations are not fully supported by japicmp plugin yet.
     // See https://github.com/melix/japicmp-gradle-plugin/issues/92
-    private void removeAnnotationChanges(JApiCompatibility member) {
+    private static void removeAnnotationChanges(JApiCompatibility member) {
         member.getCompatibilityChanges().removeIf(change -> ANNOTATION_RELATED_CHANGES.contains(change.getType()));
+    }
+
+    private static void removeJlsCompatibleChanges(JApiCompatibility member) {
+        member.getCompatibilityChanges().removeIf(change -> JLS_BINARY_COMPATIBLE_CHANGES.contains(change.getType()));
     }
 
 }
