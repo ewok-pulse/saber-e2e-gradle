@@ -59,6 +59,7 @@ import org.gradle.internal.cc.impl.services.RemoteScriptUpToDateChecker
 import org.gradle.internal.concurrent.ExecutorFactory
 import org.gradle.internal.configuration.problems.CommonReport
 import org.gradle.internal.configuration.problems.DefaultProblemFactory
+import org.gradle.internal.configuration.problems.IsolatedProjectsProblemsListener
 import org.gradle.internal.configuration.problems.IsolatedProjectsProblemsReporter
 import org.gradle.internal.configuration.problems.ProblemFactory
 import org.gradle.internal.configuration.problems.ProblemsListener
@@ -96,6 +97,7 @@ object BuildTreeModelControllerServices : ServiceRegistrationProvider {
         add(InputTrackingState::class.java)
         add(InstrumentedExecutionAccessListener::class.java)
         add(ConfigurationCacheProblemsListener::class.java, DefaultConfigurationCacheProblemsListener::class.java)
+        add(IsolatedProjectsProblemsReporter::class.java)
         // TODO: do these services have to be registered in all modes?
         add(DefaultConfigurationCacheDegradationController::class.java)
         add(ConfigurationCacheFingerprintEventHandler::class.java)
@@ -109,7 +111,7 @@ object BuildTreeModelControllerServices : ServiceRegistrationProvider {
             // Allow nudging to enable CC if it is off and there is no explicit decision. CC doesn't work for model building so do not nudge there.
             !requirements.startParameter.configurationCache.isExplicit && !requirements.isCreatesModel -> add(ConfigurationCachePromoHandler::class.java)
             // Do not nudge if CC is explicitly disabled or if models are requested.
-            else -> add(ProblemsListener::class.java, IgnoringProblemsListener)
+            else -> add(ProblemsListener::class.java, IsolatedProjectsProblemsListener::class.java, IgnoringProblemsListener::class.java)
         }
 
         if (modelParameters.isVintage) {
@@ -157,7 +159,6 @@ object BuildTreeModelControllerServices : ServiceRegistrationProvider {
 
             if (modelParameters.isIsolatedProjects) {
                 add(ClassLoaderScopesFingerprintController::class.java, IsolatedProjectsClassLoaderScopesFingerprintController::class.java)
-                add(IsolatedProjectsProblemsReporter::class.java)
             } else {
                 add(ClassLoaderScopesFingerprintController::class.java, ConfigurationCacheClassLoaderScopesFingerprintController::class.java)
             }
