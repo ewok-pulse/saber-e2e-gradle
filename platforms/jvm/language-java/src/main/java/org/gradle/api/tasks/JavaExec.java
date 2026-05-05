@@ -340,7 +340,6 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      * {@inheritDoc}
      */
     @Override
-    @ReplacesEagerProperty(adapter = ArgsAdapter.class)
     public ListProperty<String> getArgs() {
         return javaExecSpec.getArgs();
     }
@@ -427,7 +426,6 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      * {@inheritDoc}
      */
     @Override
-    @ReplacesEagerProperty(adapter = ClasspathAdapter.class)
     public ConfigurableFileCollection getClasspath() {
         return javaExecSpec.getClasspath();
     }
@@ -553,7 +551,6 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      */
     @Override
     @Internal
-    @ReplacesEagerProperty(adapter = JavaExec.StandardInputAdapter.class)
     public Property<InputStream> getStandardInput() {
         return javaExecSpec.getStandardInput();
     }
@@ -573,7 +570,6 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      */
     @Override
     @Internal
-    @ReplacesEagerProperty(adapter = JavaExec.StandardOutputAdapter.class)
     public Property<OutputStream> getStandardOutput() {
         return javaExecSpec.getStandardOutput();
     }
@@ -593,7 +589,6 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      */
     @Override
     @Internal
-    @ReplacesEagerProperty(adapter = JavaExec.ErrorOutputAdapter.class)
     public Property<OutputStream> getErrorOutput() {
         return javaExecSpec.getErrorOutput();
     }
@@ -613,7 +608,6 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      */
     @Override
     @Input
-    @ReplacesEagerProperty(adapter = JavaExec.IgnoreExitValueAdapter.class)
     public Property<Boolean> getIgnoreExitValue() {
         return javaExecSpec.getIgnoreExitValue();
     }
@@ -699,54 +693,5 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
     private Iterable<String> jvmArgsConventionValue() {
         Iterable<String> jvmArgs = getConventionMapping().getConventionValue(null, "jvmArgs", false);
         return jvmArgs != null ? jvmArgs : emptyList();
-    }
-
-    /**
-     * Upgrade for {@link JavaExec#getIgnoreExitValue()}
-     * <p>
-     * No need to upgrade getter since it's already upgraded via BaseExecSpec
-     */
-    static class IgnoreExitValueAdapter {
-    }
-
-    /**
-     * Upgrade for {@link JavaExec#getStandardInput()}
-     * <p>
-     * No need to upgrade getter since it's already upgraded via BaseExecSpec
-     */
-    static class StandardInputAdapter {
-    }
-
-    /**
-     * Upgrade for {@link JavaExec#getStandardOutput()}
-     * <p>
-     * No need to upgrade getter since it's already upgraded via JavaExecSpec
-     */
-    static class StandardOutputAdapter {
-    }
-
-    /**
-     * Upgrade for {@link JavaExec#getErrorOutput()}
-     * <p>
-     * No need to upgrade getter since it's already upgraded via JavaExecSpec
-     */
-    static class ErrorOutputAdapter {
-    }
-
-    /**
-     * Upgrade for {@link JavaExec#getArgs()}
-     * <p>
-     * No need to upgrade getter since it's already upgraded via JavaExecSpec
-     */
-    static class ArgsAdapter {
-
-    }
-
-    /**
-     * Upgrade for {@link JavaExec#getClasspath()}
-     * <p>
-     * No need to upgrade getter since it's already upgraded via JavaExecSpec
-     */
-    static class ClasspathAdapter {
     }
 }

@@ -222,7 +222,7 @@ public abstract class DependencyInsightReportTask extends DefaultTask {
     @Input
     @Optional
     @Option(option = "dependency", description = "Shows the details of given dependency.")
-    @ReplacesEagerProperty(adapter = DependencyInsightReportTaskAdapter.class)
+    @ReplacesEagerProperty
     public abstract Property<String> getDependencyNotation();
 
     /** Eager forwarder; see {@link #getDependencyNotation()}. */
@@ -745,8 +745,5 @@ public abstract class DependencyInsightReportTask extends DefaultTask {
             this.stringRepresentation = configuration.toString();
             this.attributes = configuration.getAttributes();
         }
-    }
-
-    static class DependencyInsightReportTaskAdapter {
     }
 }

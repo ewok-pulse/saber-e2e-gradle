@@ -112,7 +112,6 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
     @Optional
     @Input
     @Override
-    @ReplacesEagerProperty(adapter = AbstractExecTask.ArgsAdapter.class)
     public ListProperty<String> getArgs() {
         return execSpec.getArgs();
     }
@@ -234,7 +233,6 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
      */
     @Internal
     @Override
-    @ReplacesEagerProperty(adapter = StandardInputAdapter.class)
     public Property<InputStream> getStandardInput() {
         return execSpec.getStandardInput();
     }
@@ -254,7 +252,6 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
      */
     @Internal
     @Override
-    @ReplacesEagerProperty(adapter = StandardOutputAdapter.class)
     public Property<OutputStream> getStandardOutput() {
         return execSpec.getStandardOutput();
     }
@@ -274,7 +271,6 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
      */
     @Internal
     @Override
-    @ReplacesEagerProperty(adapter = ErrorOutputAdapter.class)
     public Property<OutputStream> getErrorOutput() {
         return execSpec.getErrorOutput();
     }
@@ -294,7 +290,6 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
      */
     @Input
     @Override
-    @ReplacesEagerProperty(adapter = IgnoreExitValueAdapter.class)
     public Property<Boolean> getIgnoreExitValue() {
         return execSpec.getIgnoreExitValue();
     }
@@ -327,35 +322,5 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
     @Internal
     public Provider<ExecResult> getExecutionResult() {
         return execResult;
-    }
-
-    /**
-     * No need to upgrade getter since it's already upgraded via BaseExecSpec
-     */
-    static class IgnoreExitValueAdapter {
-    }
-
-    /**
-     * No need to upgrade getter since it's already upgraded via ExecSpec
-     */
-    static class ArgsAdapter {
-    }
-
-    /**
-     * No need to upgrade getter since it's already upgraded via BaseExecSpec
-     */
-    static class StandardInputAdapter {
-    }
-
-    /**
-     * No need to upgrade getter since it's already upgraded via BaseExecSpec
-     */
-    static class StandardOutputAdapter {
-    }
-
-    /**
-     * No need to upgrade getter since it's already upgraded via BaseExecSpec
-     */
-    static class ErrorOutputAdapter {
     }
 }

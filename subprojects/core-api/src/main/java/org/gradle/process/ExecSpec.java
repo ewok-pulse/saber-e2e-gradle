@@ -33,7 +33,6 @@ public interface ExecSpec extends BaseExecSpec {
      * {@inheritDoc}
      */
     @Override
-    @ReplacesEagerProperty(adapter = ExecSpecAdapters.CommandLineAdapter.class)
     Provider<List<String>> getCommandLine();
 
     /**

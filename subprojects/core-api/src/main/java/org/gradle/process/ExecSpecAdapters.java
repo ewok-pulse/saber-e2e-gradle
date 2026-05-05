@@ -23,16 +23,6 @@ import java.util.List;
 class ExecSpecAdapters {
 
     /**
-     * Adapter for {@link ExecSpec#getCommandLine()}}
-     *
-     * Note: Getter is upgraded via {@link BaseExecSpec#getCommandLine()} upgrade.
-     */
-    static class CommandLineAdapter {
-
-
-    }
-
-    /**
      * Adapter for {@link ExecSpec#getArgs()}}
      */
     static class ArgsAdapter {
