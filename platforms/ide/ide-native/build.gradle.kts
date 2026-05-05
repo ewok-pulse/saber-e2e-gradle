@@ -32,12 +32,9 @@ dependencies {
     api(projects.platformNative)
     api(projects.serviceProvider)
 
-    api(projects.pluginsModelNative)
-
     implementation(projects.modelCore)
     implementation(projects.testingNative)
     implementation(projects.loggingApi)
-    implementation(projects.serviceLookup)
     implementation(projects.functional)
     implementation(projects.platformBase)
     implementation(libs.commonsLang)
@@ -46,6 +43,7 @@ dependencies {
     runtimeOnly(projects.dependencyManagement)
     runtimeOnly(projects.testingBase)
 
+    testImplementation(projects.pluginsModelNative)
     testImplementation(testFixtures(projects.core))
     testImplementation(testFixtures(projects.platformNative))
     testImplementation(testFixtures(projects.languageNative))
