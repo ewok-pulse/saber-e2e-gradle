@@ -5,7 +5,6 @@ plugins {
 dependencies {
     api(projects.stdlibJavaExtensions)
     api(projects.serviceLookup)
-    api(projects.serviceProvider)
     api(projects.baseServices)
     api(projects.core)
     api(projects.coreApi)
@@ -20,7 +19,6 @@ dependencies {
 
     implementation(projects.dependencyManagement)
     implementation(projects.execution)
-    implementation(projects.modelReflect)
 
     implementation(libs.commonsLang)
 
