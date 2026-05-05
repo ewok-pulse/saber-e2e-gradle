@@ -20,6 +20,8 @@ import org.gradle.api.internal.artifacts.ivyservice.ArtifactCachesProvider
 import org.gradle.api.internal.artifacts.ivyservice.modulecache.FileStoreAndIndexProvider
 import org.gradle.api.internal.artifacts.ivyservice.projectmodule.LocalComponentCache
 import org.gradle.api.internal.file.temp.TemporaryFileProvider
+import org.gradle.api.internal.project.IsolatedProjectsApiAccessReporter
+import org.gradle.api.internal.project.NoOpIsolatedProjectsApiAccessReporter
 import org.gradle.execution.ExecutionAccessChecker
 import org.gradle.initialization.Environment
 import org.gradle.internal.build.BuildToolingModelControllerFactory
@@ -124,6 +126,7 @@ object BuildTreeModelControllerServices : ServiceRegistrationProvider {
             add(ConfigurationCacheInputsListener::class.java, PromoInputsListener::class.java)
             add(BuildTreeModelSideEffectExecutor::class.java, DefaultBuildTreeModelSideEffectExecutor::class.java)
             add(ExecutionAccessChecker::class.java, DefaultExecutionAccessChecker::class.java)
+            add(IsolatedProjectsApiAccessReporter::class.java, NoOpIsolatedProjectsApiAccessReporter::class.java)
             // endregion
 
             // region VT-only
@@ -160,8 +163,10 @@ object BuildTreeModelControllerServices : ServiceRegistrationProvider {
             if (modelParameters.isIsolatedProjects) {
                 add(ClassLoaderScopesFingerprintController::class.java, IsolatedProjectsClassLoaderScopesFingerprintController::class.java)
                 add(IsolatedProjectsProblemsReporter::class.java)
+                add(IsolatedProjectsApiAccessReporter::class.java, IsolatedProjectsApiAccessReporterImpl::class.java)
             } else {
                 add(ClassLoaderScopesFingerprintController::class.java, ConfigurationCacheClassLoaderScopesFingerprintController::class.java)
+                add(IsolatedProjectsApiAccessReporter::class.java, NoOpIsolatedProjectsApiAccessReporter::class.java)
             }
             // endregion
 

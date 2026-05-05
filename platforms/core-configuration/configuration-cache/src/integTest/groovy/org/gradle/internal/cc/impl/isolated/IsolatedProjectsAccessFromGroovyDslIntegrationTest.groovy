@@ -523,18 +523,22 @@ class IsolatedProjectsAccessFromGroovyDslIntegrationTest extends AbstractIsolate
         """
 
         when:
-        if (expr == "properties") {
-            executer.expectDocumentedDeprecationWarning("Dynamically calling getProperties() on a script has been deprecated. " +
-                "This will fail with an error in Gradle 10. " +
-                "Consult the upgrading guide for further information: " +
-                "https://docs.gradle.org/current/userguide/upgrading_version_9.html#deprecated_get_properties")
-        }
         isolatedProjectsFails(":a:help")
 
         then:
         fixture.assertStateStoredAndDiscarded {
             projectsConfigured(":", ":a")
-            problem("Build file 'a/build.gradle': line 2: Project ':a' cannot dynamically look up a $kind in the parent project ':'")
+            if (expr == "properties") {
+                // The Project.getProperties() violation supersedes the parent-walk one:
+                // the dynamic-object lookup runs while ignoring further problems on
+                // this thread, so the cross-project parent walk does not double-report.
+                // The Gradle 9 deprecation warning is also suppressed — the IP violation
+                // already tells the user the call is not allowed, so the "will fail in
+                // Gradle 10" message would be misleading.
+                problem("Build file 'a/build.gradle': line 2: use of 'Project.getProperties()' is not allowed with Isolated Projects")
+            } else {
+                problem("Build file 'a/build.gradle': line 2: Project ':a' cannot dynamically look up a $kind in the parent project ':'")
+            }
         }
 
         where:
@@ -546,6 +550,27 @@ class IsolatedProjectsAccessFromGroovyDslIntegrationTest extends AbstractIsolate
         "property" | "ext.foo = 1"   | "getProperty('foo')"
         "property" | "ext.foo = 1"   | "properties"
         "method"   | "def foo() { }" | "foo()"
+    }
+
+    def "reports problem when build script uses #expr on its own project"() {
+        file("build.gradle") << """
+            println($expr)
+        """
+
+        when:
+        // Under IP the Gradle 9 deprecation is suppressed — the IP violation
+        // is the authoritative signal. (See companion non-IP coverage in
+        // GetPropertiesDeprecationIntegrationTest.)
+        isolatedProjectsFails("help")
+
+        then:
+        fixture.assertStateStoredAndDiscarded {
+            projectsConfigured(":")
+            problem("Build file 'build.gradle': line 2: use of 'Project.getProperties()' is not allowed with Isolated Projects")
+        }
+
+        where:
+        expr << ["properties", "project.properties", "project.getProperties()"]
     }
 
     def 'no duplicate problems reported for dynamic property lookup in transitive parents'() {

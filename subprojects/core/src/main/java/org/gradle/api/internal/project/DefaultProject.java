@@ -226,6 +226,8 @@ public abstract class DefaultProject extends AbstractPluginAware implements Proj
 
     private boolean preparedForRuleBasedPlugins;
 
+    private IsolatedProjectsApiAccessReporter reporter;
+
     @Nullable
     private Object beforeProjectActionState;
 
@@ -257,8 +259,10 @@ public abstract class DefaultProject extends AbstractPluginAware implements Proj
         services = serviceRegistryFactory.createFor(this);
         taskContainer = services.get(TaskContainerInternal.class);
         extensibleDynamicObject = new ExtensibleDynamicObject(this, Project.class, services.get(InstantiatorFactory.class).decorateLenient(services));
+        reporter = services.get(IsolatedProjectsApiAccessReporter.class);
 
-        @Nullable HierarchicalDynamicObject parentInherited = services.get(CrossProjectModelAccess.class).parentProjectDynamicInheritedScope(this);
+
+        HierarchicalDynamicObject parentInherited = services.get(CrossProjectModelAccess.class).parentProjectDynamicInheritedScope(this);
         if (parentInherited != null) {
             extensibleDynamicObject.setParent(parentInherited);
             extensibleDynamicObject.setFailOnParentAccess(services.get(InternalOptions.class).getBoolean(FAIL_ON_PARENT_PROPERTY_LOOKUP));
@@ -1193,11 +1197,18 @@ public abstract class DefaultProject extends AbstractPluginAware implements Proj
     @SuppressWarnings("deprecation")
     @Override
     public Map<String, ? extends @Nullable Object> getProperties() {
-        DeprecationLogger.deprecateMethod(Project.class, "getProperties")
-            .willBecomeAnErrorInGradle10()
-            .withUpgradeGuideSection(9, "deprecated_get_properties")
-            .nagUser();
-        return extensibleDynamicObject.getProperties();
+        if (!reporter.onProjectGetProperties()) {
+            // Either IP is off, or internal Gradle code is calling within
+            // DeprecationLogger.whileDisabled. Emit the standard deprecation;
+            // it self-suppresses inside whileDisabled.
+            DeprecationLogger.deprecateMethod(Project.class, "getProperties")
+                .willBecomeAnErrorInGradle10()
+                .withUpgradeGuideSection(9, "deprecated_get_properties")
+                .nagUser();
+        }
+        // Run the dynamic-object lookup while ignoring further problems so the
+        // nested cross-project parent-walk violation does not double-report.
+        return reporter.runIgnoringProblemsOnCurrentThread(extensibleDynamicObject::getProperties);
     }
 
     @Override

@@ -287,7 +287,17 @@ public class DeprecationLogger {
         DISABLE_COUNT.get()[0]--;
     }
 
-    private static boolean isEnabled() {
+    /**
+     * Whether deprecation logging is currently enabled in the calling thread,
+     * i.e. the call stack is not wrapped in {@link #whileDisabled(Factory)} or
+     * a related variant.
+     * <p>
+     * Other concerns conceptually tied to deprecation reporting — for example,
+     * Isolated Projects violation reporting for an API that is also deprecated —
+     * can use this to opt out for the same call sites the deprecation logger
+     * ignores.
+     */
+    public static boolean isEnabled() {
         // log deprecation messages only after the outermost whileDisabled finished execution
         return DISABLE_COUNT.get()[0] == 0;
     }

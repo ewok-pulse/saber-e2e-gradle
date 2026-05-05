@@ -17,7 +17,10 @@
 package org.gradle.api.internal.project
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
+import org.gradle.test.precondition.Requires
+import org.gradle.test.preconditions.TestExecutionPreconditions
 
+@Requires(value = TestExecutionPreconditions.NotIsolatedProjects, reason = "Under Isolated Projects, getProperties() is a hard violation; the deprecation cannot be observed")
 class GetPropertiesDeprecationIntegrationTest extends AbstractIntegrationSpec {
 
     private static final String PROJECT_DEPRECATION = "The Project.getProperties method has been deprecated. " +

@@ -19,7 +19,9 @@ package org.gradle.groovy.scripts;
 import groovy.lang.Binding;
 import groovy.lang.MissingMethodException;
 import groovy.lang.MissingPropertyException;
+import org.gradle.api.Project;
 import org.gradle.api.internal.DynamicObjectAware;
+import org.gradle.api.internal.project.IsolatedProjectsApiAccessReporter;
 import org.gradle.internal.logging.StandardOutputCapture;
 import org.gradle.internal.metaobject.AbstractDynamicObject;
 import org.gradle.internal.metaobject.BeanDynamicObject;
@@ -38,10 +40,12 @@ public abstract class BasicScript extends org.gradle.groovy.scripts.Script imple
     private StandardOutputCapture standardOutputCapture;
     private Object target;
     private final ScriptDynamicObject dynamicObject = new ScriptDynamicObject(this);
+    private IsolatedProjectsApiAccessReporter ipApiAccessReporter;
 
     @Override
     public void init(Object target, ServiceRegistry services) {
         standardOutputCapture = services.get(StandardOutputCapture.class);
+        ipApiAccessReporter = services.get(IsolatedProjectsApiAccessReporter.class);
         setScriptTarget(target);
     }
 
@@ -75,11 +79,19 @@ public abstract class BasicScript extends org.gradle.groovy.scripts.Script imple
 
     @Deprecated
     public Map<String, ? extends @Nullable Object> getProperties() {
-        DeprecationLogger.deprecateAction("Dynamically calling getProperties() on a script")
-            .willBecomeAnErrorInGradle10()
-            .withUpgradeGuideSection(9, "deprecated_get_properties")
-            .nagUser();
-        return dynamicObject.getProperties();
+        // Only build scripts go through the IP path; for settings/init scripts the
+        // reporter is unused and we always emit the standard deprecation.
+        boolean reportedAsIpViolation = target instanceof Project && ipApiAccessReporter.onProjectGetProperties();
+        if (!reportedAsIpViolation) {
+            DeprecationLogger.deprecateAction("Dynamically calling getProperties() on a script")
+                .willBecomeAnErrorInGradle10()
+                .withUpgradeGuideSection(9, "deprecated_get_properties")
+                .nagUser();
+            return dynamicObject.getProperties();
+        }
+        // Run the dynamic-object lookup while ignoring further problems so the
+        // nested cross-project parent-walk violation does not double-report.
+        return ipApiAccessReporter.runIgnoringProblemsOnCurrentThread(dynamicObject::getProperties);
     }
 
     public boolean hasProperty(String property) {
