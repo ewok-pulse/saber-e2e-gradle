@@ -720,4 +720,48 @@ class ConfigurationCacheUnsupportedTypesIntegrationTest extends AbstractConfigur
         "vetoable"   | "detached"   | "observable/vetoable" | '@get:Internal var classPath: Configuration by Delegates.vetoable(project.configurations.detachedConfiguration()) { _, _, _ -> true }'
         "vetoable"   | "created"    | "observable/vetoable" | '@get:Internal var classPath: Configuration by Delegates.vetoable(project.configurations.create("myConf")) { _, _, _ -> true }'
     }
+
+    @Requires(JdkVersionTestPreconditions.KotlinSupportedJdk)
+    @Issue("https://github.com/gradle/gradle/issues/16177")
+    def "Kotlin field declared with Lazy type is not treated as a by-delegate"() {
+        // Regression test: classes like org.jetbrains.kotlin.gradle.plugin.SubpluginOption declare
+        // regular fields whose type is Lazy<T> (without `by lazy`). Such fields must not be
+        // misidentified as Kotlin compiled `$delegate` fields by the CC delegate-inspection logic.
+        given:
+        file("buildSrc/settings.gradle.kts").text = ""
+        file("buildSrc/build.gradle.kts").text = """
+            plugins { `kotlin-dsl` }
+            ${mavenCentralRepository(GradleDsl.KOTLIN)}
+        """
+        file("buildSrc/src/main/kotlin/LazyFieldTask.kt").text = """
+            import org.gradle.api.DefaultTask
+            import org.gradle.api.tasks.Internal
+            import org.gradle.api.tasks.TaskAction
+
+            open class LazyFieldTask : DefaultTask() {
+                @get:Internal
+                val lazyValue: Lazy<String> = lazy { "computed" }
+
+                @TaskAction
+                fun run() {
+                    println("lazyValue: " + lazyValue.value)
+                }
+            }
+        """.stripIndent()
+        buildFile << """
+            tasks.register("doLazy", LazyFieldTask)
+        """
+
+        when: "first run stores to configuration cache"
+        configurationCacheRun "doLazy"
+
+        then:
+        outputContains("lazyValue: computed")
+
+        when: "second run loads from cache"
+        configurationCacheRun "doLazy"
+
+        then:
+        outputContains("lazyValue: computed")
+    }
 }

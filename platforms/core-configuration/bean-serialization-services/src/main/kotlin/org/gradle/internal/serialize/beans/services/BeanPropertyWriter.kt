@@ -108,6 +108,10 @@ class BeanPropertyWriter(
      */
     private
     suspend fun WriteContext.checkKotlinDelegateForUnsupportedValue(field: Field, fieldName: String, fieldValue: Any?) {
+        // A Kotlin `by`-delegate is identified by BOTH the field name (compiler emits `<name>$delegate`)
+        // AND the value type. A regular field declared as `Lazy<T>` is not a delegate even though its
+        // value satisfies isKotlinDelegate(); skip it so normal codec-driven serialization handles it.
+        if (!field.name.endsWith("\$delegate")) return
         if (!KotlinDelegateInspector.isKotlinDelegate(fieldValue)) return
         val delegateValue = KotlinDelegateInspector.extractValue(fieldValue!!) ?: return
         val kotlinGetterReturnType = KotlinDelegateInspector.kotlinPropertyGetterReturnType(field)
