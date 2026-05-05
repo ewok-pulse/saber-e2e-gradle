@@ -39,6 +39,8 @@ import org.gradle.profiler.ide.IdeSyncAction
 import org.gradle.profiler.ide.IdeType
 import org.gradle.profiler.ide.invoker.IdeGradleScenarioDefinition
 import org.gradle.profiler.ide.invoker.IdeGradleScenarioInvoker
+import org.gradle.profiler.ide.tools.AndroidStudioFinder
+import org.gradle.profiler.ide.tools.IntellijFinder
 import org.gradle.profiler.instrument.PidInstrumentation
 import org.gradle.profiler.report.Format
 import org.gradle.test.fixtures.file.CleanupTestDirectory
@@ -50,12 +52,8 @@ import spock.lang.Timeout
 
 /**
  * Tests that runs a project import to IDE, with an provisioning of the desired version.
- *
- * Provisioned IDEs are cached in the {@link AbstractIdeSyncTest#getIdeHome} directory.
- * @see <a href="https://github.com/gradle/gradle-ide-starter">gradle-ide-starter</a>
  */
-// gradle-ide-starter timeout + 30sec for wrap up
-@Timeout(630)
+@Timeout(600)
 @CleanupTestDirectory
 abstract class AbstractIdeSyncTest extends Specification {
 
@@ -72,6 +70,8 @@ abstract class AbstractIdeSyncTest extends Specification {
         return new IsolatedProjectsIdeSyncFixture(projectDirectory)
     }
 
+    List<String> ideJvmArgs = []
+
     /**
      * Runs a full Android Studio sync using Gradle Profiler.
      * The Android Studio installation is resolved by {@link AndroidStudioFinder}.
@@ -79,8 +79,7 @@ abstract class AbstractIdeSyncTest extends Specification {
      * When mutators are provided, two syncs are performed: initial import + re-sync after mutation.
      */
     protected void androidStudioSync(List<BuildMutator> mutators = []) {
-        writeAndroidLocalProperties()
-        ideSync(IdeType.ANDROID_STUDIO, new File(System.getProperty("android.studio.archive")), mutators)
+        ideSync(IdeType.ANDROID_STUDIO, AndroidStudioFinder.findStudioHome(), mutators)
     }
 
     /**
@@ -89,7 +88,7 @@ abstract class AbstractIdeSyncTest extends Specification {
      * The IDE distribution is provisioned by IdeProvisioningPlugin.
      */
     protected void ideaSync(List<BuildMutator> mutators = []) {
-        ideSync(IdeType.INTELLIJ_IDEA, new File(System.getProperty("intellij.idea.archive")), mutators)
+        ideSync(IdeType.INTELLIJ_IDEA, IntellijFinder.findIdeHome(), mutators)
     }
 
     private void ideSync(IdeType ide, File ideInstallDir, List<BuildMutator> buildMutators) {
@@ -151,7 +150,7 @@ abstract class AbstractIdeSyncTest extends Specification {
         def ideScenarioDefinition = new IdeGradleScenarioDefinition(
             scenarioDefinition,
             ide,
-            ImmutableList.of(), // TODO check headless flag in perf tests
+            ideJvmArgs,
             ImmutableList.of()
         )
 
@@ -205,7 +204,7 @@ abstract class AbstractIdeSyncTest extends Specification {
         projectDirectory.file(path)
     }
 
-    private void writeAndroidLocalProperties() {
+    protected void writeAndroidLocalProperties() {
         def androidSdkRoot = System.getenv("ANDROID_SDK_ROOT")
         if (androidSdkRoot != null) {
             projectFile("local.properties") << "sdk.dir=${FilenameUtils.separatorsToUnix(androidSdkRoot)}\n"

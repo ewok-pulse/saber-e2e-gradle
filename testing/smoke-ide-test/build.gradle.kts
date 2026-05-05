@@ -2,7 +2,8 @@ import gradlebuild.basics.BuildEnvironment
 import gradlebuild.basics.buildCommitId
 import gradlebuild.integrationtests.addDependenciesAndConfigurations
 import gradlebuild.integrationtests.configureTestSourceSetInIde
-import gradlebuild.integrationtests.ide.IdeProvisioningPlugin
+import gradlebuild.integrationtests.ide.androidStudioSystemProperties
+import gradlebuild.integrationtests.ide.ideaSystemProperties
 import gradlebuild.integrationtests.tasks.SmokeIdeTest
 import gradlebuild.performance.generator.tasks.RemoteProject
 
@@ -49,11 +50,6 @@ abstract class IdeStarterPathProvider : CommandLineArgumentProvider {
 }
 
 tasks {
-    val unzipIdeStarter = register<Sync>("unzipIdeStarter") {
-        from(zipTree(ideStarter.elements.map { it.single() }))
-        into(ideStarterBuildDir)
-    }
-
     val fetchGradle = register<RemoteProject>("fetchGradle") {
         remoteUri = rootDir.absolutePath
         ref = buildCommitId
@@ -83,20 +79,14 @@ tasks {
     }
 
     register<SmokeIdeTest>("smokeIdeTest") {
-        dependsOn(unzipIdeStarter, shrinkGradle)
+        dependsOn(shrinkGradle)
         group = "Verification"
         maxParallelForks = 1
         systemProperties["org.gradle.integtest.executer"] = "forking"
         testClassesDirs = smokeIdeTestSourceSet.output.classesDirs
         classpath = smokeIdeTestSourceSet.runtimeClasspath
-        jvmArgumentProviders.add(
-            objects.newInstance<IdeStarterPathProvider>().apply {
-                ideStarterDir = ideStarterBuildDir
-            }
-        )
-        jvmArgumentProviders.add(
-            IdeProvisioningPlugin.ideArchivesProvider(project)
-        )
+        jvmArgumentProviders.add(ideaSystemProperties())
+        jvmArgumentProviders.add(androidStudioSystemProperties())
     }
 }
 

@@ -16,15 +16,10 @@
 
 package org.gradle.ide.sync
 
-import org.gradle.ide.starter.IdeScenarioBuilder
-import org.gradle.integtests.fixtures.versions.AndroidGradlePluginVersions
-import org.gradle.test.fixtures.Flaky
-
-@Flaky(because = "https://github.com/gradle/gradle-private/issues/5093")
 class IsolatedProjectsAndroidProjectSyncTest extends AbstractIdeSyncTest {
 
     // https://developer.android.com/build/releases/gradle-plugin
-    private final static String AGP_VERSION = new AndroidGradlePluginVersions().getLatestStable()
+    private final static String AGP_VERSION = "9.2.0"
 
     def "can sync simple Android build without problems"() {
         given:
@@ -42,13 +37,7 @@ class IsolatedProjectsAndroidProjectSyncTest extends AbstractIdeSyncTest {
         simpleAndroidProject(AGP_VERSION)
 
         expect:
-        androidStudioSync(
-            IdeScenarioBuilder
-                .initialImportProject()
-                .appendTextToFile("lib/build.gradle", "dependencies {}")
-                .importProject()
-                .finish()
-        )
+        androidStudioSync([new FileAppendBuildMutator(projectFile("lib/build.gradle"), "dependencies {}")])
     }
 
     private void simpleAndroidProject(String agpVersion) {
