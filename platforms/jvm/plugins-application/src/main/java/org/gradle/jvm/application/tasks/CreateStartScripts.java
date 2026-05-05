@@ -44,7 +44,7 @@ import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.deprecation.DeprecationLogger;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import java.io.File;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.internal.jvm.DefaultModularitySpec;
@@ -59,8 +59,6 @@ import org.jspecify.annotations.Nullable;
 import javax.inject.Inject;
 import java.util.Collections;
 import java.util.stream.Collectors;
-
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Creates start scripts for launching JVM applications.
@@ -202,25 +200,43 @@ public abstract class CreateStartScripts extends ConventionTask {
     /**
      * Returns the full path to the Unix script. The target directory is represented by the output directory, the file name is the application name without a file extension.
      * TODO: This should be Provider[RegularFile], but we don't support such upgrade with @ReplacesEagerProperty
+     *
+     * @since 9.6.0
      */
     @Internal
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getUnixScript"))
-    public RegularFileProperty getUnixScript() {
+    public RegularFileProperty getUnixScriptFile() {
         return getObjectFactory().fileProperty().value(
             getOutputDir().zip(getApplicationName(), Directory::file)
         );
     }
 
     /**
-     * Returns the full path to the Windows script. The target directory is represented by the output directory, the file name is the application name plus the file extension .bat.
-     * TODO: This should be Provider[RegularFile], but we don't support such upgrade with @ReplacesEagerProperty
+     * Returns the full path to the Unix script. The target directory is represented by the output directory, the file name is the application name without a file extension.
      */
     @Internal
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getWindowsScript"))
-    public RegularFileProperty getWindowsScript() {
+    public File getUnixScript() {
+        return getUnixScriptFile().getAsFile().getOrNull();
+    }
+
+    /**
+     * Returns the full path to the Windows script. The target directory is represented by the output directory, the file name is the application name plus the file extension .bat.
+     * TODO: This should be Provider[RegularFile], but we don't support such upgrade with @ReplacesEagerProperty
+     *
+     * @since 9.6.0
+     */
+    @Internal
+    public RegularFileProperty getWindowsScriptFile() {
         return getObjectFactory().fileProperty().value(
             getOutputDir().zip(getApplicationName(), (outputDir, applicationName) -> outputDir.file(applicationName + ".bat"))
         );
+    }
+
+    /**
+     * Returns the full path to the Windows script. The target directory is represented by the output directory, the file name is the application name plus the file extension .bat.
+     */
+    @Internal
+    public File getWindowsScript() {
+        return getWindowsScriptFile().getAsFile().getOrNull();
     }
 
     /**
@@ -359,12 +375,12 @@ public abstract class CreateStartScripts extends ConventionTask {
         generator.setModulePath(getRelativePath(javaModuleDetector.inferModulePath(getMainModule().isPresent(), getClasspath())));
         String executableDir = getExecutableDir().getOrNull();
         if (StringUtils.isEmpty(executableDir)) {
-            generator.setScriptRelPath(getUnixScript().getAsFile().get().getName());
+            generator.setScriptRelPath(getUnixScriptFile().getAsFile().get().getName());
         } else {
-            generator.setScriptRelPath(executableDir + "/" + getUnixScript().getAsFile().get().getName());
+            generator.setScriptRelPath(executableDir + "/" + getUnixScriptFile().getAsFile().get().getName());
         }
-        generator.generateUnixScript(getUnixScript().getAsFile().get());
-        generator.generateWindowsScript(getWindowsScript().getAsFile().get());
+        generator.generateUnixScript(getUnixScriptFile().getAsFile().get());
+        generator.generateWindowsScript(getWindowsScriptFile().getAsFile().get());
     }
 
     private AppEntryPoint getEntryPoint() {

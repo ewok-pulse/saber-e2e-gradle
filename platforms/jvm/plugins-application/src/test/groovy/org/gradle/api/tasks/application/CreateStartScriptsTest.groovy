@@ -36,8 +36,8 @@ class CreateStartScriptsTest extends AbstractProjectBuilderSpec {
         task.getApplicationName().set("myApp")
 
         then:
-        task.unixScript.asFile.get() == new File(task.outputDir.asFile.get(), 'myApp')
-        task.windowsScript.asFile.get() == new File(task.outputDir.asFile.get(), 'myApp.bat')
+        task.unixScriptFile.asFile.get() == new File(task.outputDir.asFile.get(), 'myApp')
+        task.windowsScriptFile.asFile.get() == new File(task.outputDir.asFile.get(), 'myApp.bat')
     }
 
     def optsEnvironmentVariableNameDefaultsToApplicationName() {
