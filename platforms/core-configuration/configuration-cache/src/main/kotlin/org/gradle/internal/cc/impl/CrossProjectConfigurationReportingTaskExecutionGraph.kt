@@ -23,6 +23,7 @@ import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionGraph
 import org.gradle.api.execution.TaskExecutionGraphListener
 import org.gradle.api.internal.project.CrossProjectModelAccess
+import org.gradle.api.internal.project.ProjectIdentity
 import org.gradle.api.internal.project.ProjectInternal
 import org.gradle.execution.plan.FinalizedExecutionPlan
 import org.gradle.execution.plan.ScheduledWork
@@ -38,7 +39,7 @@ import java.util.Objects
 internal
 class CrossProjectConfigurationReportingTaskExecutionGraph(
     taskGraph: TaskExecutionGraphInternal,
-    private val referrerProject: ProjectInternal,
+    private val referrerProject: ProjectIdentity,
     private val ipProblems: IsolatedProjectsProblemsReporter,
     private val crossProjectModelAccess: CrossProjectModelAccess,
     private val coupledProjectsListener: CoupledProjectsListener,
@@ -80,10 +81,12 @@ class CrossProjectConfigurationReportingTaskExecutionGraph(
             if (task == null) {
                 // check whether the path refers to a different project
                 val parentPath = Path.path(path).parent?.asString()
-                if (parentPath != referrerProject.path) {
+                if (parentPath != referrerProject.projectPath.asString()) {
                     // even though the task was not found, the current project is coupled with the other project:
                     // if the configuration of that project changes, the result of this call might be different
-                    val coupledProjects = listOfNotNull(parentPath?.let { referrerProject.findProject(it) })
+                    val coupledProjects = listOfNotNull(parentPath?.let { p ->
+                        crossProjectModelAccess.findProject(referrerProject, referrerProject, p)
+                    })
                     reportCrossProjectTaskAccess(coupledProjects, path)
                 }
             } else {
@@ -140,7 +143,7 @@ class CrossProjectConfigurationReportingTaskExecutionGraph(
 
     private
     val Project.isReferrerProject: Boolean
-        get() = this is ProjectInternal && identityPath == referrerProject.identityPath
+        get() = this is ProjectInternal && identityPath == referrerProject.buildTreePath
 
     private
     fun reportCrossProjectTaskAccess(coupledProjects: Iterable<ProjectInternal>, requestPath: String? = null) {
@@ -149,7 +152,7 @@ class CrossProjectConfigurationReportingTaskExecutionGraph(
         ipProblems.report {
             problem {
                 text("Project ")
-                reference(referrerProject.identityPath.toString())
+                reference(referrerProject.buildTreePath.toString())
                 text(" cannot access the tasks in the task graph that were created by other projects")
             }.exception { message ->
                 // As the exception message is not used for grouping, we can safely add the exact task name to it:
@@ -161,7 +164,7 @@ class CrossProjectConfigurationReportingTaskExecutionGraph(
     private
     fun reportCoupledProjects(coupledProjects: Iterable<ProjectInternal>) {
         coupledProjects.forEach { other ->
-            coupledProjectsListener.onProjectReference(referrerProject.owner, other.owner)
+            coupledProjectsListener.onProjectReference(referrerProject, other.projectIdentity)
         }
     }
 
@@ -171,7 +174,7 @@ class CrossProjectConfigurationReportingTaskExecutionGraph(
     private
     class CrossProjectAccessTrackingTaskExecutionGraphListener(
         private val delegate: TaskExecutionGraphListener,
-        private val referrerProject: ProjectInternal,
+        private val referrerProject: ProjectIdentity,
         private val crossProjectModelAccess: CrossProjectModelAccess
     ) : TaskExecutionGraphListener {
 
