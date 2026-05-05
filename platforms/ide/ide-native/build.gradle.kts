@@ -43,7 +43,6 @@ dependencies {
     runtimeOnly(projects.dependencyManagement)
     runtimeOnly(projects.testingBase)
 
-    testImplementation(projects.pluginsModelNative)
     testImplementation(testFixtures(projects.core))
     testImplementation(testFixtures(projects.platformNative))
     testImplementation(testFixtures(projects.languageNative))
