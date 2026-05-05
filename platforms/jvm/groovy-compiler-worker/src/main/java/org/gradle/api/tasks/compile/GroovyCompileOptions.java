@@ -33,8 +33,10 @@ import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.jspecify.annotations.Nullable;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 
@@ -155,8 +157,25 @@ public abstract class GroovyCompileOptions implements Serializable {
     @Optional
     @PathSensitive(PathSensitivity.NONE)
     @InputFile
-    @ReplacesEagerProperty
-    public abstract RegularFileProperty getConfigurationScript();
+    public abstract RegularFileProperty getConfigurationScriptFile();
+
+    /**
+     * Returns the path to the groovy configuration file.
+     */
+    @Internal
+    @Nullable
+    public File getConfigurationScript() {
+        return getConfigurationScriptFile().getAsFile().getOrNull();
+    }
+
+    /**
+     * Sets the path to the groovy configuration file.
+     *
+     * @see #getConfigurationScript()
+     */
+    public void setConfigurationScript(@Nullable File configurationFile) {
+        getConfigurationScriptFile().set(configurationFile);
+    }
 
     /**
      * Whether the Groovy code should be subject to Java annotation processing.

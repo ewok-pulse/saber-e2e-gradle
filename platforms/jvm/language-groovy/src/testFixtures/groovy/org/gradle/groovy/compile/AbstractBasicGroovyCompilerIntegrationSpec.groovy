@@ -430,7 +430,7 @@ abstract class AbstractBasicGroovyCompilerIntegrationSpec extends MultiVersionIn
         fails("compileGroovy")
         failureDescriptionContains(inputDoesNotExist {
             type('org.gradle.api.tasks.compile.GroovyCompile')
-                .property('groovyOptions.configurationScript')
+                .property('groovyOptions.configurationScriptFile')
                 .file(configFile)
                 .includeLink()
         })
