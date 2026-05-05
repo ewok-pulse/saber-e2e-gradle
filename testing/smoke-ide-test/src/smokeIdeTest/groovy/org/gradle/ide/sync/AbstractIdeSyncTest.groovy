@@ -46,6 +46,7 @@ import org.gradle.test.fixtures.file.CleanupTestDirectory
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.test.fixtures.file.TestNameTestDirectoryProvider
 import org.junit.Rule
+import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 import spock.lang.Timeout
 
@@ -58,6 +59,9 @@ abstract class AbstractIdeSyncTest extends Specification {
 
     @Rule
     final TestNameTestDirectoryProvider temporaryFolder = new TestNameTestDirectoryProvider(getClass())
+
+    @Rule
+    final TemporaryFolder disposableFolder = new TemporaryFolder()
 
     private final GradleDistribution distribution = new UnderDevelopmentGradleDistribution(getBuildContext())
 
@@ -91,9 +95,8 @@ abstract class AbstractIdeSyncTest extends Specification {
     }
 
     private void ideSync(IdeType ide, File ideInstallDir, List<BuildMutator> buildMutators) {
-        def gradleUserHome = new File(testDirectory, "gradle-user-home")
-        gradleUserHome.mkdirs()
-        def ideSandboxDir = new File(testDirectory, "ide-sandbox")
+        def gradleUserHome = disposableFolder.newFolder("gradle-user-home")
+        def ideSandboxDir = disposableFolder.newFolder("ide-sandbox")
         def outputDir = new File(testDirectory, "profiler-output")
         outputDir.mkdirs()
 
