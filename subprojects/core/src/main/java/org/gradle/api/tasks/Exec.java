@@ -17,7 +17,6 @@ package org.gradle.api.tasks;
 
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.work.DisableCachingByDefault;
 
@@ -66,7 +65,6 @@ public abstract class Exec extends AbstractExecTask<Exec> {
      * {@inheritDoc}
      */
     @Override
-    @EagerSetter
     public Exec setArgs(List<String> args) {
         return setArgs((Iterable<?>) args);
     }
@@ -75,7 +73,6 @@ public abstract class Exec extends AbstractExecTask<Exec> {
      * {@inheritDoc}
      */
     @Override
-    @EagerSetter
     public Exec setArgs(Iterable<?> args) {
         getArgs().empty();
         args(args);
@@ -95,7 +92,6 @@ public abstract class Exec extends AbstractExecTask<Exec> {
      * {@inheritDoc}
      */
     @Override
-    @EagerSetter
     public Exec setIgnoreExitValue(boolean value) {
         getIgnoreExitValue().set(value);
         return this;
@@ -113,7 +109,6 @@ public abstract class Exec extends AbstractExecTask<Exec> {
      * {@inheritDoc}
      */
     @Override
-    @EagerSetter
     public Exec setStandardInput(InputStream value) {
         getStandardInput().set(value);
         return this;
@@ -133,7 +128,6 @@ public abstract class Exec extends AbstractExecTask<Exec> {
      * {@inheritDoc}
      */
     @Override
-    @EagerSetter
     public Exec setStandardOutput(OutputStream value) {
         getStandardOutput().set(value);
         return this;
@@ -152,7 +146,6 @@ public abstract class Exec extends AbstractExecTask<Exec> {
      * {@inheritDoc}
      */
     @Override
-    @EagerSetter
     public Exec setErrorOutput(OutputStream value) {
         getErrorOutput().set(value);
         return this;

@@ -19,7 +19,6 @@ import org.gradle.api.Action;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.SetProperty;
 import org.gradle.declarative.dsl.model.annotations.HiddenInDefinition;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
@@ -70,7 +69,6 @@ public interface MavenArtifactRepository extends ArtifactRepository, UrlArtifact
      * @deprecated Maven repositories with separate locations for POMs and artifacts are a Gradle-only feature with no equivalent in Maven. This method is scheduled to be removed in Gradle 10.
      */
     @Deprecated
-    @EagerSetter
     default void setArtifactUrls(Set<URI> urls) {
         getArtifactUrls().set(urls);
     }
@@ -85,7 +83,6 @@ public interface MavenArtifactRepository extends ArtifactRepository, UrlArtifact
      * @deprecated Maven repositories with separate locations for POMs and artifacts are a Gradle-only feature with no equivalent in Maven. This method is scheduled to be removed in Gradle 10.
      */
     @Deprecated
-    @EagerSetter
     default void setArtifactUrls(Iterable<?> urls) {
         List<Object> list = new ArrayList<>();
         urls.forEach(list::add);

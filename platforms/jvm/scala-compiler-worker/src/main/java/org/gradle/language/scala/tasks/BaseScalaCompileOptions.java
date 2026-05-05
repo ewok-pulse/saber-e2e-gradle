@@ -28,7 +28,6 @@ import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.scala.IncrementalCompileOptions;
 import org.gradle.api.tasks.scala.ScalaForkOptions;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.jspecify.annotations.Nullable;
@@ -71,7 +70,6 @@ public abstract class BaseScalaCompileOptions implements Serializable {
     public abstract Property<Boolean> getFailOnError();
 
     /** Eager forwarder; see {@link #getFailOnError()}. */
-    @EagerSetter
     public void setFailOnError(boolean failOnError) {
         getFailOnError().set(failOnError);
     }
@@ -89,7 +87,6 @@ public abstract class BaseScalaCompileOptions implements Serializable {
     public abstract Property<Boolean> getDeprecation();
 
     /** Eager forwarder; see {@link #getDeprecation()}. */
-    @EagerSetter
     public void setDeprecation(boolean deprecation) {
         getDeprecation().set(deprecation);
     }
@@ -107,7 +104,6 @@ public abstract class BaseScalaCompileOptions implements Serializable {
     public abstract Property<Boolean> getUnchecked();
 
     /** Eager forwarder; see {@link #getUnchecked()}. */
-    @EagerSetter
     public void setUnchecked(boolean unchecked) {
         getUnchecked().set(unchecked);
     }
@@ -127,7 +123,6 @@ public abstract class BaseScalaCompileOptions implements Serializable {
     public abstract Property<String> getDebugLevel();
 
     /** Eager forwarder; see {@link #getDebugLevel()}. */
-    @EagerSetter
     public void setDebugLevel(String debugLevel) {
         getDebugLevel().set(debugLevel);
     }
@@ -140,7 +135,6 @@ public abstract class BaseScalaCompileOptions implements Serializable {
     public abstract Property<Boolean> getOptimize();
 
     /** Eager forwarder; see {@link #getOptimize()}. */
-    @EagerSetter
     public void setOptimize(boolean optimize) {
         getOptimize().set(optimize);
     }
@@ -159,7 +153,6 @@ public abstract class BaseScalaCompileOptions implements Serializable {
     public abstract Property<String> getEncoding();
 
     /** Eager forwarder; see {@link #getEncoding()}. */
-    @EagerSetter
     public void setEncoding(String encoding) {
         getEncoding().set(encoding);
     }
@@ -175,7 +168,6 @@ public abstract class BaseScalaCompileOptions implements Serializable {
     public abstract Property<Boolean> getForce();
 
     /** Eager forwarder; see {@link #getForce()}. */
-    @EagerSetter
     public void setForce(boolean force) {
         getForce().set(force);
     }
@@ -199,7 +191,6 @@ public abstract class BaseScalaCompileOptions implements Serializable {
     /**
      * Sets the additional parameters passed to the Scala compiler.
      */
-    @EagerSetter
     public void setAdditionalParameters(@Nullable List<String> additionalParameters) {
         if (additionalParameters != null) {
             getAdditionalParameters().set(additionalParameters);
@@ -216,7 +207,6 @@ public abstract class BaseScalaCompileOptions implements Serializable {
     public abstract Property<Boolean> getListFiles();
 
     /** Eager forwarder; see {@link #getListFiles()}. */
-    @EagerSetter
     public void setListFiles(boolean listFiles) {
         getListFiles().set(listFiles);
     }
@@ -235,7 +225,6 @@ public abstract class BaseScalaCompileOptions implements Serializable {
     public abstract Property<String> getLoggingLevel();
 
     /** Eager forwarder; see {@link #getLoggingLevel()}. */
-    @EagerSetter
     public void setLoggingLevel(String loggingLevel) {
         getLoggingLevel().set(loggingLevel);
     }
@@ -250,7 +239,6 @@ public abstract class BaseScalaCompileOptions implements Serializable {
     public abstract ListProperty<String> getLoggingPhases();
 
     /** Eager forwarder; see {@link #getLoggingPhases()}. */
-    @EagerSetter
     public void setLoggingPhases(List<String> loggingPhases) {
         getLoggingPhases().set(loggingPhases);
     }

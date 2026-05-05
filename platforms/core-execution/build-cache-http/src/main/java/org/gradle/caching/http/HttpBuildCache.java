@@ -22,7 +22,6 @@ import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Nested;
 import org.gradle.caching.configuration.AbstractBuildCache;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.jspecify.annotations.Nullable;
@@ -81,7 +80,6 @@ public abstract class HttpBuildCache extends AbstractBuildCache {
     /**
      * Sets the URL of the cache. The URL must end in a '/'.
      */
-    @EagerSetter
     public void setUrl(URL url) throws URISyntaxException {
         getUrl().set(url.toURI());
     }
@@ -89,7 +87,6 @@ public abstract class HttpBuildCache extends AbstractBuildCache {
     /**
      * Sets the URL of the cache. The URL must end in a '/'.
      */
-    @EagerSetter
     public void setUrl(URI url) {
         getUrl().set(url);
     }
@@ -140,7 +137,6 @@ public abstract class HttpBuildCache extends AbstractBuildCache {
      * @see #isAllowUntrustedServer()
      * @since 4.2
      */
-    @EagerSetter
     public void setAllowUntrustedServer(boolean allowUntrustedServer) {
         getAllowUntrustedServer().set(allowUntrustedServer);
     }
@@ -178,7 +174,6 @@ public abstract class HttpBuildCache extends AbstractBuildCache {
      * @see #isAllowInsecureProtocol()
      * @since 6.0
      */
-    @EagerSetter
     public void setAllowInsecureProtocol(boolean allowInsecureProtocol) {
         getAllowInsecureProtocol().set(allowInsecureProtocol);
     }
@@ -213,7 +208,6 @@ public abstract class HttpBuildCache extends AbstractBuildCache {
      *
      * @since 7.2
      */
-    @EagerSetter
     public void setUseExpectContinue(boolean useExpectContinue) {
         getUseExpectContinue().set(useExpectContinue);
     }

@@ -21,7 +21,6 @@ import org.gradle.api.internal.ConventionTask;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.TaskAction;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
@@ -66,7 +65,6 @@ public abstract class AntTarget extends ConventionTask {
     /**
      * Sets the Ant target to execute.
      */
-    @EagerSetter
     public void setTarget(Target target) {
         getTarget().set(target);
     }
@@ -81,7 +79,6 @@ public abstract class AntTarget extends ConventionTask {
     /**
      * Sets the Ant project base directory to use when executing the target.
      */
-    @EagerSetter
     public void setBaseDir(File baseDir) {
         getBaseDir().set(baseDir);
     }

@@ -22,7 +22,6 @@ import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.MapProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.process.CommandLineArgumentProvider;
 import org.gradle.process.ExecResult;
@@ -120,7 +119,6 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
      * {@inheritDoc}
      */
     @Override
-    @EagerSetter
     public T setArgs(List<String> arguments) {
         execSpec.setArgs(arguments);
         return taskType.cast(this);
@@ -130,7 +128,6 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
      * {@inheritDoc}
      */
     @Override
-    @EagerSetter
     public T setArgs(Iterable<?> arguments) {
         execSpec.setArgs(arguments);
         return taskType.cast(this);
@@ -241,7 +238,6 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
      * {@inheritDoc}
      */
     @Override
-    @EagerSetter
     public T setStandardInput(InputStream inputStream) {
         getStandardInput().set(inputStream);
         return taskType.cast(this);
@@ -260,7 +256,6 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
      * {@inheritDoc}
      */
     @Override
-    @EagerSetter
     public T setStandardOutput(OutputStream outputStream) {
         getStandardOutput().set(outputStream);
         return taskType.cast(this);
@@ -279,7 +274,6 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
      * {@inheritDoc}
      */
     @Override
-    @EagerSetter
     public T setErrorOutput(OutputStream outputStream) {
         getErrorOutput().set(outputStream);
         return taskType.cast(this);
@@ -298,7 +292,6 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
      * {@inheritDoc}
      */
     @Override
-    @EagerSetter
     public T setIgnoreExitValue(boolean value) {
         getIgnoreExitValue().set(value);
         return taskType.cast(this);

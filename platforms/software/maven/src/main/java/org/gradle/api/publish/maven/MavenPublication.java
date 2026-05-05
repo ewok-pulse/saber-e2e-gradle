@@ -23,7 +23,6 @@ import org.gradle.api.publish.Publication;
 import org.gradle.api.publish.VersionMappingStrategy;
 import org.gradle.api.tasks.Nested;
 import org.gradle.internal.HasInternalProtocol;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -283,7 +282,6 @@ public interface MavenPublication extends Publication {
     /**
      * Sets the groupId for this publication.
      */
-    @EagerSetter
     default void setGroupId(String groupId) {
         getGroupId().set(groupId);
     }
@@ -297,7 +295,6 @@ public interface MavenPublication extends Publication {
     /**
      * Sets the artifactId for this publication.
      */
-    @EagerSetter
     default void setArtifactId(String artifactId) {
         getArtifactId().set(artifactId);
     }
@@ -311,7 +308,6 @@ public interface MavenPublication extends Publication {
     /**
      * Sets the version for this publication.
      */
-    @EagerSetter
     default void setVersion(String version) {
         getVersion().set(version);
     }

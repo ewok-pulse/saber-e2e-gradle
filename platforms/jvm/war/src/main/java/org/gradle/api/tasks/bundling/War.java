@@ -35,7 +35,6 @@ import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.internal.Transformers;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
@@ -133,7 +132,6 @@ public abstract class War extends Jar {
      * @param classpath The classpath. Must not be null.
      * @since 4.0
      */
-    @EagerSetter
     public void setClasspath(FileCollection classpath) {
         setClasspath((Object) classpath);
     }
@@ -143,7 +141,6 @@ public abstract class War extends Jar {
      *
      * @param classpath The classpath. Must not be null.
      */
-    @EagerSetter
     public void setClasspath(Object classpath) {
         getClasspath().setFrom(classpath);
     }
@@ -173,7 +170,6 @@ public abstract class War extends Jar {
      *
      * @param webXml The {@code web.xml} file. Maybe null.
      */
-    @EagerSetter
     public void setWebXml(File webXml) {
         getWebXml().set(webXml);
     }

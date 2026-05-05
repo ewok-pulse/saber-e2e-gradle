@@ -35,7 +35,6 @@ import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.TaskCollection;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.jacoco.JacocoAgentJar;
@@ -85,7 +84,6 @@ public abstract class JacocoPluginExtension {
     public abstract Property<String> getToolVersion();
 
     /** Eager forwarder; see {@link #getToolVersion()}. */
-    @EagerSetter
     public void setToolVersion(String toolVersion) {
         getToolVersion().set(toolVersion);
     }

@@ -24,7 +24,6 @@ import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.ConventionTask;
 import org.gradle.api.provider.Property;
 import org.gradle.internal.file.Deleter;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.work.DisableCachingByDefault;
@@ -74,7 +73,6 @@ public abstract class Delete extends ConventionTask implements DeleteSpec {
     public abstract ConfigurableFileCollection getTargetFiles();
 
     /** Eager forwarder; see {@link #getTargetFiles()}. */
-    @EagerSetter
     public void setTargetFiles(FileCollection targetFiles) {
         getTargetFiles().setFrom(targetFiles);
     }
@@ -93,7 +91,6 @@ public abstract class Delete extends ConventionTask implements DeleteSpec {
      * @param followSymlinks if symlinks should be followed.
      */
     @Override
-    @EagerSetter
     public void setFollowSymlinks(boolean followSymlinks) {
         getFollowSymlinks().set(followSymlinks);
     }

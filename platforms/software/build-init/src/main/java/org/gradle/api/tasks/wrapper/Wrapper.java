@@ -38,7 +38,6 @@ import org.gradle.api.tasks.wrapper.internal.WrapperDefaults;
 import org.gradle.api.tasks.wrapper.internal.WrapperGenerator;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.deprecation.DeprecationLogger;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.util.GradleVersion;
@@ -227,7 +226,6 @@ public abstract class Wrapper extends DefaultTask {
      *
      * @since 4.0
      */
-    @EagerSetter
     public void setScriptFile(File scriptFile) {
         getScriptFile().set(scriptFile);
     }
@@ -235,7 +233,6 @@ public abstract class Wrapper extends DefaultTask {
     /**
      * The file to write the wrapper script to.
      */
-    @EagerSetter
     public void setScriptFile(Object scriptFile) {
         getScriptFile().fileValue(getFileOperations().file(scriptFile));
     }
@@ -263,7 +260,6 @@ public abstract class Wrapper extends DefaultTask {
      *
      * @since 4.0
      */
-    @EagerSetter
     public void setJarFile(File jarFile) {
         getJarFile().set(jarFile);
     }
@@ -271,7 +267,6 @@ public abstract class Wrapper extends DefaultTask {
     /**
      * The file to write the wrapper jar file to.
      */
-    @EagerSetter
     public void setJarFile(Object jarFile) {
         getJarFile().fileValue(getFileOperations().file(jarFile));
     }
@@ -301,7 +296,6 @@ public abstract class Wrapper extends DefaultTask {
      *
      * @see #setDistributionPath(String)
      */
-    @EagerSetter
     public void setDistributionPath(String distributionPath) {
         getDistributionPath().set(distributionPath);
     }
@@ -322,7 +316,6 @@ public abstract class Wrapper extends DefaultTask {
     /**
      * Sets the version of the gradle distribution required by the wrapper.
      */
-    @EagerSetter
     public void setGradleVersion(String gradleVersion) {
         getGradleVersion().set(gradleVersion);
     }
@@ -342,7 +335,6 @@ public abstract class Wrapper extends DefaultTask {
      *
      * @see DistributionType
      */
-    @EagerSetter
     public void setDistributionType(DistributionType distributionType) {
         getDistributionType().set(distributionType);
     }
@@ -384,7 +376,6 @@ public abstract class Wrapper extends DefaultTask {
     /**
      * Sets the URL to download the gradle distribution from.
      */
-    @EagerSetter
     public void setDistributionUrl(String url) {
         getDistributionUrl().set(url);
     }
@@ -417,7 +408,6 @@ public abstract class Wrapper extends DefaultTask {
      *
      * @since 4.5
      */
-    @EagerSetter
     public void setDistributionSha256Sum(String distributionSha256Sum) {
         getDistributionSha256Sum().set(distributionSha256Sum);
     }
@@ -434,7 +424,6 @@ public abstract class Wrapper extends DefaultTask {
      * The distribution base specifies whether the unpacked wrapper distribution should be stored in the project or in
      * the gradle user home dir.
      */
-    @EagerSetter
     public void setDistributionBase(PathBase distributionBase) {
         getDistributionBase().set(distributionBase);
     }
@@ -451,7 +440,6 @@ public abstract class Wrapper extends DefaultTask {
      * Set's the path where the gradle distributions archive should be saved (i.e. the parent dir). The path is relative
      * to the parent dir specified with {@link #getArchiveBase()}.
      */
-    @EagerSetter
     public void setArchivePath(String archivePath) {
         getArchivePath().set(archivePath);
     }
@@ -468,7 +456,6 @@ public abstract class Wrapper extends DefaultTask {
      * The archive base specifies whether the unpacked wrapper distribution should be stored in the project or in the
      * gradle user home dir.
      */
-    @EagerSetter
     public void setArchiveBase(PathBase archiveBase) {
         getArchiveBase().set(archiveBase);
     }

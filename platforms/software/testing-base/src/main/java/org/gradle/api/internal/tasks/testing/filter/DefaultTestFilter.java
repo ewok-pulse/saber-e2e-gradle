@@ -20,7 +20,6 @@ import org.gradle.api.provider.Property;
 import org.gradle.api.provider.SetProperty;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.testing.TestFilter;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty.BinaryCompatibility;
@@ -95,7 +94,6 @@ public abstract class DefaultTestFilter implements TestFilter {
     /**
      * Sets the command-line test name patterns. Returns this to support fluent chaining.
      */
-    @EagerSetter
     public TestFilter setCommandLineIncludePatterns(Collection<String> testNamePatterns) {
         getCommandLineIncludePatterns().set(testNamePatterns);
         return this;

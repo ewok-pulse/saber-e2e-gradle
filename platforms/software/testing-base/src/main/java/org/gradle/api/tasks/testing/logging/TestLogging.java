@@ -19,7 +19,6 @@ package org.gradle.api.tasks.testing.logging;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.SetProperty;
 import org.gradle.api.tasks.Internal;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
@@ -50,7 +49,6 @@ public interface TestLogging {
      * @param events the events to be logged
      * @since 4.0
      */
-    @EagerSetter
     default void setEvents(Set<TestLogEvent> events) {
         getEvents().set(events);
     }
@@ -60,7 +58,6 @@ public interface TestLogging {
      *
      * @param events the events to be logged
      */
-    @EagerSetter
     default void setEvents(Iterable<?> events) {
         Set<TestLogEvent> set = EnumSet.noneOf(TestLogEvent.class);
         for (Object event : events) {
@@ -100,7 +97,6 @@ public interface TestLogging {
      *
      * @param minGranularity the minimum granularity of the events to be logged
      */
-    @EagerSetter
     default void setMinGranularity(int minGranularity) {
         getMinGranularity().set(minGranularity);
     }
@@ -131,7 +127,6 @@ public interface TestLogging {
      *
      * @param maxGranularity the maximum granularity of the events to be logged
      */
-    @EagerSetter
     default void setMaxGranularity(int maxGranularity) {
         getMaxGranularity().set(maxGranularity);
     }
@@ -152,7 +147,6 @@ public interface TestLogging {
      *
      * @param displayGranularity the display granularity of the events to be logged
      */
-    @EagerSetter
     default void setDisplayGranularity(int displayGranularity) {
         getDisplayGranularity().set(displayGranularity);
     }
@@ -171,7 +165,6 @@ public interface TestLogging {
      *
      * @param showExceptions whether exceptions that occur during test execution will be logged
      */
-    @EagerSetter
     default void setShowExceptions(boolean showExceptions) {
         getShowExceptions().set(showExceptions);
     }
@@ -190,7 +183,6 @@ public interface TestLogging {
      *
      * @param showCauses whether causes of exceptions that occur during test execution will be logged
      */
-    @EagerSetter
     default void setShowCauses(boolean showCauses) {
         getShowCauses().set(showCauses);
     }
@@ -209,7 +201,6 @@ public interface TestLogging {
      *
      * @param showStackTraces whether stack traces of exceptions that occur during test execution will be logged
      */
-    @EagerSetter
     default void setShowStackTraces(boolean showStackTraces) {
         getShowStackTraces().set(showStackTraces);
     }
@@ -231,7 +222,6 @@ public interface TestLogging {
      * @param exceptionFormat the format to be used for logging test exceptions
      * @since 4.0
      */
-    @EagerSetter
     default void setExceptionFormat(TestExceptionFormat exceptionFormat) {
         getExceptionFormat().set(exceptionFormat);
     }
@@ -242,7 +232,6 @@ public interface TestLogging {
      *
      * @param exceptionFormat the format to be used for logging test exceptions
      */
-    @EagerSetter
     default void setExceptionFormat(Object exceptionFormat) {
         getExceptionFormat().set(GUtil.toEnum(TestExceptionFormat.class, exceptionFormat));
     }
@@ -262,7 +251,6 @@ public interface TestLogging {
      * @param stackTraces the set of filters to be used for sanitizing test stack traces
      * @since 4.0
      */
-    @EagerSetter
     default void setStackTraceFilters(Set<TestStackTraceFilter> stackTraces) {
         getStackTraceFilters().set(stackTraces);
     }
@@ -272,7 +260,6 @@ public interface TestLogging {
      *
      * @param stackTraces the set of filters to be used for sanitizing test stack traces
      */
-    @EagerSetter
     default void setStackTraceFilters(Iterable<?> stackTraces) {
         Set<TestStackTraceFilter> set = EnumSet.noneOf(TestStackTraceFilter.class);
         for (Object trace : stackTraces) {
@@ -297,7 +284,6 @@ public interface TestLogging {
     /**
      * Sets whether output on standard out and standard error will be logged. Equivalent to setting log events {@code TestLogEvent.STANDARD_OUT} and {@code TestLogEvent.STANDARD_ERROR}.
      */
-    @EagerSetter
     default TestLogging setShowStandardStreams(boolean showStandardStreams) {
         getShowStandardStreams().set(showStandardStreams);
         return this;

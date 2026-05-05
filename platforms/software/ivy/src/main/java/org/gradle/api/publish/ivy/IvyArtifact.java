@@ -19,7 +19,6 @@ package org.gradle.api.publish.ivy;
 import org.gradle.api.provider.Property;
 import org.gradle.api.publish.PublicationArtifact;
 import org.gradle.api.tasks.Optional;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -40,7 +39,6 @@ public interface IvyArtifact extends PublicationArtifact {
      * Sets the name used to publish the artifact file.
      * @param name The name.
      */
-    @EagerSetter
     default void setName(String name) {
         getName().set(name);
     }
@@ -55,7 +53,6 @@ public interface IvyArtifact extends PublicationArtifact {
      * Sets the type used to publish the artifact file.
      * @param type The type.
      */
-    @EagerSetter
     default void setType(String type) {
         getType().set(type);
     }
@@ -71,7 +68,6 @@ public interface IvyArtifact extends PublicationArtifact {
      * Sets the extension used to publish the artifact file.
      * @param extension The extension.
      */
-    @EagerSetter
     default void setExtension(String extension) {
         getExtension().set(extension);
     }
@@ -88,7 +84,6 @@ public interface IvyArtifact extends PublicationArtifact {
      * Sets the classifier used to publish the artifact file.
      * @param classifier The classifier.
      */
-    @EagerSetter
     default void setClassifier(String classifier) {
         getClassifier().set(classifier);
     }
@@ -107,7 +102,6 @@ public interface IvyArtifact extends PublicationArtifact {
      * The '*' wildcard can be used to designate that the artifact is published in all public configurations.
      * @param conf The value of 'conf' for this artifact.
      */
-    @EagerSetter
     default void setConf(String conf) {
         getConf().set(conf);
     }

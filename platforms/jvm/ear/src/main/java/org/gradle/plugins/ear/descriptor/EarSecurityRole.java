@@ -16,7 +16,6 @@
 package org.gradle.plugins.ear.descriptor;
 
 import org.gradle.api.provider.Property;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -34,7 +33,6 @@ public interface EarSecurityRole {
     Property<String> getDescription();
 
     /** Eager forwarder; see {@link #getDescription()}. */
-    @EagerSetter
     default void setDescription(String description) {
         getDescription().set(description);
     }
@@ -46,7 +44,6 @@ public interface EarSecurityRole {
     Property<String> getRoleName();
 
     /** Eager forwarder; see {@link #getRoleName()}. */
-    @EagerSetter
     default void setRoleName(String roleName) {
         getRoleName().set(roleName);
     }

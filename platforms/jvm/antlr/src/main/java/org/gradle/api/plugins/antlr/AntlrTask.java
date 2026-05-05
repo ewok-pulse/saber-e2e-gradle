@@ -46,7 +46,6 @@ import org.gradle.api.tasks.SourceTask;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.file.Deleter;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
@@ -94,7 +93,6 @@ public abstract class AntlrTask extends SourceTask {
     public abstract Property<Boolean> getTrace();
 
     /** Eager forwarder; see {@link #getTrace()}. */
-    @EagerSetter
     public void setTrace(boolean trace) {
         getTrace().set(trace);
     }
@@ -112,7 +110,6 @@ public abstract class AntlrTask extends SourceTask {
     public abstract Property<Boolean> getTraceLexer();
 
     /** Eager forwarder; see {@link #getTraceLexer()}. */
-    @EagerSetter
     public void setTraceLexer(boolean traceLexer) {
         getTraceLexer().set(traceLexer);
     }
@@ -130,7 +127,6 @@ public abstract class AntlrTask extends SourceTask {
     public abstract Property<Boolean> getTraceParser();
 
     /** Eager forwarder; see {@link #getTraceParser()}. */
-    @EagerSetter
     public void setTraceParser(boolean traceParser) {
         getTraceParser().set(traceParser);
     }
@@ -148,7 +144,6 @@ public abstract class AntlrTask extends SourceTask {
     public abstract Property<Boolean> getTraceTreeWalker();
 
     /** Eager forwarder; see {@link #getTraceTreeWalker()}. */
-    @EagerSetter
     public void setTraceTreeWalker(boolean traceTreeWalker) {
         getTraceTreeWalker().set(traceTreeWalker);
     }
@@ -166,7 +161,6 @@ public abstract class AntlrTask extends SourceTask {
     public abstract Property<String> getMaxHeapSize();
 
     /** Eager forwarder; see {@link #getMaxHeapSize()}. */
-    @EagerSetter
     public void setMaxHeapSize(String maxHeapSize) {
         getMaxHeapSize().set(maxHeapSize);
     }
@@ -184,7 +178,6 @@ public abstract class AntlrTask extends SourceTask {
      * Sets the list of command-line arguments passed to the antlr process. A {@code null}
      * value leaves the previous value untouched, mirroring the historical eager behaviour.
      */
-    @EagerSetter
     public void setArguments(@Nullable List<String> arguments) {
         if (arguments != null) {
             getArguments().set(arguments);
@@ -205,7 +198,6 @@ public abstract class AntlrTask extends SourceTask {
      *
      * @param outputDirectory The output directory. Must not be null.
      */
-    @EagerSetter
     public void setOutputDirectory(File outputDirectory) {
         getOutputDirectory().set(outputDirectory);
     }
@@ -224,7 +216,6 @@ public abstract class AntlrTask extends SourceTask {
      *
      * @param antlrClasspath The Ant task implementation classpath. Must not be null.
      */
-    @EagerSetter
     public void setAntlrClasspath(FileCollection antlrClasspath) {
         getAntlrClasspath().setFrom(antlrClasspath);
     }

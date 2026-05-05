@@ -37,7 +37,6 @@ import org.gradle.api.tasks.SourceTask;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.scala.internal.GenerateScaladoc;
 import org.gradle.api.tasks.scala.internal.ScalaRuntimeHelper;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
@@ -73,7 +72,6 @@ public abstract class ScalaDoc extends SourceTask {
     public abstract DirectoryProperty getDestinationDir();
 
     /** Eager forwarder; see {@link #getDestinationDir()}. */
-    @EagerSetter
     public void setDestinationDir(File destinationDir) {
         getDestinationDir().set(destinationDir);
     }
@@ -128,7 +126,6 @@ public abstract class ScalaDoc extends SourceTask {
     public abstract ConfigurableFileCollection getClasspath();
 
     /** Eager forwarder; see {@link #getClasspath()}. */
-    @EagerSetter
     public void setClasspath(FileCollection classpath) {
         getClasspath().setFrom(classpath);
     }
@@ -141,7 +138,6 @@ public abstract class ScalaDoc extends SourceTask {
     public abstract ConfigurableFileCollection getScalaClasspath();
 
     /** Eager forwarder; see {@link #getScalaClasspath()}. */
-    @EagerSetter
     public void setScalaClasspath(FileCollection scalaClasspath) {
         getScalaClasspath().setFrom(scalaClasspath);
     }
@@ -170,7 +166,6 @@ public abstract class ScalaDoc extends SourceTask {
     public abstract Property<String> getTitle();
 
     /** Eager forwarder; see {@link #getTitle()}. */
-    @EagerSetter
     public void setTitle(String title) {
         getTitle().set(title);
     }

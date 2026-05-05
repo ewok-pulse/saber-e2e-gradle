@@ -21,7 +21,6 @@ import org.gradle.api.XmlProvider;
 import org.gradle.api.provider.MapProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.internal.HasInternalProtocol;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -52,7 +51,6 @@ public interface MavenPom {
     /**
      * Sets the packaging for the publication represented by this POM.
      */
-    @EagerSetter
     default void setPackaging(String packaging) {
         getPackaging().set(packaging);
     }

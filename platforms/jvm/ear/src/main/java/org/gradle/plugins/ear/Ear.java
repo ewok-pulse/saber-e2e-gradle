@@ -33,7 +33,6 @@ import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.bundling.Jar;
 import org.gradle.internal.execution.OutputChangeListener;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
@@ -244,7 +243,6 @@ public abstract class Ear extends Jar {
     public abstract Property<String> getLibDirName();
 
     /** Eager forwarder; see {@link #getLibDirName()}. */
-    @EagerSetter
     public void setLibDirName(String libDirName) {
         getLibDirName().set(libDirName);
     }

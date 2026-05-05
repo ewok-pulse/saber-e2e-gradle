@@ -26,7 +26,6 @@ import org.gradle.api.provider.Provider;
 import org.gradle.api.provider.ProviderFactory;
 import org.gradle.internal.IoActions;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.util.PropertiesUtils;
@@ -84,7 +83,6 @@ public abstract class WriteProperties extends DefaultTask {
      * @see #properties(Map)
      * @see #property(String, Object)
      */
-    @EagerSetter
     public void setProperties(Map<String, Object> properties) {
         getProperties().empty();
         properties.forEach(this::property);
@@ -150,7 +148,6 @@ public abstract class WriteProperties extends DefaultTask {
     /**
      * Sets the line separator to be used when creating the properties file.
      */
-    @EagerSetter
     public void setLineSeparator(String lineSeparator) {
         getLineSeparator().set(lineSeparator);
     }
@@ -166,7 +163,6 @@ public abstract class WriteProperties extends DefaultTask {
     /**
      * Sets the optional comment to add at the beginning of the properties file.
      */
-    @EagerSetter
     public void setComment(String comment) {
         getComment().set(comment);
     }
@@ -183,7 +179,6 @@ public abstract class WriteProperties extends DefaultTask {
      * Sets the encoding used to write the properties file. Defaults to {@literal ISO_8859_1}.
      * If set to anything different, unicode escaping is turned off.
      */
-    @EagerSetter
     public void setEncoding(String encoding) {
         getEncoding().set(encoding);
     }

@@ -19,7 +19,6 @@ package org.gradle.api.plugins;
 import org.gradle.api.file.CopySpec;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
@@ -54,7 +53,6 @@ public interface JavaApplication {
     /**
      * The name of the application.
      */
-    @EagerSetter
     default void setApplicationName(String applicationName) {
         getApplicationName().set(applicationName);
     }
@@ -82,7 +80,6 @@ public interface JavaApplication {
     /**
      * Array of string arguments to pass to the JVM when running the application
      */
-    @EagerSetter
     default void setApplicationDefaultJvmArgs(Iterable<String> applicationDefaultJvmArgs) {
         getApplicationDefaultJvmArgs().set(applicationDefaultJvmArgs);
     }
@@ -96,7 +93,6 @@ public interface JavaApplication {
     /**
      * Directory to place executables in
      */
-    @EagerSetter
     default void setExecutableDir(String executableDir) {
         getExecutableDir().set(executableDir);
     }

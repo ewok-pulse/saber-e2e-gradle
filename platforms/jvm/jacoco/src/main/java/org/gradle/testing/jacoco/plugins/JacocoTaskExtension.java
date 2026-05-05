@@ -32,7 +32,6 @@ import org.gradle.api.tasks.LocalState;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.OutputFile;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
@@ -100,7 +99,6 @@ public abstract class JacocoTaskExtension {
     public abstract Property<Boolean> getEnabled();
 
     /** Eager forwarder; see {@link #getEnabled()}. */
-    @EagerSetter
     public void setEnabled(boolean enabled) {
         getEnabled().set(enabled);
     }
@@ -126,13 +124,11 @@ public abstract class JacocoTaskExtension {
      * @param destinationFile Destination file provider
      * @since 4.0
      */
-    @EagerSetter
     public void setDestinationFile(Provider<File> destinationFile) {
         getDestinationFile().fileProvider(destinationFile);
     }
 
     /** Eager forwarder; see {@link #getDestinationFile()}. */
-    @EagerSetter
     public void setDestinationFile(File destinationFile) {
         getDestinationFile().set(destinationFile);
     }
@@ -165,7 +161,6 @@ public abstract class JacocoTaskExtension {
     public abstract ListProperty<String> getIncludes();
 
     /** Eager forwarder; see {@link #getIncludes()}. */
-    @EagerSetter
     public void setIncludes(List<String> includes) {
         getIncludes().set(includes);
     }
@@ -179,7 +174,6 @@ public abstract class JacocoTaskExtension {
     public abstract ListProperty<String> getExcludes();
 
     /** Eager forwarder; see {@link #getExcludes()}. */
-    @EagerSetter
     public void setExcludes(List<String> excludes) {
         getExcludes().set(excludes);
     }
@@ -193,7 +187,6 @@ public abstract class JacocoTaskExtension {
     public abstract ListProperty<String> getExcludeClassLoaders();
 
     /** Eager forwarder; see {@link #getExcludeClassLoaders()}. */
-    @EagerSetter
     public void setExcludeClassLoaders(List<String> excludeClassLoaders) {
         getExcludeClassLoaders().set(excludeClassLoaders);
     }
@@ -208,7 +201,6 @@ public abstract class JacocoTaskExtension {
     public abstract Property<Boolean> getIncludeNoLocationClasses();
 
     /** Eager forwarder; see {@link #getIncludeNoLocationClasses()}. */
-    @EagerSetter
     public void setIncludeNoLocationClasses(boolean includeNoLocationClasses) {
         getIncludeNoLocationClasses().set(includeNoLocationClasses);
     }
@@ -227,7 +219,6 @@ public abstract class JacocoTaskExtension {
     public abstract Property<String> getSessionId();
 
     /** Eager forwarder; see {@link #getSessionId()}. */
-    @EagerSetter
     public void setSessionId(String sessionId) {
         getSessionId().set(sessionId);
     }
@@ -240,7 +231,6 @@ public abstract class JacocoTaskExtension {
     public abstract Property<Boolean> getDumpOnExit();
 
     /** Eager forwarder; see {@link #getDumpOnExit()}. */
-    @EagerSetter
     public void setDumpOnExit(boolean dumpOnExit) {
         getDumpOnExit().set(dumpOnExit);
     }
@@ -258,7 +248,6 @@ public abstract class JacocoTaskExtension {
     public abstract Property<Output> getOutput();
 
     /** Eager forwarder; see {@link #getOutput()}. */
-    @EagerSetter
     public void setOutput(Output output) {
         getOutput().set(output);
     }
@@ -272,7 +261,6 @@ public abstract class JacocoTaskExtension {
     public abstract Property<String> getAddress();
 
     /** Eager forwarder; see {@link #getAddress()}. */
-    @EagerSetter
     public void setAddress(String address) {
         getAddress().set(address);
     }
@@ -285,7 +273,6 @@ public abstract class JacocoTaskExtension {
     public abstract Property<Integer> getPort();
 
     /** Eager forwarder; see {@link #getPort()}. */
-    @EagerSetter
     public void setPort(int port) {
         getPort().set(port);
     }
@@ -305,7 +292,6 @@ public abstract class JacocoTaskExtension {
      *
      * @since 3.4
      */
-    @EagerSetter
     public void setClassDumpDir(File classDumpDir) {
         getClassDumpDir().set(classDumpDir);
     }
@@ -320,7 +306,6 @@ public abstract class JacocoTaskExtension {
     public abstract Property<Boolean> getJmx();
 
     /** Eager forwarder; see {@link #getJmx()}. */
-    @EagerSetter
     public void setJmx(boolean jmx) {
         getJmx().set(jmx);
     }

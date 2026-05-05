@@ -29,7 +29,6 @@ import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
 import org.gradle.internal.HasInternalProtocol;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
@@ -60,7 +59,6 @@ public interface JavaForkOptions extends ProcessForkOptions {
      *
      * @param systemProperties The system properties. Must not be null.
      */
-    @EagerSetter
     default void setSystemProperties(Map<String, ? extends Object> systemProperties) {
         getSystemProperties().set(systemProperties);
     }
@@ -101,7 +99,6 @@ public interface JavaForkOptions extends ProcessForkOptions {
      *
      * @param defaultCharacterEncoding The default character encoding. Use null to use {@link java.nio.charset.Charset#defaultCharset() this JVM's default charset}
      */
-    @EagerSetter
     default void setDefaultCharacterEncoding(String defaultCharacterEncoding) {
         getDefaultCharacterEncoding().set(defaultCharacterEncoding);
     }
@@ -123,7 +120,6 @@ public interface JavaForkOptions extends ProcessForkOptions {
      *
      * @param minHeapSize The minimum heap size. Use null for the default minimum heap size.
      */
-    @EagerSetter
     default void setMinHeapSize(String minHeapSize) {
         getMinHeapSize().set(minHeapSize);
     }
@@ -145,7 +141,6 @@ public interface JavaForkOptions extends ProcessForkOptions {
      *
      * @param maxHeapSize The heap size. Use null for the default maximum heap size.
      */
-    @EagerSetter
     default void setMaxHeapSize(String maxHeapSize) {
         getMaxHeapSize().set(maxHeapSize);
     }
@@ -167,7 +162,6 @@ public interface JavaForkOptions extends ProcessForkOptions {
      * @param arguments The arguments. Must not be null.
      * @since 4.0
      */
-    @EagerSetter
     default void setJvmArgs(List<String> arguments) {
         jvmArgs(arguments);
     }
@@ -178,7 +172,6 @@ public interface JavaForkOptions extends ProcessForkOptions {
      *
      * @param arguments The arguments. Must not be null.
      */
-    @EagerSetter
     default void setJvmArgs(Iterable<?> arguments) {
         jvmArgs(arguments);
     }
@@ -209,7 +202,6 @@ public interface JavaForkOptions extends ProcessForkOptions {
     ListProperty<CommandLineArgumentProvider> getJvmArgumentProviders();
 
     /** Eager forwarder; see {@link #getJvmArgumentProviders()}. */
-    @EagerSetter
     default void setJvmArgumentProviders(List<CommandLineArgumentProvider> jvmArgumentProviders) {
         getJvmArgumentProviders().set(jvmArgumentProviders);
     }
@@ -230,7 +222,6 @@ public interface JavaForkOptions extends ProcessForkOptions {
      *
      * @param bootstrapClasspath The classpath. Must not be null. Can be empty.
      */
-    @EagerSetter
     default void setBootstrapClasspath(FileCollection bootstrapClasspath) {
         getBootstrapClasspath().setFrom(bootstrapClasspath);
     }
@@ -256,7 +247,6 @@ public interface JavaForkOptions extends ProcessForkOptions {
      *
      * @param enableAssertions true to enable assertions, false to disable.
      */
-    @EagerSetter
     default void setEnableAssertions(boolean enableAssertions) {
         getEnableAssertions().set(enableAssertions);
     }
@@ -282,7 +272,6 @@ public interface JavaForkOptions extends ProcessForkOptions {
      *
      * @param debug true to enable debugging, false to disable.
      */
-    @EagerSetter
     default void setDebug(boolean debug) {
         getDebug().set(debug);
     }
@@ -322,7 +311,6 @@ public interface JavaForkOptions extends ProcessForkOptions {
      * @param arguments The arguments. Must not be null.
      * @since 4.0
      */
-    @EagerSetter
     default void setAllJvmArgs(List<String> arguments) {
         JavaForkOptionsAdapters.AllJvmArgsAdapter.setAllJvmArgs(this, arguments);
     }
@@ -333,7 +321,6 @@ public interface JavaForkOptions extends ProcessForkOptions {
      *
      * @param arguments The arguments. Must not be null.
      */
-    @EagerSetter
     default void setAllJvmArgs(Iterable<?> arguments) {
         JavaForkOptionsAdapters.AllJvmArgsAdapter.setAllJvmArgs(this, arguments);
     }

@@ -18,7 +18,6 @@ package org.gradle.api.plugins.quality;
 import org.gradle.api.Project;
 import org.gradle.api.provider.Property;
 import org.gradle.api.resources.TextResource;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
@@ -88,7 +87,6 @@ public abstract class CodeNarcExtension extends CodeQualityExtension {
     /**
      * The maximum number of priority 1 violations allowed before failing the build.
      */
-    @EagerSetter
     public void setMaxPriority1Violations(int maxPriority1Violations) {
         getMaxPriority1Violations().set(maxPriority1Violations);
     }
@@ -102,7 +100,6 @@ public abstract class CodeNarcExtension extends CodeQualityExtension {
     /**
      * The maximum number of priority 2 violations allowed before failing the build.
      */
-    @EagerSetter
     public void setMaxPriority2Violations(int maxPriority2Violations) {
         getMaxPriority2Violations().set(maxPriority2Violations);
     }
@@ -116,7 +113,6 @@ public abstract class CodeNarcExtension extends CodeQualityExtension {
     /**
      * The maximum number of priority 3 violations allowed before failing the build.
      */
-    @EagerSetter
     public void setMaxPriority3Violations(int maxPriority3Violations) {
         getMaxPriority3Violations().set(maxPriority3Violations);
     }
@@ -130,7 +126,6 @@ public abstract class CodeNarcExtension extends CodeQualityExtension {
     /**
      * Sets the format type of the CodeNarc report.
      */
-    @EagerSetter
     public void setReportFormat(String reportFormat) {
         getReportFormat().set(reportFormat);
     }

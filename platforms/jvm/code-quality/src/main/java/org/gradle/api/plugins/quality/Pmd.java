@@ -45,7 +45,6 @@ import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.Describables;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
@@ -192,7 +191,6 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
     /**
      * The class path containing the PMD library to be used.
      */
-    @EagerSetter
     public void setPmdClasspath(FileCollection pmdClasspath) {
         getPmdClasspath().setFrom(pmdClasspath);
     }
@@ -215,7 +213,6 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
      *     ruleSets = ["basic", "braces"]
      * </pre>
      */
-    @EagerSetter
     public void setRuleSets(List<String> ruleSets) {
         getRuleSets().set(ruleSets);
     }
@@ -230,7 +227,6 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
     /**
      * The target JDK to use with PMD.
      */
-    @EagerSetter
     public void setTargetJdk(TargetJdk targetJdk) {
         getTargetJdk().set(targetJdk);
     }
@@ -289,7 +285,6 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
      *     ruleSetFiles = files("config/pmd/myRuleSets.xml")
      * </pre>
      */
-    @EagerSetter
     public void setRuleSetFiles(FileCollection ruleSetFiles) {
         getRuleSetFiles().setFrom(ruleSetFiles);
     }
@@ -338,7 +333,6 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
      *
      * @since 2.1
      */
-    @EagerSetter
     public void setConsoleOutput(boolean consoleOutput) {
         getConsoleOutput().set(consoleOutput);
     }
@@ -371,7 +365,6 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
      *
      * @since 2.8
      */
-    @EagerSetter
     public void setClasspath(FileCollection classpath) {
         getClasspath().setFrom(classpath);
     }

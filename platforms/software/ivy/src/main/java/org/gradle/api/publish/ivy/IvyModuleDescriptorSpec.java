@@ -22,7 +22,6 @@ import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
 import org.gradle.internal.HasInternalProtocol;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -89,7 +88,6 @@ public interface IvyModuleDescriptorSpec {
     /**
      * Sets the status for this publication.
      */
-    @EagerSetter
     default void setStatus(String status) {
         getStatus().set(status);
     }
@@ -104,7 +102,6 @@ public interface IvyModuleDescriptorSpec {
     /**
      * Sets the branch for this publication
      */
-    @EagerSetter
     default void setBranch(String branch) {
         getBranch().set(branch);
     }

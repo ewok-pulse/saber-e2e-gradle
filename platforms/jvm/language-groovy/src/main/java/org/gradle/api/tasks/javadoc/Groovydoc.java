@@ -40,7 +40,6 @@ import org.gradle.api.tasks.SourceTask;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.file.Deleter;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
@@ -161,7 +160,6 @@ public abstract class Groovydoc extends SourceTask {
     /**
      * Sets the directory to generate the documentation into.
      */
-    @EagerSetter
     public void setDestinationDir(File destinationDir) {
         getDestinationDir().set(destinationDir);
     }
@@ -178,7 +176,6 @@ public abstract class Groovydoc extends SourceTask {
     /**
      * Sets the classpath containing the Groovy library to be used.
      */
-    @EagerSetter
     public void setGroovyClasspath(FileCollection groovyClasspath) {
         getGroovyClasspath().setFrom(groovyClasspath);
     }
@@ -193,7 +190,6 @@ public abstract class Groovydoc extends SourceTask {
     /**
      * Sets the classpath used to locate classes referenced by the documented sources.
      */
-    @EagerSetter
     public void setClasspath(FileCollection classpath) {
         getClasspath().setFrom(classpath);
     }
@@ -208,7 +204,6 @@ public abstract class Groovydoc extends SourceTask {
     /**
      * Sets whether to create class and package usage pages.
      */
-    @EagerSetter
     public void setUse(boolean use) {
         getUse().set(use);
     }
@@ -228,7 +223,6 @@ public abstract class Groovydoc extends SourceTask {
     /**
      * Sets whether to include timestamp within hidden comment in generated HTML (Groovy &gt;= 2.4.6).
      */
-    @EagerSetter
     public void setNoTimestamp(boolean noTimestamp) {
         getNoTimestamp().set(noTimestamp);
     }
@@ -248,7 +242,6 @@ public abstract class Groovydoc extends SourceTask {
     /**
      * Sets whether to include version stamp within hidden comment in generated HTML (Groovy &gt;= 2.4.6).
      */
-    @EagerSetter
     public void setNoVersionStamp(boolean noVersionStamp) {
         getNoVersionStamp().set(noVersionStamp);
     }
@@ -271,7 +264,6 @@ public abstract class Groovydoc extends SourceTask {
      *
      * @param windowTitle A text for the windows title
      */
-    @EagerSetter
     public void setWindowTitle(String windowTitle) {
         getWindowTitle().set(windowTitle);
     }
@@ -289,7 +281,6 @@ public abstract class Groovydoc extends SourceTask {
      *
      * @param docTitle the docTitle as HTML
      */
-    @EagerSetter
     public void setDocTitle(String docTitle) {
         getDocTitle().set(docTitle);
     }
@@ -307,7 +298,6 @@ public abstract class Groovydoc extends SourceTask {
      *
      * @param header the header as HTML
      */
-    @EagerSetter
     public void setHeader(String header) {
         getHeader().set(header);
     }
@@ -325,7 +315,6 @@ public abstract class Groovydoc extends SourceTask {
      *
      * @param footer the footer as HTML
      */
-    @EagerSetter
     public void setFooter(String footer) {
         getFooter().set(footer);
     }
@@ -399,7 +388,6 @@ public abstract class Groovydoc extends SourceTask {
      * @param links The links to set
      * @see #link(String, String...)
      */
-    @EagerSetter
     public void setLinks(Set<Link> links) {
         getLinks().set(links);
     }

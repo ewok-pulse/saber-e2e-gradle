@@ -31,7 +31,6 @@ import org.gradle.api.tasks.AbstractCopyTask;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.OutputFile;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.nativeintegration.filesystem.FileSystem;
@@ -262,7 +261,6 @@ public abstract class AbstractArchiveTask extends AbstractCopyTask {
      * @param preserveFileTimestamps <code>true</code> if file timestamps should be preserved for archive entries
      * @since 3.4
      */
-    @EagerSetter
     public void setPreserveFileTimestamps(boolean preserveFileTimestamps) {
         getPreserveFileTimestamps().set(preserveFileTimestamps);
     }
@@ -301,7 +299,6 @@ public abstract class AbstractArchiveTask extends AbstractCopyTask {
      * @param reproducibleFileOrder <code>true</code> if the files should read from disk in a reproducible order.
      * @since 3.4
      */
-    @EagerSetter
     public void setReproducibleFileOrder(boolean reproducibleFileOrder) {
         getReproducibleFileOrder().set(reproducibleFileOrder);
     }

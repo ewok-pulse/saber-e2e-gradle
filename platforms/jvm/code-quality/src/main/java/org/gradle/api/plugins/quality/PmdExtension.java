@@ -22,7 +22,6 @@ import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.resources.TextResource;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
@@ -70,7 +69,6 @@ public abstract class PmdExtension extends CodeQualityExtension {
      *     ruleSets = ["category/java/errorprone.xml", "category/java/bestpractices.xml"]
      * </pre>
      */
-    @EagerSetter
     public void setRuleSets(List<String> ruleSets) {
         this.getRuleSetsProperty().set(ruleSets);
     }
@@ -100,7 +98,6 @@ public abstract class PmdExtension extends CodeQualityExtension {
      * @param targetJdk The target jdk
      * @since 4.0
      */
-    @EagerSetter
     public void setTargetJdk(TargetJdk targetJdk) {
         getTargetJdk().set(targetJdk);
     }
@@ -110,7 +107,6 @@ public abstract class PmdExtension extends CodeQualityExtension {
      *
      * @param value The value for the target jdk as defined by {@link TargetJdk#toVersion(Object)}
      */
-    @EagerSetter
     public void setTargetJdk(Object value) {
         getTargetJdk().set(TargetJdk.toVersion(value));
     }
@@ -189,7 +185,6 @@ public abstract class PmdExtension extends CodeQualityExtension {
      *     ruleSetFiles = files("config/pmd/myRuleSets.xml")
      * </pre>
      */
-    @EagerSetter
     public void setRuleSetFiles(FileCollection ruleSetFiles) {
         getRuleSetFiles().setFrom(ruleSetFiles);
     }
@@ -216,7 +211,6 @@ public abstract class PmdExtension extends CodeQualityExtension {
     /**
      * Whether or not to write PMD results to {@code System.out}.
      */
-    @EagerSetter
     public void setConsoleOutput(boolean consoleOutput) {
         getConsoleOutput().set(consoleOutput);
     }

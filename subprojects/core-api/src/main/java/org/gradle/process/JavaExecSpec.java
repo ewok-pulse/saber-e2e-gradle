@@ -26,7 +26,6 @@ import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
@@ -74,7 +73,6 @@ public interface JavaExecSpec extends JavaForkOptions, BaseExecSpec {
     Property<String> getMainClass();
 
     /** Eager forwarder; see {@link #getMainClass()}. */
-    @EagerSetter
     default void setMain(String main) {
         getMainClass().set(main);
     }
@@ -95,7 +93,6 @@ public interface JavaExecSpec extends JavaForkOptions, BaseExecSpec {
      * @return this
      * @since 4.0
      */
-    @EagerSetter
     default JavaExecSpec setArgs(List<String> args) {
         return setArgs((Iterable<?>) args);
     }
@@ -107,7 +104,6 @@ public interface JavaExecSpec extends JavaForkOptions, BaseExecSpec {
      *
      * @return this
      */
-    @EagerSetter
     default JavaExecSpec setArgs(Iterable<?> args) {
         getArgs().empty();
         args(args);
@@ -142,7 +138,6 @@ public interface JavaExecSpec extends JavaForkOptions, BaseExecSpec {
     ListProperty<CommandLineArgumentProvider> getArgumentProviders();
 
     /** Eager forwarder; see {@link #getArgumentProviders()}. */
-    @EagerSetter
     default void setArgumentProviders(List<CommandLineArgumentProvider> argumentProviders) {
         getArgumentProviders().set(argumentProviders);
     }
@@ -170,7 +165,6 @@ public interface JavaExecSpec extends JavaForkOptions, BaseExecSpec {
      *
      * @return this
      */
-    @EagerSetter
     default JavaExecSpec setClasspath(FileCollection classpath) {
         getClasspath().setFrom(classpath);
         return this;

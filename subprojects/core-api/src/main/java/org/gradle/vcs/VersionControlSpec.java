@@ -20,7 +20,6 @@ import org.gradle.api.Describable;
 import org.gradle.api.initialization.definition.InjectedPluginDependencies;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -62,7 +61,6 @@ public interface VersionControlSpec extends Describable {
      * @param rootDir The root directory of the build, relative to the root of this repository.
      * @since 4.5
      */
-    @EagerSetter
     default void setRootDir(String rootDir) {
         getRootDir().set(rootDir);
     }

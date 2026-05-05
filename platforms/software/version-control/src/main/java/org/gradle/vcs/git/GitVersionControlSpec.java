@@ -17,7 +17,6 @@
 package org.gradle.vcs.git;
 
 import org.gradle.api.provider.Property;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.vcs.VersionControlSpec;
@@ -47,7 +46,6 @@ public interface GitVersionControlSpec extends VersionControlSpec {
     /**
      * Sets the URL of the repository.
      */
-    @EagerSetter
     default void setUrl(URI url) {
         getUrl().set(url);
     }

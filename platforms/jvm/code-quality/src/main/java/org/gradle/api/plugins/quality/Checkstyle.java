@@ -43,7 +43,6 @@ import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.Describables;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
@@ -202,7 +201,6 @@ public abstract class Checkstyle extends AbstractCodeQualityTask implements Repo
     /**
      * The class path containing the Checkstyle library to be used.
      */
-    @EagerSetter
     public void setCheckstyleClasspath(FileCollection checkstyleClasspath) {
         getCheckstyleClasspath().setFrom(checkstyleClasspath);
     }
@@ -217,7 +215,6 @@ public abstract class Checkstyle extends AbstractCodeQualityTask implements Repo
     /**
      * The class path containing the compiled classes for the source files to be analyzed.
      */
-    @EagerSetter
     public void setClasspath(FileCollection classpath) {
         getClasspath().setFrom(classpath);
     }
@@ -252,7 +249,6 @@ public abstract class Checkstyle extends AbstractCodeQualityTask implements Repo
     /**
      * The properties available for use in the configuration file. These are substituted into the configuration file.
      */
-    @EagerSetter
     public void setConfigProperties(Map<String, Object> configProperties) {
         getConfigProperties().set(configProperties);
     }
@@ -296,7 +292,6 @@ public abstract class Checkstyle extends AbstractCodeQualityTask implements Repo
      * @param maxErrors number of errors allowed
      * @since 3.4
      */
-    @EagerSetter
     public void setMaxErrors(int maxErrors) {
         getMaxErrors().set(maxErrors);
     }
@@ -318,7 +313,6 @@ public abstract class Checkstyle extends AbstractCodeQualityTask implements Repo
      * @param maxWarnings number of warnings allowed
      * @since 3.4
      */
-    @EagerSetter
     public void setMaxWarnings(int maxWarnings) {
         getMaxWarnings().set(maxWarnings);
     }
@@ -335,7 +329,6 @@ public abstract class Checkstyle extends AbstractCodeQualityTask implements Repo
     /**
      * Whether rule violations are to be displayed on the console.
      */
-    @EagerSetter
     public void setShowViolations(boolean showViolations) {
         getShowViolations().set(showViolations);
     }
@@ -370,7 +363,6 @@ public abstract class Checkstyle extends AbstractCodeQualityTask implements Repo
     }
 
     /** Eager forwarder; see {@link #getIsIgnoreFailures()}. */
-    @EagerSetter
     public void setIsIgnoreFailures(Boolean isIgnoreFailures) {
         getIsIgnoreFailures().set(isIgnoreFailures);
     }

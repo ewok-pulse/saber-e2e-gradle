@@ -17,7 +17,6 @@ package org.gradle.plugins.ear.descriptor;
 
 import groovy.util.Node;
 import org.gradle.api.provider.Property;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -35,7 +34,6 @@ public interface EarModule {
     Property<String> getPath();
 
     /** Eager forwarder; see {@link #getPath()}. */
-    @EagerSetter
     default void setPath(String path) {
         getPath().set(path);
     }
@@ -50,7 +48,6 @@ public interface EarModule {
     Property<String> getAltDeployDescriptor();
 
     /** Eager forwarder; see {@link #getAltDeployDescriptor()}. */
-    @EagerSetter
     default void setAltDeployDescriptor(String altDeployDescriptor) {
         getAltDeployDescriptor().set(altDeployDescriptor);
     }

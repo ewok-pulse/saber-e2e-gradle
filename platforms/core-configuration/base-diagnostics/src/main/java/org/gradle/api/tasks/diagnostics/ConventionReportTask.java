@@ -29,7 +29,6 @@ import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.diagnostics.internal.ReportGenerator;
 import org.gradle.api.tasks.diagnostics.internal.ReportRenderer;
 import org.gradle.initialization.BuildClientMetaData;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.logging.ConsoleRenderer;
@@ -92,7 +91,6 @@ public abstract class ConventionReportTask extends ConventionTask {
      *
      * @param outputFile The output file. May be null.
      */
-    @EagerSetter
     public void setOutputFile(File outputFile) {
         getOutputFile().set(outputFile);
     }
@@ -114,7 +112,6 @@ public abstract class ConventionReportTask extends ConventionTask {
      *
      * @param projects The set of projects. Must not be null.
      */
-    @EagerSetter
     public void setProjects(Set<Project> projects) {
         getProjects().set(projects);
     }

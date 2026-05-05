@@ -18,7 +18,6 @@ package org.gradle.api.artifacts.repositories;
 
 
 import org.gradle.api.provider.Property;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -44,7 +43,6 @@ public interface UrlArtifactRepository {
      *
      * @param url The base URL.
      */
-    @EagerSetter
     default void setUrl(URI url) {
         getUrl().set(url);
     }
@@ -79,7 +77,6 @@ public interface UrlArtifactRepository {
      *
      * @see #isAllowInsecureProtocol()
      */
-    @EagerSetter
     default void setAllowInsecureProtocol(boolean allowInsecureProtocol) {
         getAllowInsecureProtocol().set(allowInsecureProtocol);
     }

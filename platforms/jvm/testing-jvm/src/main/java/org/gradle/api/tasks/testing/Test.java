@@ -75,7 +75,6 @@ import org.gradle.internal.actor.ActorFactory;
 import org.gradle.internal.concurrent.CompositeStoppable;
 import org.gradle.internal.deprecation.DeprecationLogger;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
@@ -806,7 +805,6 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      * @param testClassesDirs All test class directories to be used.
      * @since 4.0
      */
-    @EagerSetter
     public void setTestClassesDirs(FileCollection testClassesDirs) {
         getTestClassesDirs().setFrom(testClassesDirs);
     }
@@ -882,7 +880,6 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
     public abstract Property<TestFramework> getTestFramework();
 
     /** Eager forwarder; see {@link #getTestFramework()}. */
-    @EagerSetter
     public void setTestFramework(TestFramework testFramework) {
         getTestFramework().set(testFramework);
     }
@@ -1074,7 +1071,6 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
     public abstract ConfigurableFileCollection getClasspath();
 
     /** Eager forwarder; see {@link #getClasspath()}. */
-    @EagerSetter
     public void setClasspath(FileCollection classpath) {
         getClasspath().setFrom(classpath);
     }
@@ -1088,7 +1084,6 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
     public abstract Property<Boolean> getScanForTestClasses();
 
     /** Eager forwarder; see {@link #getScanForTestClasses()}. */
-    @EagerSetter
     public void setScanForTestClasses(boolean scanForTestClasses) {
         getScanForTestClasses().set(scanForTestClasses);
     }
@@ -1128,7 +1123,6 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      * @param forkEvery The maximum number of test classes. Use 0 to specify no maximum.
      * @since 8.1
      */
-    @EagerSetter
     public void setForkEvery(long forkEvery) {
         getForkEvery().set(forkEvery);
     }
@@ -1159,7 +1153,6 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      *
      * @param maxParallelForks The maximum number of forked test processes. Use 1 to disable parallel test execution for this task.
      */
-    @EagerSetter
     public void setMaxParallelForks(int maxParallelForks) {
         getMaxParallelForks().set(maxParallelForks);
     }

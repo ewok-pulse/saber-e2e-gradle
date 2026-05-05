@@ -40,7 +40,6 @@ import org.gradle.api.tasks.diagnostics.internal.TaskReportModel;
 import org.gradle.api.tasks.diagnostics.internal.TaskReportRenderer;
 import org.gradle.api.tasks.options.Option;
 import org.gradle.internal.Try;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.serialization.Cached;
@@ -79,7 +78,6 @@ public abstract class TaskReportTask extends ConventionReportTask {
     public abstract Property<TaskReportRenderer> getRenderer();
 
     /** Eager forwarder; see {@link #getRenderer()}. */
-    @EagerSetter
     public void setRenderer(TaskReportRenderer renderer) {
         getRenderer().set(renderer);
     }
@@ -98,7 +96,6 @@ public abstract class TaskReportTask extends ConventionReportTask {
     /**
      * Sets whether to show "invisible" tasks without a group or dependent tasks.
      */
-    @EagerSetter
     public void setShowDetail(boolean detail) {
         getShowDetail().set(detail);
     }
@@ -124,7 +121,6 @@ public abstract class TaskReportTask extends ConventionReportTask {
      *
      * @since 5.1
      */
-    @EagerSetter
     public void setDisplayGroup(String displayGroup) {
         getDisplayGroup().set(displayGroup);
     }

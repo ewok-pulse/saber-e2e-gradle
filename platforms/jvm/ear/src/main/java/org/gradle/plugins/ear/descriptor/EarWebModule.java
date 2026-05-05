@@ -16,7 +16,6 @@
 package org.gradle.plugins.ear.descriptor;
 
 import org.gradle.api.provider.Property;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -34,7 +33,6 @@ public interface EarWebModule extends EarModule {
     Property<String> getContextRoot();
 
     /** Eager forwarder; see {@link #getContextRoot()}. */
-    @EagerSetter
     default void setContextRoot(String contextRoot) {
         getContextRoot().set(contextRoot);
     }

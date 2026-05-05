@@ -21,7 +21,6 @@ import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -52,7 +51,6 @@ public abstract class ScalaDocOptions implements Serializable {
     /**
      * Sets whether to generate deprecation information.
      */
-    @EagerSetter
     public void setDeprecation(boolean deprecation) {
         getDeprecation().set(deprecation);
     }
@@ -72,7 +70,6 @@ public abstract class ScalaDocOptions implements Serializable {
     /**
      * Sets whether to generate unchecked information.
      */
-    @EagerSetter
     public void setUnchecked(boolean unchecked) {
         getUnchecked().set(unchecked);
     }
@@ -93,7 +90,6 @@ public abstract class ScalaDocOptions implements Serializable {
     /**
      * Sets the text to appear in the window title.
      */
-    @EagerSetter
     public void setWindowTitle(String windowTitle) {
         getWindowTitle().set(windowTitle);
     }
@@ -109,7 +105,6 @@ public abstract class ScalaDocOptions implements Serializable {
     /**
      * Sets the HTML text to appear in the main frame title.
      */
-    @EagerSetter
     public void setDocTitle(String docTitle) {
         getDocTitle().set(docTitle);
     }
@@ -125,7 +120,6 @@ public abstract class ScalaDocOptions implements Serializable {
     /**
      * Sets the HTML text to appear in the header for each page.
      */
-    @EagerSetter
     public void setHeader(String header) {
         getHeader().set(header);
     }
@@ -141,7 +135,6 @@ public abstract class ScalaDocOptions implements Serializable {
     /**
      * Sets the HTML text to appear in the footer for each page.
      */
-    @EagerSetter
     public void setFooter(String footer) {
         getFooter().set(footer);
     }
@@ -157,7 +150,6 @@ public abstract class ScalaDocOptions implements Serializable {
     /**
      * Sets the HTML text to appear in the top text for each page.
      */
-    @EagerSetter
     public void setTop(String top) {
         getTop().set(top);
     }
@@ -173,7 +165,6 @@ public abstract class ScalaDocOptions implements Serializable {
     /**
      * Sets the HTML text to appear in the bottom text for each page.
      */
-    @EagerSetter
     public void setBottom(String bottom) {
         getBottom().set(bottom);
     }
@@ -191,7 +182,6 @@ public abstract class ScalaDocOptions implements Serializable {
      * Sets the additional parameters passed to the compiler.
      * Each parameter must start with '-'.
      */
-    @EagerSetter
     public void setAdditionalParameters(List<String> additionalParameters) {
         getAdditionalParameters().set(additionalParameters);
     }

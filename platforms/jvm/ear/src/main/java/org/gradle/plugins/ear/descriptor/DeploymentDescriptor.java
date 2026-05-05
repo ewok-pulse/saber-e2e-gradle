@@ -22,7 +22,6 @@ import org.gradle.api.XmlProvider;
 import org.gradle.api.provider.MapProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.SetProperty;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
@@ -54,7 +53,6 @@ public interface DeploymentDescriptor {
     Property<String> getVersion();
 
     /** Eager forwarder; see {@link #getVersion()}. */
-    @EagerSetter
     default void setVersion(String version) {
         getVersion().set(version);
     }
@@ -66,7 +64,6 @@ public interface DeploymentDescriptor {
     Property<String> getApplicationName();
 
     /** Eager forwarder; see {@link #getApplicationName()}. */
-    @EagerSetter
     default void setApplicationName(String applicationName) {
         getApplicationName().set(applicationName);
     }
@@ -79,7 +76,6 @@ public interface DeploymentDescriptor {
     Property<Boolean> getInitializeInOrder();
 
     /** Eager forwarder; see {@link #getInitializeInOrder()}. */
-    @EagerSetter
     default void setInitializeInOrder(Boolean initializeInOrder) {
         getInitializeInOrder().set(initializeInOrder);
     }
@@ -91,7 +87,6 @@ public interface DeploymentDescriptor {
     Property<String> getDescription();
 
     /** Eager forwarder; see {@link #getDescription()}. */
-    @EagerSetter
     default void setDescription(String description) {
         getDescription().set(description);
     }
@@ -103,7 +98,6 @@ public interface DeploymentDescriptor {
     Property<String> getDisplayName();
 
     /** Eager forwarder; see {@link #getDisplayName()}. */
-    @EagerSetter
     default void setDisplayName(String displayName) {
         getDisplayName().set(displayName);
     }
@@ -115,7 +109,6 @@ public interface DeploymentDescriptor {
     Property<String> getLibraryDirectory();
 
     /** Eager forwarder; see {@link #getLibraryDirectory()}. */
-    @EagerSetter
     default void setLibraryDirectory(String libraryDirectory) {
         getLibraryDirectory().set(libraryDirectory);
     }
@@ -128,7 +121,6 @@ public interface DeploymentDescriptor {
     SetProperty<EarModule> getModules();
 
     /** Eager forwarder; see {@link #getModules()}. */
-    @EagerSetter
     default void setModules(Set<EarModule> modules) {
         getModules().set(modules);
     }
@@ -173,7 +165,6 @@ public interface DeploymentDescriptor {
     SetProperty<EarSecurityRole> getSecurityRoles();
 
     /** Eager forwarder; see {@link #getSecurityRoles()}. */
-    @EagerSetter
     default void setSecurityRoles(Set<EarSecurityRole> securityRoles) {
         getSecurityRoles().set(securityRoles);
     }
@@ -212,7 +203,6 @@ public interface DeploymentDescriptor {
     MapProperty<String, String> getModuleTypeMappings();
 
     /** Eager forwarder; see {@link #getModuleTypeMappings()}. */
-    @EagerSetter
     default void setModuleTypeMappings(Map<String, String> moduleTypeMappings) {
         getModuleTypeMappings().set(moduleTypeMappings);
     }

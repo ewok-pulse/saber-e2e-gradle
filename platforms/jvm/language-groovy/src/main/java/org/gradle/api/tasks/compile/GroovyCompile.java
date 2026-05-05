@@ -58,7 +58,6 @@ import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.WorkResult;
 import org.gradle.internal.buildoption.FeatureFlags;
 import org.gradle.internal.file.Deleter;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
@@ -331,7 +330,6 @@ public abstract class GroovyCompile extends AbstractCompile implements HasCompil
      *
      * @param groovyClasspath The classpath. Must not be null.
      */
-    @EagerSetter
     public void setGroovyClasspath(FileCollection groovyClasspath) {
         getGroovyClasspath().setFrom(groovyClasspath);
     }

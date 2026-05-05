@@ -29,7 +29,6 @@ import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.UntrackedTask;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.serialization.Cached;
@@ -85,7 +84,6 @@ public abstract class GenerateMavenPom extends DefaultTask {
      * @param destination The file the descriptor will be written to.
      * @since 4.0
      */
-    @EagerSetter
     public void setDestination(File destination) {
         getDestination().fileValue(destination);
     }
@@ -95,7 +93,6 @@ public abstract class GenerateMavenPom extends DefaultTask {
      *
      * <p>The argument is evaluated as per {@link org.gradle.api.Project#file(Object)}.
      */
-    @EagerSetter
     public void setDestination(Object destination) {
         ProviderApiDeprecationLogger.logDeprecation(GenerateMavenPom.class, "setDestination(Object)", "getDestination()");
         getDestination().fileValue(getFileResolver().resolve(destination));

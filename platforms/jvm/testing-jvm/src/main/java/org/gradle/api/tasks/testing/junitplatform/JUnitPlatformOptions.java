@@ -19,7 +19,6 @@ package org.gradle.api.tasks.testing.junitplatform;
 import org.gradle.api.provider.SetProperty;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.testing.TestFrameworkOptions;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -91,7 +90,6 @@ public abstract class JUnitPlatformOptions extends TestFrameworkOptions {
     public abstract SetProperty<String> getIncludeEngines();
 
     /** Eager forwarder; see {@link #getIncludeEngines()}. */
-    @EagerSetter
     public void setIncludeEngines(Set<String> includeEngines) {
         getIncludeEngines().set(includeEngines);
     }
@@ -101,7 +99,6 @@ public abstract class JUnitPlatformOptions extends TestFrameworkOptions {
     public abstract SetProperty<String> getIncludeTags();
 
     /** Eager forwarder; see {@link #getIncludeTags()}. */
-    @EagerSetter
     public void setIncludeTags(Set<String> includeTags) {
         getIncludeTags().set(includeTags);
     }
@@ -111,7 +108,6 @@ public abstract class JUnitPlatformOptions extends TestFrameworkOptions {
     public abstract SetProperty<String> getExcludeEngines();
 
     /** Eager forwarder; see {@link #getExcludeEngines()}. */
-    @EagerSetter
     public void setExcludeEngines(Set<String> excludeEngines) {
         getExcludeEngines().set(excludeEngines);
     }
@@ -121,7 +117,6 @@ public abstract class JUnitPlatformOptions extends TestFrameworkOptions {
     public abstract SetProperty<String> getExcludeTags();
 
     /** Eager forwarder; see {@link #getExcludeTags()}. */
-    @EagerSetter
     public void setExcludeTags(Set<String> excludeTags) {
         getExcludeTags().set(excludeTags);
     }

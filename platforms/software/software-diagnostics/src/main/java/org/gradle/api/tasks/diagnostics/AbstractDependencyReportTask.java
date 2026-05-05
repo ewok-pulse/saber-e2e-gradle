@@ -32,7 +32,6 @@ import org.gradle.api.tasks.diagnostics.internal.DependencyReportRenderer;
 import org.gradle.api.tasks.diagnostics.internal.ProjectDetails;
 import org.gradle.api.tasks.diagnostics.internal.dependencies.AsciiDependencyReportRenderer;
 import org.gradle.api.tasks.options.Option;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.serialization.Transient;
@@ -67,7 +66,6 @@ public abstract class AbstractDependencyReportTask extends AbstractProjectBasedR
     /**
      * Set the renderer to use to build a report. If unset, AsciiGraphRenderer will be used.
      */
-    @EagerSetter
     public void setRenderer(DependencyReportRenderer renderer) {
         getRenderer().set(renderer);
     }
@@ -125,7 +123,6 @@ public abstract class AbstractDependencyReportTask extends AbstractProjectBasedR
      *
      * @param configurations The configuration. Must not be null.
      */
-    @EagerSetter
     public void setConfigurations(Set<Configuration> configurations) {
         getConfigurations().set(configurations);
     }

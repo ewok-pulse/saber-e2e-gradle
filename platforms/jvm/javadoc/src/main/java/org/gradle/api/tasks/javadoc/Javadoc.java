@@ -54,7 +54,6 @@ import org.gradle.external.javadoc.StandardJavadocDocletOptions;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.file.Deleter;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
@@ -256,7 +255,6 @@ public abstract class Javadoc extends SourceTask {
     /**
      * <p>Sets the directory to generate the documentation into.</p>
      */
-    @EagerSetter
     public void setDestinationDir(File destinationDir) {
         getDestinationDir().set(destinationDir);
     }
@@ -279,7 +277,6 @@ public abstract class Javadoc extends SourceTask {
      *
      * @param maxMemory The amount of memory
      */
-    @EagerSetter
     public void setMaxMemory(String maxMemory) {
         getMaxMemory().set(maxMemory);
     }
@@ -297,7 +294,6 @@ public abstract class Javadoc extends SourceTask {
     /**
      * <p>Sets the title for the generated documentation.</p>
      */
-    @EagerSetter
     public void setTitle(String title) {
         getTitle().set(title);
     }
@@ -316,7 +312,6 @@ public abstract class Javadoc extends SourceTask {
      *
      * @param classpath The classpath. Must not be null.
      */
-    @EagerSetter
     public void setClasspath(FileCollection classpath) {
         getClasspath().setFrom(classpath);
     }
@@ -369,7 +364,6 @@ public abstract class Javadoc extends SourceTask {
     public abstract Property<Boolean> getFailOnError();
 
     /** Eager forwarder; see {@link #getFailOnError()}. */
-    @EagerSetter
     public void setFailOnError(boolean failOnError) {
         getFailOnError().set(failOnError);
     }
@@ -398,7 +392,6 @@ public abstract class Javadoc extends SourceTask {
     public abstract Property<String> getExecutable();
 
     /** Eager forwarder; see {@link #getExecutable()}. */
-    @EagerSetter
     public void setExecutable(String executable) {
         getExecutable().set(executable);
     }

@@ -19,7 +19,6 @@ import org.gradle.api.provider.Property;
 import org.gradle.api.provider.SetProperty;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -120,7 +119,6 @@ public interface TestFilter {
      * @param includePatterns class or method name patterns to set, may contain wildcard '*'
      * @return this filter object
      */
-    @EagerSetter
     default TestFilter setIncludePatterns(String... includePatterns) {
         getIncludePatterns().set(Arrays.asList(includePatterns));
         return this;
@@ -143,7 +141,6 @@ public interface TestFilter {
      * @return this filter object
      * @since 5.0
      */
-    @EagerSetter
     default TestFilter setExcludePatterns(String... excludePatterns) {
         getExcludePatterns().set(Arrays.asList(excludePatterns));
         return this;
@@ -180,7 +177,6 @@ public interface TestFilter {
      * Let the test task fail if a filter configuration was provided but no test matched the given configuration.
      * @param failOnNoMatchingTests whether a test task should fail if no test is matching the filter configuration.
      * */
-    @EagerSetter
     default void setFailOnNoMatchingTests(boolean failOnNoMatchingTests) {
         getFailOnNoMatchingTests().set(failOnNoMatchingTests);
     }

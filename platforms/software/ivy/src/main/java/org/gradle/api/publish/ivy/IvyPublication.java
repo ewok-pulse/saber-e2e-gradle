@@ -23,7 +23,6 @@ import org.gradle.api.publish.Publication;
 import org.gradle.api.publish.VersionMappingStrategy;
 import org.gradle.api.tasks.Nested;
 import org.gradle.internal.HasInternalProtocol;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -330,7 +329,6 @@ public interface IvyPublication extends Publication {
     /**
      * Sets the organisation for this publication.
      */
-    @EagerSetter
     default void setOrganisation(String organisation) {
         getOrganisation().set(organisation);
     }
@@ -344,7 +342,6 @@ public interface IvyPublication extends Publication {
     /**
      * Sets the module for this publication.
      */
-    @EagerSetter
     default void setModule(String module) {
         getModule().set(module);
     }
@@ -358,7 +355,6 @@ public interface IvyPublication extends Publication {
     /**
      * Sets the revision for this publication.
      */
-    @EagerSetter
     default void setRevision(String revision) {
         getRevision().set(revision);
     }

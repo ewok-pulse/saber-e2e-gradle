@@ -26,7 +26,6 @@ import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.work.DisableCachingByDefault;
@@ -92,7 +91,6 @@ public abstract class Zip extends AbstractArchiveTask {
      *
      * @param entryCompression {@code STORED} or {@code DEFLATED}
      */
-    @EagerSetter
     public void setEntryCompression(ZipEntryCompression entryCompression) {
         getEntryCompression().set(entryCompression);
     }
@@ -117,7 +115,6 @@ public abstract class Zip extends AbstractArchiveTask {
      *
      * @see #isZip64()
      */
-    @EagerSetter
     public void setZip64(boolean zip64) {
         getZip64().set(zip64);
     }
@@ -144,7 +141,6 @@ public abstract class Zip extends AbstractArchiveTask {
     /**
      * Sets the character set used to encode ZIP metadata like file names.
      */
-    @EagerSetter
     public void setMetadataCharset(String metadataCharset) {
         getMetadataCharset().set(metadataCharset);
     }

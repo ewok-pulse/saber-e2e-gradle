@@ -23,7 +23,6 @@ import org.gradle.api.provider.Property;
 import org.gradle.api.resources.TextResource;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Optional;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
@@ -95,7 +94,6 @@ public abstract class CheckstyleExtension extends CodeQualityExtension {
     /**
      * The properties available for use in the configuration file. These are substituted into the configuration file.
      */
-    @EagerSetter
     public void setConfigProperties(Map<String, Object> configProperties) {
         getConfigProperties().set(configProperties);
     }
@@ -129,7 +127,6 @@ public abstract class CheckstyleExtension extends CodeQualityExtension {
      * @param maxErrors number of errors allowed
      * @since 3.4
      */
-    @EagerSetter
     public void setMaxErrors(int maxErrors) {
         getMaxErrors().set(maxErrors);
     }
@@ -152,7 +149,6 @@ public abstract class CheckstyleExtension extends CodeQualityExtension {
      * @param maxWarnings number of warnings allowed
      * @since 3.4
      */
-    @EagerSetter
     public void setMaxWarnings(int maxWarnings) {
         getMaxWarnings().set(maxWarnings);
     }
@@ -170,7 +166,6 @@ public abstract class CheckstyleExtension extends CodeQualityExtension {
      *
      * Example: showViolations = false
      */
-    @EagerSetter
     public void setShowViolations(boolean showViolations) {
         getShowViolations().set(showViolations);
     }

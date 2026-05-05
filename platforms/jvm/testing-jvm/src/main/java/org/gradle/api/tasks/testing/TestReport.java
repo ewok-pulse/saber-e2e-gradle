@@ -30,7 +30,6 @@ import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.SkipWhenEmpty;
 import org.gradle.api.tasks.TaskAction;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedDeprecation;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedDeprecation.RemovedIn;
@@ -91,7 +90,6 @@ public abstract class TestReport extends DefaultTask {
      * @deprecated Use {@link #getDestinationDirectory()} instead.
      */
     @Deprecated
-    @EagerSetter
     public void setDestinationDir(File destinationDir) {
         getDestinationDirectory().set(destinationDir);
     }

@@ -18,7 +18,6 @@ package org.gradle.process;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.provider.MapProperty;
 import org.gradle.api.provider.Property;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -45,7 +44,6 @@ public interface ProcessForkOptions {
      * @param executable The executable. Must not be null.
      * @since 4.0
      */
-    @EagerSetter
     default void setExecutable(String executable) {
         getExecutable().set(executable);
     }
@@ -55,7 +53,6 @@ public interface ProcessForkOptions {
      *
      * @param executable The executable. Must not be null.
      */
-    @EagerSetter
     default void setExecutable(Object executable) {
         executable(executable);
     }
@@ -82,7 +79,6 @@ public interface ProcessForkOptions {
      * @param dir The working directory. Must not be null.
      * @since 4.0
      */
-    @EagerSetter
     default void setWorkingDir(File dir) {
         getWorkingDir().set(dir);
     }
@@ -93,7 +89,6 @@ public interface ProcessForkOptions {
      *
      * @param dir The working directory. Must not be null.
      */
-    @EagerSetter
     default void setWorkingDir(Object dir) {
         workingDir(dir);
     }
@@ -120,7 +115,6 @@ public interface ProcessForkOptions {
      *
      * @param environment The environment variables. Must not be null.
      */
-    @EagerSetter
     default void setEnvironment(Map<String, ?> environment) {
         getEnvironment().set(environment);
     }

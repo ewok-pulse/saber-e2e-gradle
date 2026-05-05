@@ -17,7 +17,6 @@ package org.gradle.api.tasks.diagnostics;
 
 import org.gradle.api.Incubating;
 import org.gradle.api.Project;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
@@ -64,7 +63,6 @@ public abstract class PropertyReportTask extends AbstractProjectBasedReportTask<
     public abstract Property<PropertyReportRenderer> getRenderer();
 
     /** Eager forwarder; see {@link #getRenderer()}. */
-    @EagerSetter
     public void setRenderer(PropertyReportRenderer renderer) {
         getRenderer().set(renderer);
     }

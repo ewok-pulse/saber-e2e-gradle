@@ -30,7 +30,6 @@ import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.process.ExecSpec;
@@ -51,7 +50,6 @@ public interface MinimalJavadocOptions {
     Property<String> getOverview();
 
     /** Eager forwarder; see {@link #getOverview()}. */
-    @EagerSetter
     default void setOverview(String overview) {
         getOverview().set(overview);
     }
@@ -64,7 +62,6 @@ public interface MinimalJavadocOptions {
     Property<JavadocMemberLevel> getMemberLevel();
 
     /** Eager forwarder; see {@link #getMemberLevel()}. */
-    @EagerSetter
     default void setMemberLevel(JavadocMemberLevel memberLevel) {
         getMemberLevel().set(memberLevel);
     }
@@ -85,7 +82,6 @@ public interface MinimalJavadocOptions {
     Property<String> getDoclet();
 
     /** Eager forwarder; see {@link #getDoclet()}. */
-    @EagerSetter
     default void setDoclet(String doclet) {
         getDoclet().set(doclet);
     }
@@ -97,7 +93,6 @@ public interface MinimalJavadocOptions {
     ConfigurableFileCollection getDocletpath();
 
     /** Eager forwarder; see {@link #getDocletpath()}. */
-    @EagerSetter
     default void setDocletpath(List<File> docletpath) {
         getDocletpath().setFrom(docletpath);
     }
@@ -110,7 +105,6 @@ public interface MinimalJavadocOptions {
     Property<String> getSource();
 
     /** Eager forwarder; see {@link #getSource()}. */
-    @EagerSetter
     default void setSource(String source) {
         getSource().set(source);
     }
@@ -122,7 +116,6 @@ public interface MinimalJavadocOptions {
     ConfigurableFileCollection getClasspath();
 
     /** Eager forwarder; see {@link #getClasspath()}. */
-    @EagerSetter
     default void setClasspath(List<File> classpath) {
         getClasspath().setFrom(classpath);
     }
@@ -141,7 +134,6 @@ public interface MinimalJavadocOptions {
      *
      * @since 6.4
      */
-    @EagerSetter
     default void setModulePath(List<File> modulePath) {
         getModulePath().setFrom(modulePath);
     }
@@ -162,7 +154,6 @@ public interface MinimalJavadocOptions {
     ConfigurableFileCollection getBootClasspath();
 
     /** Eager forwarder; see {@link #getBootClasspath()}. */
-    @EagerSetter
     default void setBootClasspath(List<File> bootClasspath) {
         getBootClasspath().setFrom(bootClasspath);
     }
@@ -177,7 +168,6 @@ public interface MinimalJavadocOptions {
     ConfigurableFileCollection getExtDirs();
 
     /** Eager forwarder; see {@link #getExtDirs()}. */
-    @EagerSetter
     default void setExtDirs(List<File> extDirs) {
         getExtDirs().setFrom(extDirs);
     }
@@ -189,7 +179,6 @@ public interface MinimalJavadocOptions {
     Property<JavadocOutputLevel> getOutputLevel();
 
     /** Eager forwarder; see {@link #getOutputLevel()}. */
-    @EagerSetter
     default void setOutputLevel(JavadocOutputLevel outputLevel) {
         getOutputLevel().set(outputLevel);
     }
@@ -213,7 +202,6 @@ public interface MinimalJavadocOptions {
     Property<Boolean> getBreakIterator();
 
     /** Eager forwarder; see {@link #getBreakIterator()}. */
-    @EagerSetter
     default void setBreakIterator(boolean breakIterator) {
         getBreakIterator().set(breakIterator);
     }
@@ -234,7 +222,6 @@ public interface MinimalJavadocOptions {
     Property<String> getLocale();
 
     /** Eager forwarder; see {@link #getLocale()}. */
-    @EagerSetter
     default void setLocale(String locale) {
         getLocale().set(locale);
     }
@@ -247,7 +234,6 @@ public interface MinimalJavadocOptions {
     Property<String> getEncoding();
 
     /** Eager forwarder; see {@link #getEncoding()}. */
-    @EagerSetter
     default void setEncoding(String encoding) {
         getEncoding().set(encoding);
     }
@@ -260,7 +246,6 @@ public interface MinimalJavadocOptions {
     ListProperty<String> getJFlags();
 
     /** Eager forwarder; see {@link #getJFlags()}. */
-    @EagerSetter
     default void setJFlags(List<String> jFlags) {
         getJFlags().set(jFlags);
     }
@@ -274,7 +259,6 @@ public interface MinimalJavadocOptions {
     ConfigurableFileCollection getOptionFiles();
 
     /** Eager forwarder; see {@link #getOptionFiles()}. */
-    @EagerSetter
     default void setOptionFiles(List<File> optionFiles) {
         getOptionFiles().setFrom(optionFiles);
     }
@@ -286,7 +270,6 @@ public interface MinimalJavadocOptions {
     DirectoryProperty getDestinationDirectory();
 
     /** Eager forwarder; see {@link #getDestinationDirectory()}. */
-    @EagerSetter
     default void setDestinationDirectory(File destinationDirectory) {
         getDestinationDirectory().set(destinationDirectory);
     }
@@ -299,7 +282,6 @@ public interface MinimalJavadocOptions {
     Property<String> getWindowTitle();
 
     /** Eager forwarder; see {@link #getWindowTitle()}. */
-    @EagerSetter
     default void setWindowTitle(String windowTitle) {
         getWindowTitle().set(windowTitle);
     }
@@ -312,7 +294,6 @@ public interface MinimalJavadocOptions {
     Property<String> getHeader();
 
     /** Eager forwarder; see {@link #getHeader()}. */
-    @EagerSetter
     default void setHeader(String header) {
         getHeader().set(header);
     }
@@ -326,7 +307,6 @@ public interface MinimalJavadocOptions {
     ListProperty<String> getSourceNames();
 
     /** Eager forwarder; see {@link #getSourceNames()}. */
-    @EagerSetter
     default void setSourceNames(List<String> sourceNames) {
         getSourceNames().set(sourceNames);
     }

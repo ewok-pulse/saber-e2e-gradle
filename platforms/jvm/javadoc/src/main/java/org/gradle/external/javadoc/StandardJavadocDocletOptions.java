@@ -44,7 +44,6 @@ import org.gradle.external.javadoc.internal.options.MapPropertyKnownOption;
 import org.gradle.external.javadoc.internal.options.PropertyKnownOption;
 import org.gradle.internal.Cast;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -192,7 +191,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<Boolean> getUse();
 
     /** Eager forwarder; see {@link #getUse()}. */
-    @EagerSetter
     public void setUse(boolean use) {
         getUse().set(use);
     }
@@ -225,7 +223,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<Boolean> getVersion();
 
     /** Eager forwarder; see {@link #getVersion()}. */
-    @EagerSetter
     public void setVersion(boolean version) {
         getVersion().set(version);
     }
@@ -257,7 +254,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<Boolean> getAuthor();
 
     /** Eager forwarder; see {@link #getAuthor()}. */
-    @EagerSetter
     public void setAuthor(boolean author) {
         getAuthor().set(author);
     }
@@ -290,7 +286,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<Boolean> getSplitIndex();
 
     /** Eager forwarder; see {@link #getSplitIndex()}. */
-    @EagerSetter
     public void setSplitIndex(boolean splitIndex) {
         getSplitIndex().set(splitIndex);
     }
@@ -362,7 +357,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<String> getDocTitle();
 
     /** Eager forwarder; see {@link #getDocTitle()}. */
-    @EagerSetter
     public void setDocTitle(String docTitle) {
         getDocTitle().set(docTitle);
     }
@@ -385,7 +379,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<String> getFooter();
 
     /** Eager forwarder; see {@link #getFooter()}. */
-    @EagerSetter
     public void setFooter(String footer) {
         getFooter().set(footer);
     }
@@ -409,7 +402,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<String> getBottom();
 
     /** Eager forwarder; see {@link #getBottom()}. */
-    @EagerSetter
     public void setBottom(String bottom) {
         getBottom().set(bottom);
     }
@@ -444,7 +436,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract ListProperty<String> getLinks();
 
     /** Eager forwarder; see {@link #getLinks()}. */
-    @EagerSetter
     public void setLinks(List<String> links) {
         getLinks().set(links);
     }
@@ -489,7 +480,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract ListProperty<JavadocOfflineLink> getLinksOffline();
 
     /** Eager forwarder; see {@link #getLinksOffline()}. */
-    @EagerSetter
     public void setLinksOffline(List<JavadocOfflineLink> linksOffline) {
         getLinksOffline().set(linksOffline);
     }
@@ -522,7 +512,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<Boolean> getLinkSource();
 
     /** Eager forwarder; see {@link #getLinkSource()}. */
-    @EagerSetter
     public void setLinkSource(boolean linkSource) {
         getLinkSource().set(linkSource);
     }
@@ -592,7 +581,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract MapProperty<String, List<String>> getGroups();
 
     /** Eager forwarder; see {@link #getGroups()}. */
-    @EagerSetter
     public void setGroups(Map<String, List<String>> groups) {
         getGroups().set(groups);
     }
@@ -627,7 +615,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<Boolean> getNoDeprecated();
 
     /** Eager forwarder; see {@link #getNoDeprecated()}. */
-    @EagerSetter
     public void setNoDeprecated(boolean noDeprecated) {
         getNoDeprecated().set(noDeprecated);
     }
@@ -662,7 +649,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<Boolean> getNoDeprecatedList();
 
     /** Eager forwarder; see {@link #getNoDeprecatedList()}. */
-    @EagerSetter
     public void setNoDeprecatedList(boolean noDeprecatedList) {
         getNoDeprecatedList().set(noDeprecatedList);
     }
@@ -694,7 +680,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<Boolean> getNoSince();
 
     /** Eager forwarder; see {@link #getNoSince()}. */
-    @EagerSetter
     public void setNoSince(boolean noSince) {
         getNoSince().set(noSince);
     }
@@ -728,7 +713,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<Boolean> getNoTree();
 
     /** Eager forwarder; see {@link #getNoTree()}. */
-    @EagerSetter
     public void setNoTree(boolean noTree) {
         getNoTree().set(noTree);
     }
@@ -760,7 +744,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<Boolean> getNoIndex();
 
     /** Eager forwarder; see {@link #getNoIndex()}. */
-    @EagerSetter
     public void setNoIndex(boolean noIndex) {
         getNoIndex().set(noIndex);
     }
@@ -792,7 +775,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<Boolean> getNoHelp();
 
     /** Eager forwarder; see {@link #getNoHelp()}. */
-    @EagerSetter
     public void setNoHelp(boolean noHelp) {
         getNoHelp().set(noHelp);
     }
@@ -827,7 +809,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<Boolean> getNoNavBar();
 
     /** Eager forwarder; see {@link #getNoNavBar()}. */
-    @EagerSetter
     public void setNoNavBar(boolean noNavBar) {
         getNoNavBar().set(noNavBar);
     }
@@ -863,7 +844,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract RegularFileProperty getHelpFile();
 
     /** Eager forwarder; see {@link #getHelpFile()}. */
-    @EagerSetter
     public void setHelpFile(File helpFile) {
         getHelpFile().set(helpFile);
     }
@@ -887,7 +867,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract RegularFileProperty getStylesheetFile();
 
     /** Eager forwarder; see {@link #getStylesheetFile()}. */
-    @EagerSetter
     public void setStylesheetFile(File stylesheetFile) {
         getStylesheetFile().set(stylesheetFile);
     }
@@ -910,7 +889,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<Boolean> getSerialWarn();
 
     /** Eager forwarder; see {@link #getSerialWarn()}. */
-    @EagerSetter
     public void setSerialWarn(boolean serialWarn) {
         getSerialWarn().set(serialWarn);
     }
@@ -952,7 +930,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<String> getCharSet();
 
     /** Eager forwarder; see {@link #getCharSet()}. */
-    @EagerSetter
     public void setCharSet(String charSet) {
         getCharSet().set(charSet);
     }
@@ -977,7 +954,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<String> getDocEncoding();
 
     /** Eager forwarder; see {@link #getDocEncoding()}. */
-    @EagerSetter
     public void setDocEncoding(String docEncoding) {
         getDocEncoding().set(docEncoding);
     }
@@ -995,7 +971,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<Boolean> getKeyWords();
 
     /** Eager forwarder; see {@link #getKeyWords()}. */
-    @EagerSetter
     public void setKeyWords(boolean keyWords) {
         getKeyWords().set(keyWords);
     }
@@ -1026,7 +1001,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract ListProperty<String> getTags();
 
     /** Eager forwarder; see {@link #getTags()}. */
-    @EagerSetter
     public void setTags(List<String> tags) {
         getTags().set(tags);
     }
@@ -1053,7 +1027,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract ListProperty<String> getTaglets();
 
     /** Eager forwarder; see {@link #getTaglets()}. */
-    @EagerSetter
     public void setTaglets(List<String> taglets) {
         getTaglets().set(taglets);
     }
@@ -1076,7 +1049,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract ConfigurableFileCollection getTagletPath();
 
     /** Eager forwarder; see {@link #getTagletPath()}. */
-    @EagerSetter
     public void setTagletPath(List<File> tagletPath) {
         getTagletPath().setFrom(tagletPath);
     }
@@ -1098,7 +1070,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<Boolean> getDocFilesSubDirs();
 
     /** Eager forwarder; see {@link #getDocFilesSubDirs()}. */
-    @EagerSetter
     public void setDocFilesSubDirs(boolean docFilesSubDirs) {
         getDocFilesSubDirs().set(docFilesSubDirs);
     }
@@ -1129,7 +1100,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract ListProperty<String> getExcludeDocFilesSubDir();
 
     /** Eager forwarder; see {@link #getExcludeDocFilesSubDir()}. */
-    @EagerSetter
     public void setExcludeDocFilesSubDir(List<String> excludeDocFilesSubDir) {
         getExcludeDocFilesSubDir().set(excludeDocFilesSubDir);
     }
@@ -1152,7 +1122,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract ListProperty<String> getNoQualifiers();
 
     /** Eager forwarder; see {@link #getNoQualifiers()}. */
-    @EagerSetter
     public void setNoQualifiers(List<String> noQualifiers) {
         getNoQualifiers().set(noQualifiers);
     }
@@ -1171,7 +1140,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<Boolean> getNoTimestamp();
 
     /** Eager forwarder; see {@link #getNoTimestamp()}. */
-    @EagerSetter
     public void setNoTimestamp(boolean noTimestamp) {
         getNoTimestamp().set(noTimestamp);
     }
@@ -1201,7 +1169,6 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     public abstract Property<Boolean> getNoComment();
 
     /** Eager forwarder; see {@link #getNoComment()}. */
-    @EagerSetter
     public void setNoComment(boolean noComment) {
         getNoComment().set(noComment);
     }

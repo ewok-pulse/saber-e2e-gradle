@@ -18,7 +18,6 @@ package org.gradle.api.publish.maven;
 import org.gradle.api.provider.Property;
 import org.gradle.api.publish.PublicationArtifact;
 import org.gradle.api.tasks.Optional;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -39,7 +38,6 @@ public interface MavenArtifact extends PublicationArtifact {
      * Sets the extension used to publish the artifact file.
      * @param extension The extension.
      */
-    @EagerSetter
     default void setExtension(String extension) {
         getExtension().set(extension);
     }
@@ -56,7 +54,6 @@ public interface MavenArtifact extends PublicationArtifact {
      * Sets the classifier used to publish the artifact file.
      * @param classifier The classifier.
      */
-    @EagerSetter
     default void setClassifier(String classifier) {
         getClassifier().set(classifier);
     }

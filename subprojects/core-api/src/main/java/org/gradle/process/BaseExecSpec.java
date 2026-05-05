@@ -17,7 +17,6 @@ package org.gradle.process;
 
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -45,7 +44,6 @@ public interface BaseExecSpec extends ProcessForkOptions {
      * @param ignoreExitValue whether a non-zero exit value is ignored, or an exception thrown
      * @return this
      */
-    @EagerSetter
     default BaseExecSpec setIgnoreExitValue(boolean ignoreExitValue) {
         getIgnoreExitValue().set(ignoreExitValue);
         return this;
@@ -74,7 +72,6 @@ public interface BaseExecSpec extends ProcessForkOptions {
      * @param standardInput The standard input stream for the process. Must not be null.
      * @return this
      */
-    @EagerSetter
     default BaseExecSpec setStandardInput(InputStream standardInput) {
         getStandardInput().set(standardInput);
         return this;
@@ -96,7 +93,6 @@ public interface BaseExecSpec extends ProcessForkOptions {
      * @param standardOutput The standard output stream for the process. Must not be null.
      * @return this
      */
-    @EagerSetter
     default BaseExecSpec setStandardOutput(OutputStream standardOutput) {
         getStandardOutput().set(standardOutput);
         return this;
@@ -118,7 +114,6 @@ public interface BaseExecSpec extends ProcessForkOptions {
      * @param errorOutput The standard output error stream for the process. Must not be null.
      * @return this
      */
-    @EagerSetter
     default BaseExecSpec setErrorOutput(OutputStream errorOutput) {
         getErrorOutput().set(errorOutput);
         return this;

@@ -21,7 +21,6 @@ import org.gradle.api.provider.Property;
 import org.gradle.api.reporting.DirectoryReport;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -44,7 +43,6 @@ public interface JUnitXmlReport extends DirectoryReport {
     /**
      * Should the output be associated with individual test cases instead of at the suite level.
      */
-    @EagerSetter
     default void setOutputPerTestCase(boolean outputPerTestCase) {
         getOutputPerTestCase().set(outputPerTestCase);
     }

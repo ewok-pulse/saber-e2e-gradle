@@ -58,7 +58,6 @@ import org.gradle.buildinit.specs.BuildInitGenerator;
 import org.gradle.buildinit.specs.BuildInitParameter;
 import org.gradle.buildinit.specs.BuildInitSpec;
 import org.gradle.buildinit.specs.internal.BuildInitSpecRegistry;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
@@ -144,7 +143,6 @@ public abstract class InitBuild extends DefaultTask {
     public abstract Property<String> getType();
 
     /** Eager forwarder; see {@link #getType()}. */
-    @EagerSetter
     public void setType(String type) {
         getType().set(type);
     }
@@ -178,7 +176,6 @@ public abstract class InitBuild extends DefaultTask {
      *
      * @since 4.5
      */
-    @EagerSetter
     public void setDsl(String dsl) {
         getDsl().set(dsl);
     }
@@ -241,7 +238,6 @@ public abstract class InitBuild extends DefaultTask {
      *
      * @since 5.0
      */
-    @EagerSetter
     public void setProjectName(String projectName) {
         getProjectName().set(projectName);
     }
@@ -262,7 +258,6 @@ public abstract class InitBuild extends DefaultTask {
      *
      * @since 5.0
      */
-    @EagerSetter
     public void setPackageName(String packageName) {
         getPackageName().set(packageName);
     }
@@ -279,7 +274,6 @@ public abstract class InitBuild extends DefaultTask {
     /**
      * Set the test framework to be used.
      */
-    @EagerSetter
     public void setTestFramework(String testFramework) {
         getTestFramework().set(testFramework);
     }

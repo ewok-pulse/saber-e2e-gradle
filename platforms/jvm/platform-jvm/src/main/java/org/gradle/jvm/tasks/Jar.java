@@ -35,7 +35,6 @@ import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.bundling.Zip;
 import org.gradle.internal.execution.OutputChangeListener;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
@@ -141,7 +140,6 @@ public abstract class Jar extends Zip {
     /**
      * Sets the character set used to encode JAR metadata fields such as long file names.
      */
-    @EagerSetter
     public void setManifestContentCharset(String manifestContentCharset) {
         getManifestContentCharset().set(manifestContentCharset);
     }

@@ -20,7 +20,6 @@ import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
@@ -57,7 +56,6 @@ public abstract class ForkOptions extends ProviderAwareCompilerDaemonForkOptions
      * <p>
      * Setting the executable disables task output caching.
      */
-    @EagerSetter
     public void setExecutable(String executable) {
         getExecutable().set(executable);
     }
@@ -101,7 +99,6 @@ public abstract class ForkOptions extends ProviderAwareCompilerDaemonForkOptions
      * command line arguments to the compiler process. Defaults to {@code null},
      * in which case the directory will be chosen automatically.
      */
-    @EagerSetter
     public void setTempDir(String tempDir) {
         getTempDir().set(tempDir);
     }

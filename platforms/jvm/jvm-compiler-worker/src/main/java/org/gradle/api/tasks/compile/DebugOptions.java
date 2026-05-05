@@ -19,7 +19,6 @@ package org.gradle.api.tasks.compile;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Optional;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -74,7 +73,6 @@ public abstract class DebugOptions implements Serializable {
      * <p>Setting this value to null will reset the property to its default value of only
      * generating line and source debug information.</p>
      */
-    @EagerSetter
     public void setDebugLevel(String debugLevel) {
         getDebugLevel().set(debugLevel);
     }

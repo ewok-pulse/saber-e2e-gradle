@@ -18,7 +18,6 @@ package org.gradle.caching.configuration;
 
 import org.gradle.api.model.ReplacedBy;
 import org.gradle.api.provider.Property;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
@@ -42,7 +41,6 @@ public interface BuildCache {
     /**
      * Sets whether the build cache is enabled.
      */
-    @EagerSetter
     default void setEnabled(boolean enabled) {
         getEnabled().set(enabled);
     }
@@ -64,7 +62,6 @@ public interface BuildCache {
     /**
      * Sets whether a given build can store outputs in the build cache.
      */
-    @EagerSetter
     default void setPush(boolean push) {
         getPush().set(push);
     }

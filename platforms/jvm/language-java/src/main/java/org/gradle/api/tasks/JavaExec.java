@@ -33,7 +33,6 @@ import org.gradle.api.provider.Provider;
 import org.gradle.api.provider.ProviderFactory;
 import org.gradle.api.tasks.internal.JavaExecExecutableUtils;
 import org.gradle.api.tasks.options.Option;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.jvm.DefaultModularitySpec;
@@ -348,7 +347,6 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      * {@inheritDoc}
      */
     @Override
-    @EagerSetter
     public JavaExec setArgs(List<String> args) {
         return setArgs((Iterable<?>) args);
     }
@@ -357,7 +355,6 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      * {@inheritDoc}
      */
     @Override
-    @EagerSetter
     public JavaExec setArgs(Iterable<?> args) {
         getArgs().empty();
         args(args);
@@ -434,7 +431,6 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      * {@inheritDoc}
      */
     @Override
-    @EagerSetter
     public JavaExec setClasspath(FileCollection fileCollection) {
         getClasspath().setFrom(fileCollection);
         return this;
@@ -559,7 +555,6 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      * {@inheritDoc}
      */
     @Override
-    @EagerSetter
     public JavaExec setStandardInput(InputStream value) {
         getStandardInput().set(value);
         return this;
@@ -578,7 +573,6 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      * {@inheritDoc}
      */
     @Override
-    @EagerSetter
     public JavaExec setStandardOutput(OutputStream value) {
         getStandardOutput().set(value);
         return this;
@@ -597,7 +591,6 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      * {@inheritDoc}
      */
     @Override
-    @EagerSetter
     public JavaExec setErrorOutput(OutputStream value) {
         getErrorOutput().set(value);
         return this;
@@ -616,7 +609,6 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      * {@inheritDoc}
      */
     @Override
-    @EagerSetter
     public JavaExec setIgnoreExitValue(boolean value) {
         getIgnoreExitValue().set(value);
         return this;

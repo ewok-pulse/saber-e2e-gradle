@@ -24,7 +24,6 @@ import org.gradle.api.internal.file.archive.compression.SimpleCompressor;
 import org.gradle.api.internal.file.copy.CopyAction;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.work.DisableCachingByDefault;
@@ -73,7 +72,6 @@ public abstract class Tar extends AbstractArchiveTask {
      *
      * @param compression The compression. Should not be null.
      */
-    @EagerSetter
     public void setCompression(Compression compression) {
         getCompression().set(compression);
     }

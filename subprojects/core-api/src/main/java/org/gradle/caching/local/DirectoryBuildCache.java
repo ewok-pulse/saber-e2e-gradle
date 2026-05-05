@@ -21,7 +21,6 @@ import org.gradle.api.tasks.Optional;
 import org.gradle.caching.configuration.AbstractBuildCache;
 import org.gradle.internal.file.PathToFileResolver;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.jspecify.annotations.Nullable;
 
@@ -47,7 +46,6 @@ public abstract class DirectoryBuildCache extends AbstractBuildCache {
      *
      * The directory is evaluated as per {@code Project.file(Object)}.
      */
-    @EagerSetter
     public void setDirectory(Object directory) {
         getDirectory().set(getFileResolver().resolve(directory));
     }

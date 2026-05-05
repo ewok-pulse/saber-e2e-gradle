@@ -38,7 +38,6 @@ import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedDeprecation;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedDeprecation.RemovedIn;
@@ -82,7 +81,6 @@ public abstract class CompileOptions implements Serializable {
     /**
      * Sets whether to fail the build when compilation fails. Defaults to {@code true}.
      */
-    @EagerSetter
     public void setFailOnError(boolean failOnError) {
         getFailOnError().set(failOnError);
     }
@@ -102,7 +100,6 @@ public abstract class CompileOptions implements Serializable {
     /**
      * Sets whether to produce verbose output. Defaults to {@code false}.
      */
-    @EagerSetter
     public void setVerbose(boolean verbose) {
         getVerbose().set(verbose);
     }
@@ -122,7 +119,6 @@ public abstract class CompileOptions implements Serializable {
     /**
      * Sets whether to log the files to be compiled. Defaults to {@code false}.
      */
-    @EagerSetter
     public void setListFiles(boolean listFiles) {
         getListFiles().set(listFiles);
     }
@@ -142,7 +138,6 @@ public abstract class CompileOptions implements Serializable {
     /**
      * Sets whether to log details of usage of deprecated members or classes. Defaults to {@code false}.
      */
-    @EagerSetter
     public void setDeprecation(boolean deprecation) {
         getDeprecation().set(deprecation);
     }
@@ -165,7 +160,6 @@ public abstract class CompileOptions implements Serializable {
     /**
      * Sets whether to log warning messages. The default is {@code true}.
      */
-    @EagerSetter
     public void setWarnings(boolean warnings) {
         getWarnings().set(warnings);
     }
@@ -191,7 +185,6 @@ public abstract class CompileOptions implements Serializable {
      * Sets the character encoding to be used when reading source files. Defaults to {@code null}, in which
      * case the platform default encoding will be used.
      */
-    @EagerSetter
     public void setEncoding(String encoding) {
         getEncoding().set(encoding);
     }
@@ -208,7 +201,6 @@ public abstract class CompileOptions implements Serializable {
      * Sets whether to include debugging information in the generated class files. Defaults
      * to {@code true}. See {@link DebugOptions#getDebugLevel()} for which debugging information will be generated.
      */
-    @EagerSetter
     public void setDebug(boolean debug) {
         getDebug().set(debug);
     }
@@ -251,7 +243,6 @@ public abstract class CompileOptions implements Serializable {
      * not necessarily mean that a new process will be created for each compile task.
      * Defaults to {@code false}.
      */
-    @EagerSetter
     public void setFork(boolean fork) {
         getFork().set(fork);
     }
@@ -296,7 +287,6 @@ public abstract class CompileOptions implements Serializable {
      *
      * @since 4.3
      */
-    @EagerSetter
     public void setBootstrapClasspath(FileCollection bootstrapClasspath) {
         getBootstrapClasspath().setFrom(bootstrapClasspath);
     }
@@ -312,7 +302,6 @@ public abstract class CompileOptions implements Serializable {
     /**
      * Sets the extension dirs to be used for the compiler process. Defaults to {@code null}.
      */
-    @EagerSetter
     public void setExtensionDirs(String extensionDirs) {
         getExtensionDirs().set(extensionDirs);
     }
@@ -337,7 +326,6 @@ public abstract class CompileOptions implements Serializable {
      * Sets any additional arguments to be passed to the compiler.
      * Defaults to the empty list.
      */
-    @EagerSetter
     public void setCompilerArgs(List<String> compilerArgs) {
         getCompilerArgs().set(compilerArgs);
     }
@@ -370,7 +358,6 @@ public abstract class CompileOptions implements Serializable {
     public abstract ListProperty<CommandLineArgumentProvider> getCompilerArgumentProviders();
 
     /** Eager forwarder; see {@link #getCompilerArgumentProviders()}. */
-    @EagerSetter
     public void setCompilerArgumentProviders(List<CommandLineArgumentProvider> compilerArgumentProviders) {
         getCompilerArgumentProviders().set(compilerArgumentProviders);
     }
@@ -388,7 +375,6 @@ public abstract class CompileOptions implements Serializable {
      *
      * @return this {@code CompileOptions} instance
      */
-    @EagerSetter
     public CompileOptions setIncremental(boolean incremental) {
         getIncremental().set(incremental);
         return this;
@@ -441,7 +427,6 @@ public abstract class CompileOptions implements Serializable {
      *
      * @param sourcepath the source path
      */
-    @EagerSetter
     public void setSourcepath(FileCollection sourcepath) {
         getSourcepath().setFrom(sourcepath);
     }
@@ -463,7 +448,6 @@ public abstract class CompileOptions implements Serializable {
      * @param annotationProcessorPath The annotation processor path, or {@code null} to disable annotation processing.
      * @since 3.4
      */
-    @EagerSetter
     public void setAnnotationProcessorPath(FileCollection annotationProcessorPath) {
         getAnnotationProcessorPath().setFrom(annotationProcessorPath);
     }
@@ -517,7 +501,6 @@ public abstract class CompileOptions implements Serializable {
      * @deprecated Use {@link #getGeneratedSourceOutputDirectory()} instead.
      */
     @Deprecated
-    @EagerSetter
     public void setAnnotationProcessorGeneratedSourcesDirectory(File file) {
         getGeneratedSourceOutputDirectory().set(file);
     }

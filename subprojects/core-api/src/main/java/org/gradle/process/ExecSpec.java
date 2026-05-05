@@ -17,7 +17,6 @@ package org.gradle.process;
 
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Provider;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
@@ -41,7 +40,6 @@ public interface ExecSpec extends BaseExecSpec {
      * @param args the command plus the args to be executed
      * @since 4.0
      */
-    @EagerSetter
     default void setCommandLine(List<String> args) {
         commandLine(args);
     }
@@ -51,7 +49,6 @@ public interface ExecSpec extends BaseExecSpec {
      *
      * @param args the command plus the args to be executed
      */
-    @EagerSetter
     default void setCommandLine(Object... args) {
         commandLine(args);
     }
@@ -61,7 +58,6 @@ public interface ExecSpec extends BaseExecSpec {
      *
      * @param args the command plus the args to be executed
      */
-    @EagerSetter
     default void setCommandLine(Iterable<?> args) {
         commandLine(args);
     }
@@ -111,7 +107,6 @@ public interface ExecSpec extends BaseExecSpec {
      * @return this
      * @since 4.0
      */
-    @EagerSetter
     default ExecSpec setArgs(List<String> args) {
         return setArgs((Iterable<?>) args);
     }
@@ -122,7 +117,6 @@ public interface ExecSpec extends BaseExecSpec {
      * @param args args for the command
      * @return this
      */
-    @EagerSetter
     default ExecSpec setArgs(Iterable<?> args) {
         getArgs().empty();
         args(args);
@@ -138,7 +132,6 @@ public interface ExecSpec extends BaseExecSpec {
     ListProperty<CommandLineArgumentProvider> getArgumentProviders();
 
     /** Eager forwarder; see {@link #getArgumentProviders()}. */
-    @EagerSetter
     default void setArgumentProviders(List<CommandLineArgumentProvider> argumentProviders) {
         getArgumentProviders().set(argumentProviders);
     }

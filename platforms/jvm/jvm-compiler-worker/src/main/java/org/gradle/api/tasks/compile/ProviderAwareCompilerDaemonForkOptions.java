@@ -23,7 +23,6 @@ import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty.BinaryCompatibility;
@@ -55,7 +54,6 @@ public abstract class ProviderAwareCompilerDaemonForkOptions extends BaseForkOpt
     public abstract ListProperty<CommandLineArgumentProvider> getJvmArgumentProviders();
 
     /** Eager forwarder; see {@link #getJvmArgumentProviders()}. */
-    @EagerSetter
     public void setJvmArgumentProviders(List<CommandLineArgumentProvider> jvmArgumentProviders) {
         getJvmArgumentProviders().set(jvmArgumentProviders);
     }

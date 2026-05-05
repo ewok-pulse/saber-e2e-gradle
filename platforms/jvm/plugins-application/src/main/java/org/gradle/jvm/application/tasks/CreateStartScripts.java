@@ -44,7 +44,6 @@ import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.deprecation.DeprecationLogger;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
@@ -172,7 +171,6 @@ public abstract class CreateStartScripts extends ConventionTask {
     }
 
     /** Eager forwarder; see {@link #getOptsEnvironmentVar()}. */
-    @EagerSetter
     public void setOptsEnvironmentVar(String optsEnvironmentVar) {
         getOptsEnvironmentVar().set(optsEnvironmentVar);
     }
@@ -220,7 +218,6 @@ public abstract class CreateStartScripts extends ConventionTask {
     }
 
     /** Eager forwarder; see {@link #getUnixScript()}. */
-    @EagerSetter
     public void setUnixScript(java.io.File unixScript) {
         getUnixScript().set(unixScript);
     }
@@ -238,7 +235,6 @@ public abstract class CreateStartScripts extends ConventionTask {
     }
 
     /** Eager forwarder; see {@link #getWindowsScript()}. */
-    @EagerSetter
     public void setWindowsScript(java.io.File windowsScript) {
         getWindowsScript().set(windowsScript);
     }
@@ -253,7 +249,6 @@ public abstract class CreateStartScripts extends ConventionTask {
     }
 
     /** Eager forwarder; see {@link #getOutputDir()}. */
-    @EagerSetter
     public void setOutputDir(File outputDir) {
         getOutputDir().set(outputDir);
     }
@@ -274,7 +269,6 @@ public abstract class CreateStartScripts extends ConventionTask {
      *
      * @since 4.5
      */
-    @EagerSetter
     public void setExecutableDir(String executableDir) {
         getExecutableDir().set(executableDir);
     }
@@ -306,7 +300,6 @@ public abstract class CreateStartScripts extends ConventionTask {
     public abstract ListProperty<String> getDefaultJvmOpts();
 
     /** Eager forwarder; see {@link #getDefaultJvmOpts()}. */
-    @EagerSetter
     public void setDefaultJvmOpts(Iterable<String> defaultJvmOpts) {
         getDefaultJvmOpts().set(defaultJvmOpts);
     }
@@ -322,7 +315,6 @@ public abstract class CreateStartScripts extends ConventionTask {
     }
 
     /** Eager forwarder; see {@link #getApplicationName()}. */
-    @EagerSetter
     public void setApplicationName(String applicationName) {
         getApplicationName().set(applicationName);
     }
@@ -355,7 +347,6 @@ public abstract class CreateStartScripts extends ConventionTask {
     public abstract ConfigurableFileCollection getClasspath();
 
     /** Eager forwarder; see {@link #getClasspath()}. */
-    @EagerSetter
     public void setClasspath(FileCollection classpath) {
         getClasspath().setFrom(classpath);
     }

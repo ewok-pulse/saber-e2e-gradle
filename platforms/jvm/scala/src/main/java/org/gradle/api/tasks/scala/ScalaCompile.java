@@ -30,7 +30,6 @@ import org.gradle.api.tasks.scala.internal.ScalaCompileOptionsConfigurer;
 import org.gradle.initialization.ClassLoaderRegistry;
 import org.gradle.initialization.layout.ProjectCacheDir;
 import org.gradle.internal.classloader.ClasspathHasher;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.language.scala.tasks.AbstractScalaCompile;
@@ -63,7 +62,6 @@ public abstract class ScalaCompile extends AbstractScalaCompile {
     public abstract ConfigurableFileCollection getScalaClasspath();
 
     /** Eager forwarder; see {@link #getScalaClasspath()}. */
-    @EagerSetter
     public void setScalaClasspath(FileCollection scalaClasspath) {
         getScalaClasspath().setFrom(scalaClasspath);
     }
@@ -83,7 +81,6 @@ public abstract class ScalaCompile extends AbstractScalaCompile {
      * @param scalaCompilerPlugins Collection of Scala compiler plugins.
      * @since 6.4
      */
-    @EagerSetter
     public void setScalaCompilerPlugins(FileCollection scalaCompilerPlugins) {
         getScalaCompilerPlugins().setFrom(scalaCompilerPlugins);
     }
@@ -111,7 +108,6 @@ public abstract class ScalaCompile extends AbstractScalaCompile {
     public abstract ConfigurableFileCollection getZincClasspath();
 
     /** Eager forwarder; see {@link #getZincClasspath()}. */
-    @EagerSetter
     public void setZincClasspath(FileCollection zincClasspath) {
         getZincClasspath().setFrom(zincClasspath);
     }

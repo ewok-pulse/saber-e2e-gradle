@@ -22,7 +22,6 @@ import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.SourceTask;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedDeprecation;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedDeprecation.RemovedIn;
@@ -61,7 +60,6 @@ public abstract class AbstractCompile extends SourceTask {
      *
      * @param classpath The classpath. Must not be null, but may be empty.
      */
-    @EagerSetter
     public void setClasspath(FileCollection classpath) {
         getClasspath().setFrom(classpath);
     }
@@ -87,7 +85,6 @@ public abstract class AbstractCompile extends SourceTask {
      * @deprecated Use {@link #getDestinationDirectory()} instead.
      */
     @Deprecated
-    @EagerSetter
     public void setDestinationDir(File destinationDir) {
         getDestinationDirectory().set(destinationDir);
     }

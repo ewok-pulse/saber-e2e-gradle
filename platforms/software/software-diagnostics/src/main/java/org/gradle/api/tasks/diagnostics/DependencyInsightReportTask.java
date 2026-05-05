@@ -63,7 +63,6 @@ import org.gradle.api.tasks.options.Option;
 import org.gradle.initialization.StartParameterBuildOptions;
 import org.gradle.internal.deprecation.DeprecationLogger;
 import org.gradle.internal.graph.GraphRenderer;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.logging.text.StyledTextOutput;
@@ -222,11 +221,9 @@ public abstract class DependencyInsightReportTask extends DefaultTask {
     @Input
     @Optional
     @Option(option = "dependency", description = "Shows the details of given dependency.")
-    @ReplacesEagerProperty
     public abstract Property<String> getDependencyNotation();
 
     /** Eager forwarder; see {@link #getDependencyNotation()}. */
-    @EagerSetter
     public void setDependencyNotation(String dependencyNotation) {
         getDependencyNotation().set(dependencyNotation);
     }
@@ -243,7 +240,6 @@ public abstract class DependencyInsightReportTask extends DefaultTask {
     /**
      * Sets the configuration to look the dependency in.
      */
-    @EagerSetter
     public void setConfiguration(Configuration configuration) {
         getConfiguration().set(configuration);
     }
@@ -295,7 +291,6 @@ public abstract class DependencyInsightReportTask extends DefaultTask {
      *
      * @since 4.9
      */
-    @EagerSetter
     public void setShowSinglePathToDependency(boolean showSinglePathToDependency) {
         getShowSinglePathToDependency().set(showSinglePathToDependency);
     }

@@ -39,7 +39,6 @@ import org.gradle.api.tasks.testing.TestFrameworkOptions;
 import org.gradle.internal.ErroringAction;
 import org.gradle.internal.IoActions;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
-import org.gradle.internal.instrumentation.api.annotations.EagerSetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
@@ -218,7 +217,6 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
     public abstract DirectoryProperty getOutputDirectory();
 
     /** Eager forwarder; see {@link #getOutputDirectory()}. */
-    @EagerSetter
     public void setOutputDirectory(File outputDirectory) {
         getOutputDirectory().set(outputDirectory);
     }
@@ -231,7 +229,6 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
     public abstract SetProperty<String> getIncludeGroups();
 
     /** Eager forwarder; see {@link #getIncludeGroups()}. */
-    @EagerSetter
     public void setIncludeGroups(Set<String> includeGroups) {
         getIncludeGroups().set(includeGroups);
     }
@@ -244,7 +241,6 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
     public abstract SetProperty<String> getExcludeGroups();
 
     /** Eager forwarder; see {@link #getExcludeGroups()}. */
-    @EagerSetter
     public void setExcludeGroups(Set<String> excludeGroups) {
         getExcludeGroups().set(excludeGroups);
     }
@@ -257,7 +253,6 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
     public abstract Property<String> getConfigFailurePolicy();
 
     /** Eager forwarder; see {@link #getConfigFailurePolicy()}. */
-    @EagerSetter
     public void setConfigFailurePolicy(String configFailurePolicy) {
         getConfigFailurePolicy().set(configFailurePolicy);
     }
@@ -285,7 +280,6 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
     public abstract SetProperty<String> getListeners();
 
     /** Eager forwarder; see {@link #getListeners()}. */
-    @EagerSetter
     public void setListeners(Set<String> listeners) {
         getListeners().set(listeners);
     }
@@ -302,7 +296,6 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
     public abstract Property<String> getParallel();
 
     /** Eager forwarder; see {@link #getParallel()}. */
-    @EagerSetter
     public void setParallel(String parallel) {
         getParallel().set(parallel);
     }
@@ -315,7 +308,6 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
     public abstract Property<Integer> getThreadCount();
 
     /** Eager forwarder; see {@link #getThreadCount()}. */
-    @EagerSetter
     public void setThreadCount(int threadCount) {
         getThreadCount().set(threadCount);
     }
@@ -345,7 +337,6 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
      * Requires TestNG 7.0 or higher
      * @since 8.7
      */
-    @EagerSetter
     public void setThreadPoolFactoryClass(String threadPoolFactoryClass) {
         getThreadPoolFactoryClass().set(threadPoolFactoryClass);
     }
@@ -380,7 +371,6 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
     public abstract Property<Boolean> getUseDefaultListeners();
 
     /** Eager forwarder; see {@link #getUseDefaultListeners()}. */
-    @EagerSetter
     public void setUseDefaultListeners(boolean useDefaultListeners) {
         getUseDefaultListeners().set(useDefaultListeners);
     }
@@ -398,7 +388,6 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
     public abstract Property<String> getSuiteName();
 
     /** Eager forwarder; see {@link #getSuiteName()}. */
-    @EagerSetter
     public void setSuiteName(String suiteName) {
         getSuiteName().set(suiteName);
     }
@@ -411,7 +400,6 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
     public abstract Property<String> getTestName();
 
     /** Eager forwarder; see {@link #getTestName()}. */
-    @EagerSetter
     public void setTestName(String testName) {
         getTestName().set(testName);
     }
@@ -427,7 +415,6 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
     public abstract ConfigurableFileCollection getSuiteXmlFiles();
 
     /** Eager forwarder; see {@link #getSuiteXmlFiles()}. */
-    @EagerSetter
     public void setSuiteXmlFiles(List<File> suiteXmlFiles) {
         getSuiteXmlFiles().setFrom(suiteXmlFiles);
     }
@@ -445,7 +432,6 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
     public abstract Property<Boolean> getPreserveOrder();
 
     /** Eager forwarder; see {@link #getPreserveOrder()}. */
-    @EagerSetter
     public void setPreserveOrder(boolean preserveOrder) {
         getPreserveOrder().set(preserveOrder);
     }
@@ -468,7 +454,6 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
     public abstract Property<Boolean> getGroupByInstances();
 
     /** Eager forwarder; see {@link #getGroupByInstances()}. */
-    @EagerSetter
     public void setGroupByInstances(boolean groupByInstances) {
         getGroupByInstances().set(groupByInstances);
     }
@@ -497,7 +482,6 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
     }
 
     /** Eager forwarder; see {@link #getSuiteXmlWriter()}. */
-    @EagerSetter
     public void setSuiteXmlWriter(StringWriter suiteXmlWriter) {
         getSuiteXmlWriter().set(suiteXmlWriter);
     }
@@ -509,7 +493,6 @@ public abstract class TestNGOptions extends TestFrameworkOptions {
     }
 
     /** Eager forwarder; see {@link #getSuiteXmlBuilder()}. */
-    @EagerSetter
     public void setSuiteXmlBuilder(MarkupBuilder suiteXmlBuilder) {
         getSuiteXmlBuilder().set(suiteXmlBuilder);
     }
