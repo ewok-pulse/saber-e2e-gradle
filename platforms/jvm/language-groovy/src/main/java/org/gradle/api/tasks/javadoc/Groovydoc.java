@@ -79,7 +79,7 @@ public abstract class Groovydoc extends SourceTask {
     @TaskAction
     protected void generate() {
         checkGroovyClasspathNonEmpty(getGroovyClasspath().getFiles());
-        File destinationDir = getDestinationDir().getAsFile().get();
+        File destinationDir = getDestinationDirectory().getAsFile().get();
         try {
             getDeleter().ensureEmptyDirectory(destinationDir);
         } catch (IOException ex) {
@@ -146,11 +146,29 @@ public abstract class Groovydoc extends SourceTask {
     /**
      * Returns the directory to generate the documentation into.
      *
-     * @return The directory to generate the documentation into
+     * @return The directory property to generate the documentation into
+     * @since 9.6.0
      */
     @OutputDirectory
-    @ReplacesEagerProperty
-    public abstract DirectoryProperty getDestinationDir();
+    public abstract DirectoryProperty getDestinationDirectory();
+
+    /**
+     * Returns the directory to generate the documentation into.
+     *
+     * @return The directory to generate the documentation into
+     */
+    @Internal
+    @Nullable
+    public File getDestinationDir() {
+        return getDestinationDirectory().getAsFile().getOrNull();
+    }
+
+    /**
+     * Sets the directory to generate the documentation into.
+     */
+    public void setDestinationDir(@Nullable File destinationDir) {
+        getDestinationDirectory().set(destinationDir);
+    }
 
     /**
      * Returns the classpath containing the Groovy library to be used.
