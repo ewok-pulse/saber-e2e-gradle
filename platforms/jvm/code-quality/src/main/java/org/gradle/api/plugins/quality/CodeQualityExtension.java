@@ -20,7 +20,9 @@ import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.SourceSet;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.jspecify.annotations.Nullable;
 
+import java.io.File;
 import java.util.Collection;
 
 /**
@@ -58,7 +60,23 @@ public abstract class CodeQualityExtension {
 
     /**
      * The directory where reports will be generated.
+     *
+     * @since 9.6.0
      */
-    @ReplacesEagerProperty
-    public abstract DirectoryProperty getReportsDir();
+    public abstract DirectoryProperty getReportsDirectory();
+
+    /**
+     * The directory where reports will be generated.
+     */
+    @Nullable
+    public File getReportsDir() {
+        return getReportsDirectory().getAsFile().getOrNull();
+    }
+
+    /**
+     * Sets the directory where reports will be generated.
+     */
+    public void setReportsDir(@Nullable File reportsDir) {
+        getReportsDirectory().set(reportsDir);
+    }
 }
