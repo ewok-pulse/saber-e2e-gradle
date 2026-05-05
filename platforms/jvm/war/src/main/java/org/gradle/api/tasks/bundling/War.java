@@ -73,7 +73,7 @@ public abstract class War extends Jar {
 
         CopySpecInternal renameSpec = webInf.addChild();
         renameSpec.into("");
-        renameSpec.from((Callable<?>) () -> getWebXml().getOrNull());
+        renameSpec.from((Callable<File>) War.this::getWebXml);
         renameSpec.appendCachingSafeCopyAction(new RenamingCopyAction(Transformers.constant("web.xml")));
     }
 
@@ -136,13 +136,33 @@ public abstract class War extends Jar {
     /**
      * Returns the {@code web.xml} file to include in the WAR archive. When {@code null}, no {@code web.xml} file is included in the WAR.
      *
-     * @return The {@code web.xml} file.
+     * @return The {@code web.xml} file property.
+     * @since 9.6.0
      */
     @Optional
     @PathSensitive(PathSensitivity.NONE)
     @InputFile
-    @ReplacesEagerProperty
-    public abstract RegularFileProperty getWebXml();
+    public abstract RegularFileProperty getWebXmlFile();
+
+    /**
+     * Returns the {@code web.xml} file to include in the WAR archive. When {@code null}, no {@code web.xml} file is included in the WAR.
+     *
+     * @return The {@code web.xml} file.
+     */
+    @Internal
+    @Nullable
+    public File getWebXml() {
+        return getWebXmlFile().getAsFile().getOrNull();
+    }
+
+    /**
+     * Sets the {@code web.xml} file to include in the WAR archive. When {@code null}, no {@code web.xml} file is included in the WAR.
+     *
+     * @param webXml The {@code web.xml} file. May be null.
+     */
+    public void setWebXml(@Nullable File webXml) {
+        getWebXmlFile().set(webXml);
+    }
 
     /**
      * Returns the app directory of the task. Added to the output web archive by default.
