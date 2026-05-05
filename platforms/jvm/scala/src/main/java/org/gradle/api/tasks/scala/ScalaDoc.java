@@ -62,10 +62,27 @@ public abstract class ScalaDoc extends SourceTask {
 
     /**
      * Returns the directory to generate the API documentation into.
+     *
+     * @since 9.6.0
      */
     @OutputDirectory
-    @ReplacesEagerProperty
-    public abstract DirectoryProperty getDestinationDir();
+    public abstract DirectoryProperty getDestinationDirectory();
+
+    /**
+     * Returns the directory to generate the API documentation into.
+     */
+    @Internal
+    @Nullable
+    public File getDestinationDir() {
+        return getDestinationDirectory().getAsFile().getOrNull();
+    }
+
+    /**
+     * Sets the directory to generate the API documentation into.
+     */
+    public void setDestinationDir(@Nullable File destinationDir) {
+        getDestinationDirectory().set(destinationDir);
+    }
 
     /**
      * Returns the source for this task, after the include and exclude patterns have been applied. Ignores source files which do not exist.
@@ -183,7 +200,7 @@ public abstract class ScalaDoc extends SourceTask {
             File optionsFile = createOptionsFile();
             parameters.getOptionsFile().set(optionsFile);
             parameters.getClasspath().from(getClasspath());
-            parameters.getOutputDirectory().set(getDestinationDir());
+            parameters.getOutputDirectory().set(getDestinationDirectory());
             boolean isScala3 = ScalaRuntimeHelper.findScalaJar(getScalaClasspath(), "library_3") != null;
             parameters.getIsScala3().set(isScala3);
             if (isScala3) {
