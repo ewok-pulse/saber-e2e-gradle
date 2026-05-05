@@ -33,6 +33,7 @@ import org.gradle.process.ProcessForkOptions;
 import org.jspecify.annotations.Nullable;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
@@ -257,8 +258,23 @@ public class DefaultJavaExecAction implements JavaExecAction {
     }
 
     @Override
-    public DirectoryProperty getWorkingDir() {
+    public DirectoryProperty getWorkingDirectory() {
+        return javaExecSpec.getWorkingDirectory();
+    }
+
+    @Override
+    public File getWorkingDir() {
         return javaExecSpec.getWorkingDir();
+    }
+
+    @Override
+    public void setWorkingDir(File dir) {
+        javaExecSpec.setWorkingDir(dir);
+    }
+
+    @Override
+    public void setWorkingDir(Object dir) {
+        javaExecSpec.setWorkingDir(dir);
     }
 
     @Override

@@ -36,6 +36,7 @@ import org.gradle.process.internal.ExecActionFactory;
 import org.gradle.work.DisableCachingByDefault;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
@@ -162,8 +163,33 @@ public abstract class AbstractExecTask<T extends AbstractExecTask> extends Conve
     @Override
     @Internal
     // TODO:LPTR Should be a content-less @InputDirectory
-    public DirectoryProperty getWorkingDir() {
+    public DirectoryProperty getWorkingDirectory() {
+        return execSpec.getWorkingDirectory();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Internal
+    public File getWorkingDir() {
         return execSpec.getWorkingDir();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setWorkingDir(File dir) {
+        execSpec.setWorkingDir(dir);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setWorkingDir(Object dir) {
+        execSpec.setWorkingDir(dir);
     }
 
     /**

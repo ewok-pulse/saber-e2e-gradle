@@ -223,8 +223,33 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
      */
     @Override
     @Internal
-    public DirectoryProperty getWorkingDir() {
+    public DirectoryProperty getWorkingDirectory() {
+        return forkOptions.getWorkingDirectory();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Internal
+    public File getWorkingDir() {
         return forkOptions.getWorkingDir();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setWorkingDir(File dir) {
+        forkOptions.setWorkingDir(dir);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setWorkingDir(Object dir) {
+        forkOptions.setWorkingDir(dir);
     }
 
     /**

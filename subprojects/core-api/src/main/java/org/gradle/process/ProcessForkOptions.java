@@ -19,7 +19,9 @@ import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.provider.MapProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
+import org.jspecify.annotations.Nullable;
 
+import java.io.File;
 import java.util.Map;
 
 /**
@@ -47,8 +49,23 @@ public interface ProcessForkOptions {
      *
      * @return The working directory. Never returns null.
      */
-    @ReplacesEagerProperty(adapter = ProcessForkOptionsAdapters.WorkingDirAdapter.class)
-    DirectoryProperty getWorkingDir();
+    @Nullable
+    File getWorkingDir();
+
+    /**
+     * Sets the working directory for the process.
+     *
+     * @param dir The working directory. Must not be null.
+     */
+    void setWorkingDir(File dir);
+
+    /**
+     * Sets the working directory for the process. The supplied argument is evaluated as per {@link
+     * org.gradle.api.Project#file(Object)}.
+     *
+     * @param dir The working directory. Must not be null.
+     */
+    void setWorkingDir(Object dir);
 
     /**
      * Sets the working directory for the process. The supplied argument is evaluated as per {@link
@@ -58,6 +75,14 @@ public interface ProcessForkOptions {
      * @return this
      */
     ProcessForkOptions workingDir(Object dir);
+
+    /**
+     * Returns the working directory for the process as a {@link DirectoryProperty}. Defaults to the project directory.
+     *
+     * @return The working directory property. Never returns null.
+     * @since 9.6.0
+     */
+    DirectoryProperty getWorkingDirectory();
 
     /**
      * The environment variables to use for the process. Defaults to the environment of this process.

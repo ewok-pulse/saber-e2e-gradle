@@ -27,6 +27,7 @@ import org.gradle.process.ExecSpec;
 import org.gradle.process.ProcessForkOptions;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
@@ -80,8 +81,23 @@ public class DefaultExecAction implements ExecAction {
     }
 
     @Override
-    public DirectoryProperty getWorkingDir() {
+    public DirectoryProperty getWorkingDirectory() {
+        return execSpec.getWorkingDirectory();
+    }
+
+    @Override
+    public File getWorkingDir() {
         return execSpec.getWorkingDir();
+    }
+
+    @Override
+    public void setWorkingDir(File dir) {
+        execSpec.setWorkingDir(dir);
+    }
+
+    @Override
+    public void setWorkingDir(Object dir) {
+        execSpec.setWorkingDir(dir);
     }
 
     @Override

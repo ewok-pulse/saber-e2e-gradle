@@ -37,8 +37,10 @@ import org.gradle.internal.file.PathToFileResolver;
 import org.gradle.internal.nativeintegration.services.FileSystems;
 import org.gradle.process.ProcessForkOptions;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -115,16 +117,32 @@ public class DefaultProcessForkOptions implements ProcessForkOptions {
     }
 
     @Override
-    public DirectoryProperty getWorkingDir() {
+    public DirectoryProperty getWorkingDirectory() {
         return workingDir;
+    }
+
+    @Override
+    @Nullable
+    public File getWorkingDir() {
+        return getWorkingDirectory().getAsFile().getOrNull();
+    }
+
+    @Override
+    public void setWorkingDir(File dir) {
+        getWorkingDirectory().set(dir);
+    }
+
+    @Override
+    public void setWorkingDir(Object dir) {
+        workingDir(dir);
     }
 
     @Override
     public ProcessForkOptions workingDir(Object dir) {
         if (dir instanceof Provider) {
-            getWorkingDir().fileProvider(((Provider<?>) dir).map(resolver::resolve));
+            getWorkingDirectory().fileProvider(((Provider<?>) dir).map(resolver::resolve));
         } else {
-            getWorkingDir().set(resolver.resolve(dir));
+            getWorkingDirectory().set(resolver.resolve(dir));
         }
         return this;
     }
@@ -156,7 +174,7 @@ public class DefaultProcessForkOptions implements ProcessForkOptions {
     @Override
     public ProcessForkOptions copyTo(ProcessForkOptions target) {
         target.getExecutable().set(getExecutable());
-        target.getWorkingDir().set(getWorkingDir());
+        target.getWorkingDirectory().set(getWorkingDirectory());
         target.getEnvironment().set(getEnvironment());
         return this;
     }

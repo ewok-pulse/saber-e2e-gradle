@@ -24,6 +24,7 @@ import org.gradle.process.CommandLineArgumentProvider;
 import org.gradle.process.ProcessForkOptions;
 import org.gradle.process.internal.streams.StreamsHandler;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -58,8 +59,23 @@ public class DefaultExecHandleBuilder extends AbstractExecHandleBuilder implemen
     }
 
     @Override
-    public DirectoryProperty getWorkingDir() {
+    public DirectoryProperty getWorkingDirectory() {
+        return delegate.getWorkingDirectory();
+    }
+
+    @Override
+    public File getWorkingDir() {
         return delegate.getWorkingDir();
+    }
+
+    @Override
+    public void setWorkingDir(File dir) {
+        delegate.setWorkingDir(dir);
+    }
+
+    @Override
+    public void setWorkingDir(Object dir) {
+        delegate.setWorkingDir(dir);
     }
 
     @Override
@@ -152,7 +168,7 @@ public class DefaultExecHandleBuilder extends AbstractExecHandleBuilder implemen
     @Override
     public ProcessForkOptions copyTo(ProcessForkOptions options) {
         options.getExecutable().set(delegate.getExecutable());
-        options.getWorkingDir().set(delegate.getWorkingDir());
+        options.getWorkingDirectory().set(delegate.getWorkingDirectory());
         options.getEnvironment().set(delegate.getEnvironment());
         return this;
     }

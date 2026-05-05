@@ -23,6 +23,7 @@ import org.gradle.api.provider.Provider;
 import org.gradle.process.BaseExecSpec;
 import org.gradle.process.ProcessForkOptions;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
@@ -69,8 +70,23 @@ interface DelegatingBaseExecSpec extends BaseExecSpec {
     }
 
     @Override
-    default DirectoryProperty getWorkingDir() {
+    default DirectoryProperty getWorkingDirectory() {
+        return getDelegate().getWorkingDirectory();
+    }
+
+    @Override
+    default File getWorkingDir() {
         return getDelegate().getWorkingDir();
+    }
+
+    @Override
+    default void setWorkingDir(File dir) {
+        getDelegate().setWorkingDir(dir);
+    }
+
+    @Override
+    default void setWorkingDir(Object dir) {
+        getDelegate().setWorkingDir(dir);
     }
 
     @Override
