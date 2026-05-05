@@ -61,10 +61,6 @@ class PropertyUpgradeCodeGenTest extends InstrumentationCodeGenTest {
                 public static int access_get_getMaxErrors(Task self) {
                     return self.getMaxErrors().getOrElse(0);
                 }
-
-                public static void access_set_setMaxErrors(Task self, int arg0) {
-                    self.getMaxErrors().set(arg0);
-                }
             }
         """
         assertThat(compilation).succeededWithoutWarnings()
@@ -104,10 +100,6 @@ class PropertyUpgradeCodeGenTest extends InstrumentationCodeGenTest {
                              mv._INVOKESTATIC(TASK__ADAPTER_TYPE, "access_get_isIncremental", "(Lorg/gradle/test/Task;)Z");
                              return true;
                          }
-                        if (name.equals("setIncremental") && descriptor.equals("(Z)Lorg/gradle/test/Task;") && (opcode == Opcodes.INVOKEVIRTUAL || opcode == Opcodes.INVOKEINTERFACE)) {
-                             mv._INVOKESTATIC(TASK__ADAPTER_TYPE, "access_set_setIncremental", "(Lorg/gradle/test/Task;Z)Lorg/gradle/test/Task;");
-                             return true;
-                         }
                     }
                     return false;
                 }
@@ -122,11 +114,6 @@ class PropertyUpgradeCodeGenTest extends InstrumentationCodeGenTest {
             public final class Task_Adapter {
                 public static boolean access_get_isIncremental(Task self) {
                     return self.getIncremental().getOrElse(false);
-                }
-
-                public static Task access_set_setIncremental(Task self, boolean arg0) {
-                    self.getIncremental().set(arg0);
-                    return self;
                 }
             }
         """
@@ -189,11 +176,6 @@ class PropertyUpgradeCodeGenTest extends InstrumentationCodeGenTest {
                 public static $originalType access_get_${getterPrefix}Property(Task self) {
                     return $getterBody;
                 }
-
-                ${hasSuppressWarnings ? '@SuppressWarnings({"unchecked", "rawtypes"})' : ''}
-                public static void access_set_setProperty(Task self, $originalType arg0) {
-                    self.getProperty()$setterBody;
-                }
             }
         """
         assertThat(compilation).succeededWithoutWarnings()
@@ -202,18 +184,18 @@ class PropertyUpgradeCodeGenTest extends InstrumentationCodeGenTest {
             .containsElementsIn(generatedClass)
 
         where:
-        upgradedType                  | originalType     | getterBody                                       | setterBody         | imports
-        "Property<Integer>"           | "int"            | "self.getProperty().getOrElse(0)"                | ".set(arg0)"       | []
-        "Property<Boolean>"           | "boolean"        | "self.getProperty().getOrElse(false)"            | ".set(arg0)"       | []
-        "Property<Long>"              | "long"           | "self.getProperty().getOrElse(0L)"               | ".set(arg0)"       | []
-        "Property<Integer>"           | "Integer"        | "self.getProperty().getOrElse(null)"             | ".set(arg0)"       | [Integer]
-        "Property<String>"            | "String"         | "self.getProperty().getOrElse(null)"             | ".set(arg0)"       | [String]
-        "ListProperty<String>"        | "List"           | "new ListPropertyListView<>(self.getProperty())" | ".set(arg0)"       | [SuppressWarnings, List, ListPropertyListView]
-        "MapProperty<String, String>" | "Map"            | "new MapPropertyMapView<>(self.getProperty())"   | ".set(arg0)"       | [SuppressWarnings, Map, MapPropertyMapView]
-        "SetProperty<String>"         | "Set"            | "new SetPropertySetView<>(self.getProperty())"   | ".set(arg0)"       | [SuppressWarnings, Set, SetPropertySetView]
-        "RegularFileProperty"         | "File"           | "self.getProperty().getAsFile().getOrNull()"     | ".fileValue(arg0)" | [File]
-        "DirectoryProperty"           | "File"           | "self.getProperty().getAsFile().getOrNull()"     | ".fileValue(arg0)" | [File]
-        "ConfigurableFileCollection"  | "FileCollection" | "self.getProperty()"                             | ".setFrom(arg0)"   | [FileCollection]
+        upgradedType                  | originalType     | getterBody                                       | imports
+        "Property<Integer>"           | "int"            | "self.getProperty().getOrElse(0)"                | []
+        "Property<Boolean>"           | "boolean"        | "self.getProperty().getOrElse(false)"            | []
+        "Property<Long>"              | "long"           | "self.getProperty().getOrElse(0L)"               | []
+        "Property<Integer>"           | "Integer"        | "self.getProperty().getOrElse(null)"             | [Integer]
+        "Property<String>"            | "String"         | "self.getProperty().getOrElse(null)"             | [String]
+        "ListProperty<String>"        | "List"           | "new ListPropertyListView<>(self.getProperty())" | [SuppressWarnings, List, ListPropertyListView]
+        "MapProperty<String, String>" | "Map"            | "new MapPropertyMapView<>(self.getProperty())"   | [SuppressWarnings, Map, MapPropertyMapView]
+        "SetProperty<String>"         | "Set"            | "new SetPropertySetView<>(self.getProperty())"   | [SuppressWarnings, Set, SetPropertySetView]
+        "RegularFileProperty"         | "File"           | "self.getProperty().getAsFile().getOrNull()"     | [File]
+        "DirectoryProperty"           | "File"           | "self.getProperty().getAsFile().getOrNull()"     | [File]
+        "ConfigurableFileCollection"  | "FileCollection" | "self.getProperty()"                             | [FileCollection]
     }
 
     def "should auto generate adapter for Provider upgraded property #upgradedType"() {
@@ -302,10 +284,6 @@ class PropertyUpgradeCodeGenTest extends InstrumentationCodeGenTest {
                              mv._INVOKESTATIC(TASK__ADAPTER_TYPE, "access_get_getTargetCompatibility", "(Lorg/gradle/test/Task;)Ljava/lang/String;");
                              return true;
                          }
-                         if (name.equals("setTargetCompatibility") && descriptor.equals("(Ljava/lang/String;)V") && (opcode == Opcodes.INVOKEVIRTUAL || opcode == Opcodes.INVOKEINTERFACE)) {
-                           mv._INVOKESTATIC(TASK__ADAPTER_TYPE, "access_set_setTargetCompatibility", "(Lorg/gradle/test/Task;Ljava/lang/String;)V");
-                           return true;
-                       }
                     }
                     return false;
                 }
@@ -404,14 +382,6 @@ class PropertyUpgradeCodeGenTest extends InstrumentationCodeGenTest {
                             mv._INVOKESTATIC(TASK__ADAPTER_TYPE, "access_get_addDestinationDir", "(Lorg/gradle/test/Task;)Ljava/io/File;");
                             return true;
                         }
-                        if (name.equals("setDestinationDir") && descriptor.equals("(Ljava/io/File;)V") && (opcode == Opcodes.INVOKEVIRTUAL || opcode == Opcodes.INVOKEINTERFACE)) {
-                            mv._INVOKESTATIC(TASK__ADAPTER_TYPE, "access_set_setDestinationDir", "(Lorg/gradle/test/Task;Ljava/io/File;)V");
-                            return true;
-                        }
-                        if (name.equals("destinationDir") && descriptor.equals("(Ljava/io/File;)V") && (opcode == Opcodes.INVOKEVIRTUAL || opcode == Opcodes.INVOKEINTERFACE)) {
-                            mv._INVOKESTATIC(TASK__ADAPTER_TYPE, "access_set_destinationDir", "(Lorg/gradle/test/Task;Ljava/io/File;)V");
-                            return true;
-                        }
                     }
                     return false;
                 }
@@ -426,18 +396,6 @@ class PropertyUpgradeCodeGenTest extends InstrumentationCodeGenTest {
                 public static class GetDestinationDirCallInterceptor extends AbstractCallInterceptor implements SignatureAwareCallInterceptor, FilterableCallInterceptor, FilterableBytecodeInterceptor.BytecodeUpgradeInterceptor, PropertyAwareCallInterceptor {
                     public GetDestinationDirCallInterceptor() {
                         super(InterceptScope.readsOfPropertiesNamed("destinationDir"), InterceptScope.methodsNamed("getDestinationDir"));
-                    }
-                }
-                @Generated
-                public static class SetDestinationDirCallInterceptor extends AbstractCallInterceptor implements SignatureAwareCallInterceptor, FilterableCallInterceptor, FilterableBytecodeInterceptor.BytecodeUpgradeInterceptor {
-                    public SetDestinationDirCallInterceptor() {
-                        super(InterceptScope.methodsNamed("setDestinationDir"));
-                    }
-                }
-                @Generated
-                public static class DestinationDirCallInterceptor extends AbstractCallInterceptor implements SignatureAwareCallInterceptor, FilterableCallInterceptor, FilterableBytecodeInterceptor.BytecodeUpgradeInterceptor {
-                    public DestinationDirCallInterceptor() {
-                        super(InterceptScope.methodsNamed("destinationDir"));
                     }
                 }
                 @Generated
@@ -490,11 +448,6 @@ class PropertyUpgradeCodeGenTest extends InstrumentationCodeGenTest {
                 public static int access_get_getMaxErrors(Task self) {
                     ${getDefaultPropertyUpgradeDeprecation("Task", "maxErrors")}
                     return self.getMaxErrors().getOrElse(0);
-                }
-
-                public static void access_set_setMaxErrors(Task self, int arg0) {
-                    ${getDefaultPropertyUpgradeDeprecation("Task", "maxErrors")}
-                    self.getMaxErrors().set(arg0);
                 }
             }
         """
@@ -549,15 +502,6 @@ class PropertyUpgradeCodeGenTest extends InstrumentationCodeGenTest {
                             .undocumented()
                             .nagUser();
                     return self.getDestinationDirectory().getAsFile().getOrNull();
-                }
-
-                public static void access_set_setDestinationDir(Task self, File arg0) {
-                    DeprecationLogger.deprecate("The usage of Task.destinationDir")
-                            .withContext("Property 'destinationDir' was removed and this compatibility shim will be removed in Gradle 10. Please use 'destinationDirectory' property instead.")
-                            .willBecomeAnErrorInGradle10()
-                            .undocumented()
-                            .nagUser();
-                    self.getDestinationDirectory().fileValue(arg0);
                 }
             }
         """

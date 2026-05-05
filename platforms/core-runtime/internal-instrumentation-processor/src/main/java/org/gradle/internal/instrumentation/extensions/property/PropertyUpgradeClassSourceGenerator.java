@@ -109,7 +109,7 @@ public class PropertyUpgradeClassSourceGenerator extends RequestGroupingInstrume
                     .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                     .addParameter(typeName(callable.getOwner().getType()), SELF_PARAMETER_NAME)
                     .addParameters(parameters)
-                    .addCode(generateMethodBody(implementation, callable, implementationExtra))
+                    .addCode(generateMethodBody(callable, implementationExtra))
                     .returns(typeName(callable.getReturnType().getType()))
                     .addAnnotations(getAnnotations(implementationExtra))
                     .build();
@@ -193,9 +193,8 @@ public class PropertyUpgradeClassSourceGenerator extends RequestGroupingInstrume
         }
     }
 
-    private static CodeBlock generateMethodBody(ImplementationInfo implementation, CallableInfo callableInfo, PropertyUpgradeRequestExtra implementationExtra) {
+    private static CodeBlock generateMethodBody(CallableInfo callableInfo, PropertyUpgradeRequestExtra implementationExtra) {
         String propertyGetterName = implementationExtra.getMethodName();
-        boolean isSetter = implementation.getName().startsWith("access_set_");
         CallableReturnTypeInfo returnType = callableInfo.getReturnType();
         GradleLazyType upgradedPropertyType = GradleLazyType.from(implementationExtra.getNewPropertyType());
 
@@ -204,9 +203,7 @@ public class PropertyUpgradeClassSourceGenerator extends RequestGroupingInstrume
             codeBlockBuilder.addStatement(getDeprecationCodeBlock(implementationExtra, callableInfo));
         }
 
-        CodeBlock logic = isSetter
-            ? generateSetCall(propertyGetterName, implementationExtra, upgradedPropertyType)
-            : generateGetCall(propertyGetterName, implementationExtra, returnType, upgradedPropertyType);
+        CodeBlock logic = generateGetCall(propertyGetterName, implementationExtra, returnType, upgradedPropertyType);
 
         return codeBlockBuilder.addStatement(logic).build();
     }
@@ -278,30 +275,4 @@ public class PropertyUpgradeClassSourceGenerator extends RequestGroupingInstrume
         }
     }
 
-    private static CodeBlock generateSetCall(String propertyGetterName, PropertyUpgradeRequestExtra implementationExtra, GradleLazyType upgradedPropertyType) {
-        String assignment;
-        switch (upgradedPropertyType) {
-            case REGULAR_FILE_PROPERTY:
-            case DIRECTORY_PROPERTY:
-                assignment = ".fileValue(arg0)";
-                break;
-            case CONFIGURABLE_FILE_COLLECTION:
-                assignment = ".setFrom(arg0)";
-                break;
-            case LIST_PROPERTY:
-            case SET_PROPERTY:
-            case MAP_PROPERTY:
-            case PROPERTY:
-                assignment = ".set(arg0)";
-                break;
-            case PROVIDER:
-            default:
-                throw new UnsupportedOperationException("Generating set call for type: " + upgradedPropertyType.asClassName().reflectionName() + " is not supported");
-        }
-        if (implementationExtra.getReturnType().equals(TypeName.VOID)) {
-            return CodeBlock.of("$N.$N()$N", SELF_PARAMETER_NAME, propertyGetterName, assignment);
-        } else {
-            return CodeBlock.of("$N.$N()$N;\nreturn $N", SELF_PARAMETER_NAME, propertyGetterName, assignment, SELF_PARAMETER_NAME);
-        }
-    }
 }

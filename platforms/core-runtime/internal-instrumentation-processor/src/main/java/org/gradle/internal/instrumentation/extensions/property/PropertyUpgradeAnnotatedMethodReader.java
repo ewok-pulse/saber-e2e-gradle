@@ -227,14 +227,6 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
         return isGetGetterMethodName(accessor.methodName);
     }
 
-    @SuppressWarnings("unused")
-    private static boolean isGroovyPropertySetter(AccessorSpec accessorSpec, AccessorSpec groovyPropertyGetter) {
-        return accessorSpec.accessorType == AccessorType.SETTER
-            && isSetterMethodName(accessorSpec.methodName)
-            && accessorSpec.parameters.size() == 1
-            && accessorSpec.parameters.get(0).getParameterType().equals(TypeUtils.extractRawType(groovyPropertyGetter.returnType));
-    }
-
     private CallInterceptionRequest createGroovyPropertyInterceptionRequest(AccessorSpec accessor, CallableKindInfo callableKindInfo, ExecutableElement method) {
         String callableMethodName = callableKindInfo == GROOVY_PROPERTY_GETTER || callableKindInfo == GROOVY_PROPERTY_SETTER
             ? accessor.propertyName
@@ -279,17 +271,11 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
             BinaryCompatibility parentBinaryCompatibility = readBinaryCompatibility(annotationMirror);
             return replacedAccessors.stream()
                 .map(annotation -> getAccessorSpec(method, annotation, parentDeprecationSpec, parentBinaryCompatibility))
+                .filter(spec -> spec != null)
                 .collect(Collectors.toList());
         }
 
-        // Provider has only a getter, no setter
-        if (GradleLazyType.PROVIDER.isEqualToRawTypeOf(TypeName.get(method.getReturnType()))) {
-            return Collections.singletonList(getAccessorSpec(method, AccessorType.GETTER, annotationMirror));
-        }
-        return Arrays.asList(
-            getAccessorSpec(method, AccessorType.GETTER, annotationMirror),
-            getAccessorSpec(method, AccessorType.SETTER, annotationMirror)
-        );
+        return Collections.singletonList(getAccessorSpec(method, AccessorType.GETTER, annotationMirror));
     }
 
     private List<AccessorSpec> readAccessorSpecsFromToBeReplacedByLazyProperty(ExecutableElement annotatedMethod, AnnotationMirror annotation, ReadRequestContext context) {
@@ -470,6 +456,7 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
             .orElseThrow(() -> new AnnotationReadFailure("Missing 'binaryCompatibility' attribute in @ReplacedAccessor"));
     }
 
+    @Nullable
     private AccessorSpec getAccessorSpec(ExecutableElement method, AnnotationMirror annotation, DeprecationSpec parentDeprecationSpec, BinaryCompatibility binaryCompatibility) {
         String methodName = AnnotationUtils.findAnnotationValue(annotation, "name")
             .map(v -> (String) v.getValue())
@@ -477,28 +464,27 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
         AccessorType accessorType = AnnotationUtils.findAnnotationValue(annotation, "value")
             .map(v -> AccessorType.valueOf(v.getValue().toString()))
             .orElseThrow(() -> new AnnotationReadFailure("Missing 'value' attribute in @ReplacedAccessor"));
+        if (accessorType == AccessorType.SETTER) {
+            // Setter synthesis is no longer supported; explicit SETTER entries in replacedAccessors are silently ignored.
+            return null;
+        }
         TypeName originalType = extractOriginalType(method, annotation);
-        return getAccessorSpec(method, accessorType, methodName, originalType, annotation, parentDeprecationSpec, binaryCompatibility);
+        return getAccessorSpec(method, accessorType, methodName, originalType, parentDeprecationSpec, binaryCompatibility);
     }
 
     private AccessorSpec getAccessorSpec(ExecutableElement method, AccessorType accessorType, AnnotationMirror annotation) {
         String propertyName = getPropertyName(method);
         TypeName originalType = extractOriginalType(method, annotation);
         String methodName;
-        switch (accessorType) {
-            case GETTER:
-                String capitalize = propertyName.substring(0, 1).toUpperCase(Locale.ROOT) + propertyName.substring(1);
-                methodName = originalType.equals(TypeName.BOOLEAN) ? "is" + capitalize : "get" + capitalize;
-                break;
-            case SETTER:
-                methodName = method.getSimpleName().toString().replaceFirst("get", "set");
-                break;
-            default:
-                throw new IllegalArgumentException("Unsupported accessor type: " + accessorType);
+        if (accessorType == AccessorType.GETTER) {
+            String capitalize = propertyName.substring(0, 1).toUpperCase(Locale.ROOT) + propertyName.substring(1);
+            methodName = originalType.equals(TypeName.BOOLEAN) ? "is" + capitalize : "get" + capitalize;
+        } else {
+            throw new IllegalArgumentException("Unsupported accessor type: " + accessorType);
         }
         DeprecationSpec deprecationSpec = readDeprecationSpec(annotation);
         BinaryCompatibility binaryCompatibility = readBinaryCompatibility(annotation);
-        return getAccessorSpec(method, accessorType, methodName, originalType, annotation, deprecationSpec, binaryCompatibility);
+        return getAccessorSpec(method, accessorType, methodName, originalType, deprecationSpec, binaryCompatibility);
     }
 
     private AccessorSpec getAccessorSpec(
@@ -506,26 +492,16 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
         AccessorType accessorType,
         String methodName,
         TypeName originalType,
-        AnnotationMirror annotation,
         DeprecationSpec deprecationSpec,
         BinaryCompatibility binaryCompatibility
     ) {
         TypeName returnType;
         List<ParameterInfo> parameters;
-        switch (accessorType) {
-            case GETTER:
-                parameters = new ArrayList<>();
-                returnType = originalType;
-                break;
-            case SETTER:
-                parameters = Collections.singletonList(new ParameterInfoImpl("arg0", TypeUtils.extractRawType(originalType), METHOD_PARAMETER));
-                boolean isFluentSetter = AnnotationUtils.findAnnotationValueWithDefaults(elements, annotation, "fluentSetter")
-                    .map(v -> (Boolean) v.getValue())
-                    .orElseThrow(() -> new AnnotationReadFailure("Missing 'fluentSetter' attribute"));
-                returnType = isFluentSetter ? TypeName.get(method.getEnclosingElement().asType()) : ClassName.VOID;
-                break;
-            default:
-                throw new IllegalArgumentException("Unsupported accessor type: " + accessorType);
+        if (accessorType == AccessorType.GETTER) {
+            parameters = new ArrayList<>();
+            returnType = originalType;
+        } else {
+            throw new IllegalArgumentException("Unsupported accessor type: " + accessorType);
         }
         String propertyName = getPropertyName(methodName);
         String generatedClassName = "org.gradle.internal.classpath.generated." + method.getEnclosingElement().getSimpleName() + "_Adapter";
