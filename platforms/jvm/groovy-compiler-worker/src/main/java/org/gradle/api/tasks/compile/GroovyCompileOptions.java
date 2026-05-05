@@ -260,11 +260,29 @@ public abstract class GroovyCompileOptions implements Serializable {
     /**
      * Returns the directory where Java stubs for Groovy classes will be stored during Java/Groovy joint
      * compilation. Defaults to {@code null}, in which case a temporary directory will be used.
+     *
+     * @since 9.6.0
      */
     @Internal
-    @ReplacesEagerProperty
     // TOOD:LPTR Should be just a relative path
-    public abstract DirectoryProperty getStubDir();
+    public abstract DirectoryProperty getStubDirectory();
+
+    /**
+     * Returns the directory where Java stubs for Groovy classes will be stored during Java/Groovy joint
+     * compilation. Defaults to {@code null}, in which case a temporary directory will be used.
+     */
+    @Internal
+    @Nullable
+    public File getStubDir() {
+        return getStubDirectory().getAsFile().getOrNull();
+    }
+
+    /**
+     * Sets the directory where Java stubs for Groovy classes will be stored during Java/Groovy joint compilation.
+     */
+    public void setStubDir(@Nullable File stubDir) {
+        getStubDirectory().set(stubDir);
+    }
 
     /**
      * Returns the list of acceptable source file extensions. Only takes effect when compiling against
