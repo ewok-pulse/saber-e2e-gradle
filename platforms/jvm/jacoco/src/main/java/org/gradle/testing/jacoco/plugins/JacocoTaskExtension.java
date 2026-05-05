@@ -211,12 +211,31 @@ public abstract class JacocoTaskExtension {
     /**
      * Path to dump all class files the agent sees are dumped to. Defaults to no dumps.
      *
-     * @since 3.4
+     * @since 9.6.0
      */
     @Optional
     @LocalState
-    @ReplacesEagerProperty
-    public abstract DirectoryProperty getClassDumpDir();
+    public abstract DirectoryProperty getClassDumpDirectory();
+
+    /**
+     * Path to dump all class files the agent sees are dumped to. Defaults to no dumps.
+     *
+     * @since 3.4
+     */
+    @Internal
+    @Nullable
+    public File getClassDumpDir() {
+        return getClassDumpDirectory().getAsFile().getOrNull();
+    }
+
+    /**
+     * Sets the path to dump all class files the agent sees are dumped to.
+     *
+     * @since 3.4
+     */
+    public void setClassDumpDir(@Nullable File classDumpDir) {
+        getClassDumpDirectory().set(classDumpDir);
+    }
 
     /**
      * Whether or not to expose functionality via JMX under {@code org.jacoco:type=Runtime}. Defaults to {@code false}.
@@ -272,7 +291,7 @@ public abstract class JacocoTaskExtension {
             argument.append("output", getOutput().map(Output::getAsArg).getOrNull());
             argument.append("address", getAddress().getOrNull());
             argument.append("port", getPort().getOrNull());
-            argument.append("classdumpdir", getClassDumpDir().getAsFile().getOrNull());
+            argument.append("classdumpdir", getClassDumpDirectory().getAsFile().getOrNull());
 
             if (agent.supportsJmx()) {
                 argument.append("jmx", getJmx().getOrNull());
