@@ -204,13 +204,6 @@ abstract class AbstractIdeSyncTest extends Specification {
         projectDirectory.file(path)
     }
 
-    protected void writeAndroidLocalProperties() {
-        def androidSdkRoot = System.getenv("ANDROID_SDK_ROOT")
-        if (androidSdkRoot != null) {
-            projectFile("local.properties") << "sdk.dir=${FilenameUtils.separatorsToUnix(androidSdkRoot)}\n"
-        }
-    }
-
     /**
      * A {@link BuildMutator} that appends text to a file before the second build,
      * used for incremental sync testing.
