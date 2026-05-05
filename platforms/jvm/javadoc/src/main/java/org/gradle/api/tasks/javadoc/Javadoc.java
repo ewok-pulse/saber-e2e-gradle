@@ -139,7 +139,7 @@ public abstract class Javadoc extends SourceTask {
 
     @TaskAction
     protected void generate() {
-        File destinationDir = getDestinationDir().getAsFile().get();
+        File destinationDir = getDestinationDirectory().getAsFile().get();
         try {
             getDeleter().ensureEmptyDirectory(destinationDir);
         } catch (IOException ex) {
@@ -243,16 +243,34 @@ public abstract class Javadoc extends SourceTask {
     /**
      * <p>Returns the directory to generate the documentation into.</p>
      *
+     * @return The directory property.
+     * @since 9.6.0
+     */
+    @Internal
+    public abstract DirectoryProperty getDestinationDirectory();
+
+    /**
+     * <p>Returns the directory to generate the documentation into.</p>
+     *
      * @return The directory.
      */
     @Internal
-    @ReplacesEagerProperty
-    public abstract DirectoryProperty getDestinationDir();
+    @Nullable
+    public File getDestinationDir() {
+        return getDestinationDirectory().getAsFile().getOrNull();
+    }
+
+    /**
+     * <p>Sets the directory to generate the documentation into.</p>
+     */
+    public void setDestinationDir(@Nullable File destinationDir) {
+        getDestinationDirectory().set(destinationDir);
+    }
 
     @OutputDirectory
     @ReplacesEagerProperty(adapter = OutputDirectoryAdapter.class)
     protected Provider<Directory> getOutputDirectory() {
-        return getDestinationDir().orElse(optionsDestinationDir);
+        return getDestinationDirectory().orElse(optionsDestinationDir);
     }
 
     /**
