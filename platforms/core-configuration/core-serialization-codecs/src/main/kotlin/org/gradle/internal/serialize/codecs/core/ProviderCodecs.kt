@@ -71,6 +71,7 @@ import org.gradle.internal.serialize.graph.serviceOf
 import org.gradle.internal.serialize.graph.withDebugFrame
 import org.gradle.internal.serialize.graph.withIsolate
 import org.gradle.internal.serialize.graph.withPropertyTrace
+import java.util.concurrent.atomic.AtomicReference
 
 
 fun defaultCodecForProviderWithChangingValue(
@@ -326,20 +327,23 @@ object ValueSourceProviderCodec : Codec<ValueSourceProvider<*, *>> {
 
     private
     suspend fun ReadContext.decodeValueSource(): ValueSourceProvider<*, *> =
-        // TODO:configuration-cache `decodePreservingSharedIdentity` should be unnecessary for shared objects
-        decodePreservingSharedIdentity {
+        decodePreservingIdentity(sharedIdentities) { id ->
             val valueSourceType = readClass()
             val hasParameters = readBoolean()
             val parametersType = if (hasParameters) readClass() else null
-            val parameters = if (hasParameters) read()!! else null
 
+            val parametersHolder = AtomicReference<ValueSourceParameters?>()
             val valueSourceProviderFactory = isolate.owner.serviceOf<ValueSourceProviderFactory>()
-            val provider =
-                valueSourceProviderFactory.instantiateValueSourceProvider<Any, ValueSourceParameters>(
-                    valueSourceType.uncheckedCast(),
-                    parametersType?.uncheckedCast(),
-                    parameters?.uncheckedCast()
-                )
+            val provider = valueSourceProviderFactory.instantiateValueSourceProvider<Any, ValueSourceParameters>(
+                valueSourceType.uncheckedCast(),
+                parametersType?.uncheckedCast(),
+                parametersHolder::get
+            )
+            sharedIdentities.putInstance(id, provider)
+
+            if (hasParameters) {
+                parametersHolder.set(read()!!.uncheckedCast())
+            }
             provider.uncheckedCast()
         }
 }

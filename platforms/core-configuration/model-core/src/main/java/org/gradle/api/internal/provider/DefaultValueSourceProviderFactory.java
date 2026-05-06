@@ -47,6 +47,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 public class DefaultValueSourceProviderFactory implements ValueSourceProviderFactory {
 
@@ -96,7 +97,8 @@ public class DefaultValueSourceProviderFactory implements ValueSourceProviderFac
             // TODO - consider deferring configuration
             configureParameters(parameters, configureAction);
 
-            return instantiateValueSourceProvider(valueSourceType, parametersType, parameters);
+            P capturedParameters = parameters;
+            return instantiateValueSourceProvider(valueSourceType, parametersType, () -> capturedParameters);
         } catch (GradleException e) {
             throw e;
         } catch (Exception e) {
@@ -109,10 +111,10 @@ public class DefaultValueSourceProviderFactory implements ValueSourceProviderFac
     public <T, P extends ValueSourceParameters> Provider<T> instantiateValueSourceProvider(
         Class<? extends ValueSource<T, P>> valueSourceType,
         @Nullable Class<P> parametersType,
-        @Nullable P parameters
+        Supplier<@Nullable P> parametersSupplier
     ) {
         return new ValueSourceProvider<>(
-            new LazilyObtainedValue<>(valueSourceType, parametersType, parameters)
+            new LazilyObtainedValue<>(valueSourceType, parametersType, parametersSupplier)
         );
     }
 
@@ -213,7 +215,7 @@ public class DefaultValueSourceProviderFactory implements ValueSourceProviderFac
 
         @Nullable
         public P getParameters() {
-            return value.parameters;
+            return value.parametersSupplier.get();
         }
 
         @Override
@@ -262,8 +264,7 @@ public class DefaultValueSourceProviderFactory implements ValueSourceProviderFac
         @Nullable
         public final Class<P> parametersType;
 
-        @Nullable
-        public final P parameters;
+        private final Supplier<@Nullable P> parametersSupplier;
 
         private final CalculatedValue<@Nullable T> value;
         // A temporary holder for the source used to obtain the value.
@@ -274,11 +275,11 @@ public class DefaultValueSourceProviderFactory implements ValueSourceProviderFac
         private LazilyObtainedValue(
             Class<? extends ValueSource<T, P>> sourceType,
             @Nullable Class<P> parametersType,
-            @Nullable P parameters
+            Supplier<@Nullable P> parametersSupplier
         ) {
             this.sourceType = sourceType;
             this.parametersType = parametersType;
-            this.parameters = parameters;
+            this.parametersSupplier = parametersSupplier;
             this.value = calculatedValueFactory.create(Describables.of("ValueSource of type", sourceType), () -> {
                     computationListener.beforeValueObtained();
                     try {
@@ -323,7 +324,7 @@ public class DefaultValueSourceProviderFactory implements ValueSourceProviderFac
             return instantiateValueSource(
                 sourceType,
                 parametersType,
-                isolateParameters(parameters)
+                isolateParameters(parametersSupplier.get())
             );
         }
 
@@ -333,7 +334,7 @@ public class DefaultValueSourceProviderFactory implements ValueSourceProviderFac
                 obtained,
                 sourceType,
                 parametersType,
-                parameters
+                parametersSupplier.get()
             );
         }
     }
