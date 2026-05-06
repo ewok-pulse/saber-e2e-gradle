@@ -46,7 +46,6 @@ import org.gradle.test.fixtures.file.CleanupTestDirectory
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.test.fixtures.file.TestNameTestDirectoryProvider
 import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 import spock.lang.Timeout
 
@@ -60,8 +59,7 @@ abstract class AbstractIdeSyncTest extends Specification {
     @Rule
     final TestNameTestDirectoryProvider temporaryFolder = new TestNameTestDirectoryProvider(getClass())
 
-    @Rule
-    final TemporaryFolder disposableFolder = new TemporaryFolder()
+    private File disposableTempDir
 
     private final GradleDistribution distribution = new UnderDevelopmentGradleDistribution(getBuildContext())
 
@@ -74,6 +72,16 @@ abstract class AbstractIdeSyncTest extends Specification {
     }
 
     List<String> ideJvmArgs = []
+
+    def before() {
+        disposableTempDir = File.createTempDir("ide-sync-test", "")
+    }
+
+    def cleanup() {
+        if (disposableTempDir?.exists()) {
+            disposableTempDir.deleteDir()
+        }
+    }
 
     /**
      * Runs a full Android Studio sync using Gradle Profiler.
@@ -95,8 +103,9 @@ abstract class AbstractIdeSyncTest extends Specification {
     }
 
     private void ideSync(IdeType ide, File ideInstallDir, List<BuildMutator> buildMutators) {
-        def gradleUserHome = disposableFolder.newFolder("gradle-user-home")
-        def ideSandboxDir = disposableFolder.newFolder("ide-sandbox")
+        def gradleUserHome = new File(disposableTempDir, "gradle-user-home")
+        gradleUserHome.mkdirs()
+        def ideSandboxDir = new File(disposableTempDir, "ide-sandbox")
         def outputDir = new File(testDirectory, "profiler-output")
         outputDir.mkdirs()
 
