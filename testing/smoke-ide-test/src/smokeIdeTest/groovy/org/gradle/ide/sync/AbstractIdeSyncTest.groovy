@@ -73,7 +73,7 @@ abstract class AbstractIdeSyncTest extends Specification {
 
     List<String> ideJvmArgs = []
 
-    def before() {
+    def setup() {
         disposableTempDir = File.createTempDir("ide-sync-test", "")
     }
 
