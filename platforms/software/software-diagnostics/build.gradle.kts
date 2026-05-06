@@ -26,11 +26,8 @@ dependencies {
     api(projects.internalInstrumentationApi)
     api(projects.jvmServices)
     api(projects.logging)
-    api(projects.modelCore)
-    api(projects.platformBase)
     api(projects.reporting)
     api(projects.reportRendering)
-    api(projects.serviceProvider)
     api(projects.stdlibJavaExtensions)
 
     api(libs.groovy)
@@ -39,6 +36,7 @@ dependencies {
 
     implementation(projects.functional)
     implementation(projects.loggingApi)
+    implementation(projects.modelCore)
     implementation(projects.startParameter)
 
     implementation(libs.commonsLang)
