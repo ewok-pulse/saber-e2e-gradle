@@ -19,7 +19,7 @@ package org.gradle.ide.sync
 class IsolatedProjectsAndroidProjectSyncTest extends AbstractIdeSyncTest {
 
     // https://developer.android.com/build/releases/gradle-plugin
-    private final static String AGP_VERSION = "9.2.0"
+    private final static String AGP_VERSION = "9.1.1"
 
     def "can sync simple Android build without problems"() {
         given:
