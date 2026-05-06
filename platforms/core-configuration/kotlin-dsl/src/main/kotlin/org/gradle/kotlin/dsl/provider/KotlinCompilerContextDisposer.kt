@@ -46,7 +46,7 @@ class KotlinCompilerContextDisposer(
 
     @OptIn(K1Deprecation::class)
     override fun projectsEvaluated(gradle: Gradle) { // TODO: If configuration fails (or in some tooling-api paths that don't reach projectsEvaluated), cleanup never fires. do these in the stop method instead?
-        KotlinCoreEnvironment.disposeApplicationEnvironment()
-        cleanupKotlinCompilers()
+        // KotlinCoreEnvironment.disposeApplicationEnvironment() // TODO: is this ok to leave like this? memory leak?
+        // cleanupKotlinCompilers() // TODO: don't do this I guess
     }
 }
