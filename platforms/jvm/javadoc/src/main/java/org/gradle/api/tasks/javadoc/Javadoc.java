@@ -55,7 +55,7 @@ import org.gradle.internal.UncheckedException;
 import org.gradle.internal.file.Deleter;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.internal.jvm.DefaultModularitySpec;
 import org.gradle.internal.jvm.JavaModuleDetector;
@@ -72,7 +72,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.gradle.util.internal.GUtil.isTrue;
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * <p>Generates HTML API documentation for Java classes.</p>
@@ -249,7 +248,7 @@ public abstract class Javadoc extends SourceTask {
      * @return The directory.
      */
     @Internal
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDestinationDir"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getDestinationDir"))
     public abstract DirectoryProperty getDestinationDir();
 
     /**
@@ -269,7 +268,7 @@ public abstract class Javadoc extends SourceTask {
      * Returns the amount of memory allocated to this task.
      */
     @Internal
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getMaxMemory"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getMaxMemory"))
     public abstract Property<String> getMaxMemory();
 
     /**
@@ -288,7 +287,7 @@ public abstract class Javadoc extends SourceTask {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getTitle"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getTitle"))
     public abstract Property<String> getTitle();
 
     /**
@@ -304,7 +303,7 @@ public abstract class Javadoc extends SourceTask {
      * @return The classpath.
      */
     @Classpath
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getClasspath"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getClasspath"))
     public abstract ConfigurableFileCollection getClasspath();
 
     /**
@@ -360,7 +359,7 @@ public abstract class Javadoc extends SourceTask {
      * this task will fail on Javadoc error. When {@code false}, this task will ignore Javadoc errors.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isFailOnError", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isFailOnError", originalType = boolean.class))
     public abstract Property<Boolean> getFailOnError();
 
     /** Eager forwarder; see {@link #getFailOnError()}. */
@@ -374,7 +373,7 @@ public abstract class Javadoc extends SourceTask {
     }
 
     @Internal
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getOptionsFile"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getOptionsFile"))
     public Provider<RegularFile> getOptionsFile() {
         return optionsFile;
     }
@@ -388,7 +387,7 @@ public abstract class Javadoc extends SourceTask {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getExecutable"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getExecutable"))
     public abstract Property<String> getExecutable();
 
     /** Eager forwarder; see {@link #getExecutable()}. */

@@ -20,11 +20,10 @@ import org.gradle.api.provider.SetProperty;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 
 import java.util.Arrays;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Allows filtering tests for execution.
@@ -170,7 +169,7 @@ public interface TestFilter {
      * The default is true.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isFailOnNoMatchingTests", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isFailOnNoMatchingTests", originalType = boolean.class))
     Property<Boolean> getFailOnNoMatchingTests();
 
     /**

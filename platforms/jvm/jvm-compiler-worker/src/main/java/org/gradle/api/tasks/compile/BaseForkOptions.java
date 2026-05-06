@@ -21,12 +21,11 @@ import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 
 import java.io.Serializable;
 import java.util.List;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Fork options for compilation. Only take effect if {@code fork}
@@ -40,7 +39,7 @@ public abstract class BaseForkOptions implements Serializable {
      * Defaults to {@code null}, in which case the JVM's default will be used.
      */
     @Internal
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getMemoryInitialSize"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getMemoryInitialSize"))
     public abstract Property<String> getMemoryInitialSize();
 
     /**
@@ -56,7 +55,7 @@ public abstract class BaseForkOptions implements Serializable {
      * Defaults to {@code null}, in which case the JVM's default will be used.
      */
     @Internal
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getMemoryMaximumSize"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getMemoryMaximumSize"))
     public abstract Property<String> getMemoryMaximumSize();
 
     /**
@@ -73,7 +72,7 @@ public abstract class BaseForkOptions implements Serializable {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getJvmArgs"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getJvmArgs"))
     public abstract ListProperty<String> getJvmArgs();
 
     /**

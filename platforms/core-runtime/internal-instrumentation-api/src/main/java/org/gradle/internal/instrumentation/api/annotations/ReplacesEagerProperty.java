@@ -52,9 +52,9 @@ public @interface ReplacesEagerProperty {
     BinaryCompatibility binaryCompatibility() default ACCESSORS_REMOVED;
 
     /**
-     * Accessors that are replaced by the property
+     * Getters that are replaced by the property
      */
-    ReplacedAccessor[] replacedAccessors() default {};
+    ReplacedGetter[] replacedGetters() default {};
 
     /**
      * Deprecation configuration for the replaced accessors

@@ -25,17 +25,10 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.CLASS)
 @Target({ElementType.ANNOTATION_TYPE})
-public @interface ReplacedAccessor {
-
-    enum AccessorType {
-        GETTER,
-        SETTER
-    }
-
-    AccessorType value();
+public @interface ReplacedGetter {
 
     /**
-     * The name of the accessor, e.g. `getDestinationDir` or `setDestinationDir`
+     * The name of the getter, e.g. {@code getDestinationDir}
      */
     String name();
 
@@ -43,9 +36,4 @@ public @interface ReplacedAccessor {
      * See {@link ReplacesEagerProperty#originalType()}
      */
     Class<?> originalType() default DefaultValue.class;
-
-    /**
-     * See {@link ReplacesEagerProperty#fluentSetter()}
-     */
-    boolean fluentSetter() default false;
 }

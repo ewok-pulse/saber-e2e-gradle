@@ -36,7 +36,7 @@ import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.TaskCollection;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.internal.jacoco.JacocoAgentJar;
 import org.gradle.process.CommandLineArgumentProvider;
 import org.gradle.process.JavaForkOptions;
@@ -47,7 +47,6 @@ import java.io.File;
 import java.util.Collections;
 
 import static org.gradle.api.internal.lambdas.SerializableLambdas.spec;
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Extension including common properties and methods for Jacoco.
@@ -80,7 +79,7 @@ public abstract class JacocoPluginExtension {
     /**
      * Version of Jacoco JARs to use.
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getToolVersion"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getToolVersion"))
     public abstract Property<String> getToolVersion();
 
     /** Eager forwarder; see {@link #getToolVersion()}. */

@@ -27,12 +27,11 @@ import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.work.DisableCachingByDefault;
 
 import java.nio.charset.Charset;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Assembles a ZIP archive.
@@ -82,7 +81,7 @@ public abstract class Zip extends AbstractArchiveTask {
      * @return the compression level of the archive contents.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getEntryCompression"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getEntryCompression"))
     public abstract Property<ZipEntryCompression> getEntryCompression();
 
     /**
@@ -107,7 +106,7 @@ public abstract class Zip extends AbstractArchiveTask {
      * This means you should not enable this property if you are building JARs to be used with Java 6 and earlier runtimes.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isZip64", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isZip64", originalType = boolean.class))
     public abstract Property<Boolean> getZip64();
 
     /**
@@ -135,7 +134,7 @@ public abstract class Zip extends AbstractArchiveTask {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getMetadataCharset"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getMetadataCharset"))
     public abstract Property<String> getMetadataCharset();
 
     /**

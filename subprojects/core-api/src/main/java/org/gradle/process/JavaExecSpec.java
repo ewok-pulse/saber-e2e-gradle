@@ -26,14 +26,12 @@ import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Specifies the options for executing a Java application.
@@ -134,7 +132,7 @@ public interface JavaExecSpec extends JavaForkOptions, BaseExecSpec {
      * @since 4.6
      */
     @Nested
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = AccessorType.GETTER, name = "getArgumentProviders"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getArgumentProviders"))
     ListProperty<CommandLineArgumentProvider> getArgumentProviders();
 
     /** Eager forwarder; see {@link #getArgumentProviders()}. */
@@ -155,7 +153,7 @@ public interface JavaExecSpec extends JavaForkOptions, BaseExecSpec {
      * Returns the classpath for executing the main class.
      */
     @Classpath
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getClasspath"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getClasspath"))
     ConfigurableFileCollection getClasspath();
 
     /**

@@ -17,9 +17,8 @@ package org.gradle.plugins.ear.descriptor;
 
 import org.gradle.api.provider.Property;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * A module element in a deployment descriptor like application.xml that has a web child element.
@@ -29,7 +28,7 @@ public interface EarWebModule extends EarModule {
     /**
      * The context-root element specifies the context root of a web application.
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getContextRoot"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getContextRoot"))
     Property<String> getContextRoot();
 
     /** Eager forwarder; see {@link #getContextRoot()}. */

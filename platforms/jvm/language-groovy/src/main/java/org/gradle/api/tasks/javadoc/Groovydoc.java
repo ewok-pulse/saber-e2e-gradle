@@ -41,7 +41,7 @@ import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.file.Deleter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.workers.WorkerExecutor;
 import org.jspecify.annotations.Nullable;
@@ -58,7 +58,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * <p>Generates HTML API documentation for Groovy source, and optionally, Java source.
@@ -154,7 +153,7 @@ public abstract class Groovydoc extends SourceTask {
      * @return The directory to generate the documentation into
      */
     @OutputDirectory
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDestinationDir"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getDestinationDir"))
     public abstract DirectoryProperty getDestinationDir();
 
     /**
@@ -170,7 +169,7 @@ public abstract class Groovydoc extends SourceTask {
      * @return The classpath containing the Groovy library to be used
      */
     @Classpath
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getGroovyClasspath"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getGroovyClasspath"))
     public abstract ConfigurableFileCollection getGroovyClasspath();
 
     /**
@@ -184,7 +183,7 @@ public abstract class Groovydoc extends SourceTask {
      * The classpath used to locate classes referenced by the documented sources.
      */
     @Classpath
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getClasspath"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getClasspath"))
     public abstract ConfigurableFileCollection getClasspath();
 
     /**
@@ -198,7 +197,7 @@ public abstract class Groovydoc extends SourceTask {
      * Returns whether to create class and package usage pages.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isUse", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isUse", originalType = boolean.class))
     public abstract Property<Boolean> getUse();
 
     /**
@@ -217,7 +216,7 @@ public abstract class Groovydoc extends SourceTask {
      * Returns whether to include timestamp within hidden comment in generated HTML (Groovy &gt;= 2.4.6).
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isNoTimestamp", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isNoTimestamp", originalType = boolean.class))
     public abstract Property<Boolean> getNoTimestamp();
 
     /**
@@ -236,7 +235,7 @@ public abstract class Groovydoc extends SourceTask {
      * Returns whether to include version stamp within hidden comment in generated HTML (Groovy &gt;= 2.4.6).
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isNoVersionStamp", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isNoVersionStamp", originalType = boolean.class))
     public abstract Property<Boolean> getNoVersionStamp();
 
     /**
@@ -256,7 +255,7 @@ public abstract class Groovydoc extends SourceTask {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getWindowTitle"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getWindowTitle"))
     public abstract Property<String> getWindowTitle();
 
     /**
@@ -273,7 +272,7 @@ public abstract class Groovydoc extends SourceTask {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDocTitle"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getDocTitle"))
     public abstract Property<String> getDocTitle();
 
     /**
@@ -290,7 +289,7 @@ public abstract class Groovydoc extends SourceTask {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getHeader"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getHeader"))
     public abstract Property<String> getHeader();
 
     /**
@@ -307,7 +306,7 @@ public abstract class Groovydoc extends SourceTask {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getFooter"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getFooter"))
     public abstract Property<String> getFooter();
 
     /**
@@ -379,7 +378,7 @@ public abstract class Groovydoc extends SourceTask {
      * Returns the links to groovydoc/javadoc output at the given URL.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getLinks"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getLinks"))
     public abstract SetProperty<Link> getLinks();
 
     /**

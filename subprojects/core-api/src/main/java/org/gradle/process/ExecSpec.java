@@ -17,8 +17,7 @@ package org.gradle.process;
 
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Provider;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
 import java.util.List;
@@ -128,7 +127,7 @@ public interface ExecSpec extends BaseExecSpec {
      *
      * @since 4.6
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = AccessorType.GETTER, name = "getArgumentProviders"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getArgumentProviders"))
     ListProperty<CommandLineArgumentProvider> getArgumentProviders();
 
     /** Eager forwarder; see {@link #getArgumentProviders()}. */

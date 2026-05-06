@@ -21,9 +21,8 @@ import org.gradle.api.provider.Property;
 import org.gradle.api.provider.SetProperty;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Describes a Gradle plugin under development.
@@ -45,7 +44,7 @@ public abstract class PluginDeclaration implements Named {
         return name;
     }
 
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getId"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getId"))
     public abstract Property<String> getId();
 
     /** Eager forwarder; see {@link #getId()}. */
@@ -53,7 +52,7 @@ public abstract class PluginDeclaration implements Named {
         getId().set(id);
     }
 
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getImplementationClass"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getImplementationClass"))
     public abstract Property<String> getImplementationClass();
 
     /** Eager forwarder; see {@link #getImplementationClass()}. */
@@ -69,7 +68,7 @@ public abstract class PluginDeclaration implements Named {
      *
      * @since 4.10
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDisplayName"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getDisplayName"))
     public abstract Property<String> getDisplayName();
 
     /**
@@ -92,7 +91,7 @@ public abstract class PluginDeclaration implements Named {
      *
      * @since 4.10
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDescription"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getDescription"))
     public abstract Property<String> getDescription();
 
     /**

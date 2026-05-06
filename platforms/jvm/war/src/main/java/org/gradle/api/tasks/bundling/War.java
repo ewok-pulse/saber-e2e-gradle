@@ -37,7 +37,7 @@ import org.gradle.internal.Transformers;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.util.internal.ConfigureUtil;
 import org.gradle.work.DisableCachingByDefault;
 import org.jspecify.annotations.Nullable;
@@ -47,7 +47,6 @@ import java.io.File;
 import java.util.concurrent.Callable;
 
 import static org.gradle.api.internal.lambdas.SerializableLambdas.spec;
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Assembles a WAR archive.
@@ -162,7 +161,7 @@ public abstract class War extends Jar {
     @Optional
     @PathSensitive(PathSensitivity.NONE)
     @InputFile
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getWebXml"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getWebXml"))
     public abstract RegularFileProperty getWebXml();
 
     /**

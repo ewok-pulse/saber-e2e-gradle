@@ -18,12 +18,11 @@ package org.gradle.vcs.git;
 
 import org.gradle.api.provider.Property;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.vcs.VersionControlSpec;
 
 import java.net.URI;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * A specification of a Git repository.
@@ -40,7 +39,7 @@ public interface GitVersionControlSpec extends VersionControlSpec {
      * operations which are both unsuited for simple data specification and
      * allocate additional memory.</p>
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getUrl"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getUrl"))
     Property<URI> getUrl();
 
     /**

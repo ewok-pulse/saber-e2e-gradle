@@ -38,7 +38,7 @@ import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.scala.internal.GenerateScaladoc;
 import org.gradle.api.tasks.scala.internal.ScalaRuntimeHelper;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.jvm.toolchain.JavaLauncher;
 import org.gradle.jvm.toolchain.JavaToolchainService;
@@ -51,7 +51,6 @@ import javax.inject.Inject;
 import java.io.File;
 import java.util.List;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Generates HTML API documentation for Scala source files.
@@ -68,7 +67,7 @@ public abstract class ScalaDoc extends SourceTask {
      * Returns the directory to generate the API documentation into.
      */
     @OutputDirectory
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDestinationDir"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getDestinationDir"))
     public abstract DirectoryProperty getDestinationDir();
 
     /** Eager forwarder; see {@link #getDestinationDir()}. */
@@ -122,7 +121,7 @@ public abstract class ScalaDoc extends SourceTask {
      * @return The classpath.
      */
     @Classpath
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getClasspath"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getClasspath"))
     public abstract ConfigurableFileCollection getClasspath();
 
     /** Eager forwarder; see {@link #getClasspath()}. */
@@ -134,7 +133,7 @@ public abstract class ScalaDoc extends SourceTask {
      * Returns the classpath to use to load the ScalaDoc tool.
      */
     @Classpath
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getScalaClasspath"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getScalaClasspath"))
     public abstract ConfigurableFileCollection getScalaClasspath();
 
     /** Eager forwarder; see {@link #getScalaClasspath()}. */
@@ -162,7 +161,7 @@ public abstract class ScalaDoc extends SourceTask {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getTitle"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getTitle"))
     public abstract Property<String> getTitle();
 
     /** Eager forwarder; see {@link #getTitle()}. */

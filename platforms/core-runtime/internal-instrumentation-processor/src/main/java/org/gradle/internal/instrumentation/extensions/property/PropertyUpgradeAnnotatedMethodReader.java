@@ -79,7 +79,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType;
 import static org.gradle.internal.instrumentation.api.declarations.InterceptorDeclaration.GROOVY_INTERCEPTORS_GENERATED_CLASS_NAME_FOR_PROPERTY_UPGRADES;
 import static org.gradle.internal.instrumentation.api.declarations.InterceptorDeclaration.GROOVY_INTERCEPTORS_GENERATED_CLASS_NAME_FOR_PROPERTY_UPGRADES_REPORT;
 import static org.gradle.internal.instrumentation.api.declarations.InterceptorDeclaration.JVM_BYTECODE_GENERATED_CLASS_NAME_FOR_PROPERTY_UPGRADES;
@@ -263,15 +262,14 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
             return readAccessorSpecsFromAdapter(element, method.getEnclosingElement(), annotationMirror);
         }
 
-        List<AnnotationMirror> replacedAccessors = AnnotationUtils.findAnnotationValueWithDefaults(elements, annotationMirror, "replacedAccessors")
+        List<AnnotationMirror> replacedGetters = AnnotationUtils.findAnnotationValueWithDefaults(elements, annotationMirror, "replacedGetters")
             .map(v -> (List<AnnotationMirror>) v.getValue())
-            .orElseThrow(() -> new AnnotationReadFailure(String.format("Missing 'replacedAccessors' attribute in @%s", ReplacesEagerProperty.class.getSimpleName())));
-        if (!replacedAccessors.isEmpty()) {
+            .orElseThrow(() -> new AnnotationReadFailure(String.format("Missing 'replacedGetters' attribute in @%s", ReplacesEagerProperty.class.getSimpleName())));
+        if (!replacedGetters.isEmpty()) {
             DeprecationSpec parentDeprecationSpec = readDeprecationSpec(annotationMirror);
             BinaryCompatibility parentBinaryCompatibility = readBinaryCompatibility(annotationMirror);
-            return replacedAccessors.stream()
-                .map(annotation -> getAccessorSpec(method, annotation, parentDeprecationSpec, parentBinaryCompatibility))
-                .filter(spec -> spec != null)
+            return replacedGetters.stream()
+                .map(annotation -> getGetterSpec(method, annotation, parentDeprecationSpec, parentBinaryCompatibility))
                 .collect(Collectors.toList());
         }
 
@@ -453,23 +451,15 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
     private BinaryCompatibility readBinaryCompatibility(AnnotationMirror annotation) {
         return AnnotationUtils.findAnnotationValueWithDefaults(elements, annotation, "binaryCompatibility")
             .map(v -> BinaryCompatibility.valueOf(v.getValue().toString()))
-            .orElseThrow(() -> new AnnotationReadFailure("Missing 'binaryCompatibility' attribute in @ReplacedAccessor"));
+            .orElseThrow(() -> new AnnotationReadFailure("Missing 'binaryCompatibility' attribute in @ReplacesEagerProperty"));
     }
 
-    @Nullable
-    private AccessorSpec getAccessorSpec(ExecutableElement method, AnnotationMirror annotation, DeprecationSpec parentDeprecationSpec, BinaryCompatibility binaryCompatibility) {
+    private AccessorSpec getGetterSpec(ExecutableElement method, AnnotationMirror annotation, DeprecationSpec parentDeprecationSpec, BinaryCompatibility binaryCompatibility) {
         String methodName = AnnotationUtils.findAnnotationValue(annotation, "name")
             .map(v -> (String) v.getValue())
-            .orElseThrow(() -> new AnnotationReadFailure("Missing 'name' attribute in @ReplacedAccessor"));
-        AccessorType accessorType = AnnotationUtils.findAnnotationValue(annotation, "value")
-            .map(v -> AccessorType.valueOf(v.getValue().toString()))
-            .orElseThrow(() -> new AnnotationReadFailure("Missing 'value' attribute in @ReplacedAccessor"));
-        if (accessorType == AccessorType.SETTER) {
-            // Setter synthesis is no longer supported; explicit SETTER entries in replacedAccessors are silently ignored.
-            return null;
-        }
+            .orElseThrow(() -> new AnnotationReadFailure("Missing 'name' attribute in @ReplacedGetter"));
         TypeName originalType = extractOriginalType(method, annotation);
-        return getAccessorSpec(method, accessorType, methodName, originalType, parentDeprecationSpec, binaryCompatibility);
+        return getAccessorSpec(method, AccessorType.GETTER, methodName, originalType, parentDeprecationSpec, binaryCompatibility);
     }
 
     private AccessorSpec getAccessorSpec(ExecutableElement method, AccessorType accessorType, AnnotationMirror annotation) {
@@ -681,6 +671,11 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
 
     private static boolean isSetterMethodName(String methodName) {
         return methodName.startsWith("set") && methodName.length() > 3 && Character.isUpperCase(methodName.charAt(3));
+    }
+
+    private enum AccessorType {
+        GETTER,
+        SETTER
     }
 
     // TODO Consolidate with AnnotationCallInterceptionRequestReaderImpl#Failure

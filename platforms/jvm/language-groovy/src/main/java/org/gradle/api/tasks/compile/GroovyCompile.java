@@ -59,7 +59,7 @@ import org.gradle.api.tasks.WorkResult;
 import org.gradle.internal.buildoption.FeatureFlags;
 import org.gradle.internal.file.Deleter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.jvm.toolchain.JavaInstallationMetadata;
 import org.gradle.jvm.toolchain.JavaLauncher;
@@ -76,7 +76,6 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import static org.gradle.api.internal.FeaturePreviews.Feature.GROOVY_COMPILATION_AVOIDANCE;
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Compiles Groovy source files, and optionally, Java source files.
@@ -322,7 +321,7 @@ public abstract class GroovyCompile extends AbstractCompile implements HasCompil
      * @return The classpath.
      */
     @Classpath
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getGroovyClasspath"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getGroovyClasspath"))
     public abstract ConfigurableFileCollection getGroovyClasspath();
 
     /**

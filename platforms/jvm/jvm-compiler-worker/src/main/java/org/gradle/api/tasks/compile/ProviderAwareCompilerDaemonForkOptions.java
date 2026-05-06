@@ -24,14 +24,13 @@ import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty.BinaryCompatibility;
 import org.gradle.process.CommandLineArgumentProvider;
 import org.gradle.util.internal.CollectionUtils;
 
 import java.util.List;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Fork options for compilation that can accept user-defined {@link CommandLineArgumentProvider} objects.
@@ -50,7 +49,7 @@ public abstract class ProviderAwareCompilerDaemonForkOptions extends BaseForkOpt
     @Optional
     @Nested
     // Marked as ACCESSORS_KEPT since incubating methods are not reported as removed
-    @ReplacesEagerProperty(binaryCompatibility = BinaryCompatibility.ACCESSORS_KEPT, replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getJvmArgumentProviders"))
+    @ReplacesEagerProperty(binaryCompatibility = BinaryCompatibility.ACCESSORS_KEPT, replacedGetters = @ReplacedGetter(name = "getJvmArgumentProviders"))
     public abstract ListProperty<CommandLineArgumentProvider> getJvmArgumentProviders();
 
     /** Eager forwarder; see {@link #getJvmArgumentProviders()}. */
@@ -66,7 +65,7 @@ public abstract class ProviderAwareCompilerDaemonForkOptions extends BaseForkOpt
      */
     @Internal
     // Marked as ACCESSORS_KEPT since incubating methods are not reported as removed
-    @ReplacesEagerProperty(binaryCompatibility = BinaryCompatibility.ACCESSORS_KEPT, replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getAllJvmArgs"))
+    @ReplacesEagerProperty(binaryCompatibility = BinaryCompatibility.ACCESSORS_KEPT, replacedGetters = @ReplacedGetter(name = "getAllJvmArgs"))
     public Provider<List<String>> getAllJvmArgs() {
         return getJvmArgs().zip(getJvmArgumentProviders(), (args, providers) -> {
             ImmutableList.Builder<String> builder = ImmutableList.builder();

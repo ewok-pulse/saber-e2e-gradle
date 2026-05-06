@@ -64,7 +64,7 @@ import org.gradle.initialization.StartParameterBuildOptions;
 import org.gradle.internal.deprecation.DeprecationLogger;
 import org.gradle.internal.graph.GraphRenderer;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.internal.logging.text.StyledTextOutput;
 import org.gradle.internal.logging.text.StyledTextOutputFactory;
 import org.gradle.internal.serialization.Transient;
@@ -92,7 +92,6 @@ import static org.gradle.internal.logging.text.StyledTextOutput.Style.Identifier
 import static org.gradle.internal.logging.text.StyledTextOutput.Style.Info;
 import static org.gradle.internal.logging.text.StyledTextOutput.Style.Normal;
 import static org.gradle.internal.logging.text.StyledTextOutput.Style.UserInput;
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Generates a report that attempts to answer questions like:
@@ -232,7 +231,7 @@ public abstract class DependencyInsightReportTask extends DefaultTask {
      * Configuration to look the dependency in
      */
     @Internal
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getConfiguration"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getConfiguration"))
     public Property<Configuration> getConfiguration() {
         return Objects.requireNonNull(configurationProp.get());
     }
@@ -277,7 +276,7 @@ public abstract class DependencyInsightReportTask extends DefaultTask {
      */
     @Internal
     @Option(option = "single-path", description = "Show at most one path to each dependency")
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isShowSinglePathToDependency", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isShowSinglePathToDependency", originalType = boolean.class))
     public abstract Property<Boolean> getShowSinglePathToDependency();
 
     /**

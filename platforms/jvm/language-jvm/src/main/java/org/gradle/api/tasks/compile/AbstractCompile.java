@@ -22,7 +22,7 @@ import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.SourceTask;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedDeprecation;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedDeprecation.RemovedIn;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
@@ -31,7 +31,6 @@ import org.gradle.work.DisableCachingByDefault;
 
 import java.io.File;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * The base class for all JVM-based language compilation tasks.
@@ -52,7 +51,7 @@ public abstract class AbstractCompile extends SourceTask {
      * @return The classpath.
      */
     @Classpath
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getClasspath"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getClasspath"))
     public abstract ConfigurableFileCollection getClasspath();
 
     /**
@@ -72,7 +71,7 @@ public abstract class AbstractCompile extends SourceTask {
      */
     @OutputDirectory
     @ReplacesEagerProperty(
-        replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDestinationDir"),
+        replacedGetters = @ReplacedGetter(name = "getDestinationDir"),
         deprecation = @ReplacedDeprecation(removedIn = RemovedIn.GRADLE9, withUpgradeGuideMajorVersion = 7, withUpgradeGuideSection = "compile_task_wiring")
     )
     public DirectoryProperty getDestinationDirectory() {

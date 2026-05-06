@@ -21,9 +21,8 @@ import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Configuration for a Java application, defining how to assemble the application.
@@ -47,7 +46,7 @@ public interface JavaApplication {
     /**
      * The name of the application.
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getApplicationName"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getApplicationName"))
     Property<String> getApplicationName();
 
     /**
@@ -74,7 +73,7 @@ public interface JavaApplication {
     /**
      * Array of string arguments to pass to the JVM when running the application
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getApplicationDefaultJvmArgs", originalType = Iterable.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getApplicationDefaultJvmArgs", originalType = Iterable.class))
     ListProperty<String> getApplicationDefaultJvmArgs();
 
     /**
@@ -87,7 +86,7 @@ public interface JavaApplication {
     /**
      * Directory to place executables in
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getExecutableDir"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getExecutableDir"))
     Property<String> getExecutableDir();
 
     /**

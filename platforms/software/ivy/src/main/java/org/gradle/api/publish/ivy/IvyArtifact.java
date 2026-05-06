@@ -20,9 +20,8 @@ import org.gradle.api.provider.Property;
 import org.gradle.api.publish.PublicationArtifact;
 import org.gradle.api.tasks.Optional;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * An artifact published as part of a {@link IvyPublication}.
@@ -32,7 +31,7 @@ public interface IvyArtifact extends PublicationArtifact {
      * The name used to publish the artifact file.
      * Defaults to the name of the module that this artifact belongs to.
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getName"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getName"))
     Property<String> getName();
 
     /**
@@ -46,7 +45,7 @@ public interface IvyArtifact extends PublicationArtifact {
     /**
      * The type used to publish the artifact file.
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getType"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getType"))
     Property<String> getType();
 
     /**
@@ -61,7 +60,7 @@ public interface IvyArtifact extends PublicationArtifact {
      * The extension used to publish the artifact file.
      * For an artifact without an extension, this value will be an empty String.
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getExtension"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getExtension"))
     Property<String> getExtension();
 
     /**
@@ -77,7 +76,7 @@ public interface IvyArtifact extends PublicationArtifact {
      * An absent value (the default) indicates that this artifact will be published without a classifier.
      */
     @Optional
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getClassifier"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getClassifier"))
     Property<String> getClassifier();
 
     /**
@@ -94,7 +93,7 @@ public interface IvyArtifact extends PublicationArtifact {
      * An optional value (the default) indicates that this artifact will be published without a conf attribute.
      */
     @Optional
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getConf"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getConf"))
     Property<String> getConf();
 
     /**

@@ -45,7 +45,7 @@ import org.gradle.external.javadoc.internal.options.PropertyKnownOption;
 import org.gradle.internal.Cast;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -56,7 +56,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.gradle.api.tasks.PathSensitivity.NAME_ONLY;
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Provides the options for the standard Javadoc doclet.
@@ -187,7 +186,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      * then clicking on the "Use" link in the navigation bar.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isUse", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isUse", originalType = boolean.class))
     public abstract Property<Boolean> getUse();
 
     /** Eager forwarder; see {@link #getUse()}. */
@@ -219,7 +218,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      * To tell what version of the Javadoc tool you are using, use the -J-version option.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isVersion", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isVersion", originalType = boolean.class))
     public abstract Property<Boolean> getVersion();
 
     /** Eager forwarder; see {@link #getVersion()}. */
@@ -250,7 +249,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      * Includes the @author text in the generated docs.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isAuthor", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isAuthor", originalType = boolean.class))
     public abstract Property<Boolean> getAuthor();
 
     /** Eager forwarder; see {@link #getAuthor()}. */
@@ -282,7 +281,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      * plus a file for any index entries that start with non-alphabetical characters.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isSplitIndex", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isSplitIndex", originalType = boolean.class))
     public abstract Property<Boolean> getSplitIndex();
 
     /** Eager forwarder; see {@link #getSplitIndex()}. */
@@ -353,7 +352,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      */
     @Input
     @Optional
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDocTitle"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getDocTitle"))
     public abstract Property<String> getDocTitle();
 
     /** Eager forwarder; see {@link #getDocTitle()}. */
@@ -375,7 +374,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      */
     @Input
     @Optional
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getFooter"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getFooter"))
     public abstract Property<String> getFooter();
 
     /** Eager forwarder; see {@link #getFooter()}. */
@@ -398,7 +397,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      */
     @Input
     @Optional
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getBottom"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getBottom"))
     public abstract Property<String> getBottom();
 
     /** Eager forwarder; see {@link #getBottom()}. */
@@ -432,7 +431,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      */
     @Input
     @Optional
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getLinks"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getLinks"))
     public abstract ListProperty<String> getLinks();
 
     /** Eager forwarder; see {@link #getLinks()}. */
@@ -476,7 +475,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      */
     @Input
     @Optional
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getLinksOffline"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getLinksOffline"))
     public abstract ListProperty<JavadocOfflineLink> getLinksOffline();
 
     /** Eager forwarder; see {@link #getLinksOffline()}. */
@@ -508,7 +507,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      * public String getLabel()
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isLinkSource", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isLinkSource", originalType = boolean.class))
     public abstract Property<Boolean> getLinkSource();
 
     /** Eager forwarder; see {@link #getLinkSource()}. */
@@ -577,7 +576,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      */
     @Input
     @Optional
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getGroups"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getGroups"))
     public abstract MapProperty<String, List<String>> getGroups();
 
     /** Eager forwarder; see {@link #getGroups()}. */
@@ -611,7 +610,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      * This is useful when writing code and you don't want to be distracted by the deprecated code.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isNoDeprecated", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isNoDeprecated", originalType = boolean.class))
     public abstract Property<Boolean> getNoDeprecated();
 
     /** Eager forwarder; see {@link #getNoDeprecated()}. */
@@ -645,7 +644,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      * This is useful if your source code contains no deprecated API, and you want to make the navigation bar cleaner.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isNoDeprecatedList", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isNoDeprecatedList", originalType = boolean.class))
     public abstract Property<Boolean> getNoDeprecatedList();
 
     /** Eager forwarder; see {@link #getNoDeprecatedList()}. */
@@ -676,7 +675,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      * Omits from the generated docs the "Since" sections associated with the @since tags.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isNoSince", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isNoSince", originalType = boolean.class))
     public abstract Property<Boolean> getNoSince();
 
     /** Eager forwarder; see {@link #getNoSince()}. */
@@ -709,7 +708,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      * The hierarchy is produced by default.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isNoTree", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isNoTree", originalType = boolean.class))
     public abstract Property<Boolean> getNoTree();
 
     /** Eager forwarder; see {@link #getNoTree()}. */
@@ -740,7 +739,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      * Omits the index from the generated docs. The index is produced by default.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isNoIndex", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isNoIndex", originalType = boolean.class))
     public abstract Property<Boolean> getNoIndex();
 
     /** Eager forwarder; see {@link #getNoIndex()}. */
@@ -771,7 +770,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      * Omits the HELP link in the navigation bars at the top and bottom of each page of output.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isNoHelp", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isNoHelp", originalType = boolean.class))
     public abstract Property<Boolean> getNoHelp();
 
     /** Eager forwarder; see {@link #getNoHelp()}. */
@@ -805,7 +804,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      * such as converting the files to PostScript or PDF for print only.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isNoNavBar", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isNoNavBar", originalType = boolean.class))
     public abstract Property<Boolean> getNoNavBar();
 
     /** Eager forwarder; see {@link #getNoNavBar()}. */
@@ -840,7 +839,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     @InputFile
     @PathSensitive(NAME_ONLY)
     @Optional
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getHelpFile"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getHelpFile"))
     public abstract RegularFileProperty getHelpFile();
 
     /** Eager forwarder; see {@link #getHelpFile()}. */
@@ -863,7 +862,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     @InputFile
     @PathSensitive(NAME_ONLY)
     @Optional
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getStylesheetFile"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getStylesheetFile"))
     public abstract RegularFileProperty getStylesheetFile();
 
     /** Eager forwarder; see {@link #getStylesheetFile()}. */
@@ -885,7 +884,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      * which helps to properly document default serializable fields and writeExternal methods.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isSerialWarn", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isSerialWarn", originalType = boolean.class))
     public abstract Property<Boolean> getSerialWarn();
 
     /** Eager forwarder; see {@link #getSerialWarn()}. */
@@ -926,7 +925,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      */
     @Input
     @Optional
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getCharSet"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getCharSet"))
     public abstract Property<String> getCharSet();
 
     /** Eager forwarder; see {@link #getCharSet()}. */
@@ -950,7 +949,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      */
     @Input
     @Optional
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDocEncoding"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getDocEncoding"))
     public abstract Property<String> getDocEncoding();
 
     /** Eager forwarder; see {@link #getDocEncoding()}. */
@@ -967,7 +966,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      * -keywords.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isKeyWords", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isKeyWords", originalType = boolean.class))
     public abstract Property<Boolean> getKeyWords();
 
     /** Eager forwarder; see {@link #getKeyWords()}. */
@@ -997,7 +996,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      */
     @Input
     @Optional
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getTags"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getTags"))
     public abstract ListProperty<String> getTags();
 
     /** Eager forwarder; see {@link #getTags()}. */
@@ -1023,7 +1022,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      */
     @Input
     @Optional
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getTaglets"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getTaglets"))
     public abstract ListProperty<String> getTaglets();
 
     /** Eager forwarder; see {@link #getTaglets()}. */
@@ -1066,7 +1065,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      * -docfilessubdirs.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isDocFilesSubDirs", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isDocFilesSubDirs", originalType = boolean.class))
     public abstract Property<Boolean> getDocFilesSubDirs();
 
     /** Eager forwarder; see {@link #getDocFilesSubDirs()}. */
@@ -1096,7 +1095,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      */
     @Input
     @Optional
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getExcludeDocFilesSubDir"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getExcludeDocFilesSubDir"))
     public abstract ListProperty<String> getExcludeDocFilesSubDir();
 
     /** Eager forwarder; see {@link #getExcludeDocFilesSubDir()}. */
@@ -1118,7 +1117,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      */
     @Input
     @Optional
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getNoQualifiers"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getNoQualifiers"))
     public abstract ListProperty<String> getNoQualifiers();
 
     /** Eager forwarder; see {@link #getNoQualifiers()}. */
@@ -1136,7 +1135,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
     }
 
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isNoTimestamp", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isNoTimestamp", originalType = boolean.class))
     public abstract Property<Boolean> getNoTimestamp();
 
     /** Eager forwarder; see {@link #getNoTimestamp()}. */
@@ -1165,7 +1164,7 @@ public abstract class StandardJavadocDocletOptions extends CoreJavadocOptions im
      * -nocomment.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isNoComment", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isNoComment", originalType = boolean.class))
     public abstract Property<Boolean> getNoComment();
 
     /** Eager forwarder; see {@link #getNoComment()}. */

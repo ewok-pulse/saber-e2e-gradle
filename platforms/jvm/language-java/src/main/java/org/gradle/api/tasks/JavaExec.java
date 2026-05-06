@@ -34,7 +34,7 @@ import org.gradle.api.provider.ProviderFactory;
 import org.gradle.api.tasks.internal.JavaExecExecutableUtils;
 import org.gradle.api.tasks.options.Option;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.internal.jvm.DefaultModularitySpec;
 import org.gradle.jvm.toolchain.JavaLauncher;
 import org.gradle.jvm.toolchain.JavaToolchainService;
@@ -62,7 +62,6 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Collections.emptyList;
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Executes a Java application in a child process.
@@ -459,7 +458,7 @@ public abstract class JavaExec extends ConventionTask implements JavaExecSpec {
      * @since 5.2
      */
     @Internal("covered by getJavaLauncher().getMetadata().getLanguageVersion()")
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getJavaVersion"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getJavaVersion"))
     public Provider<JavaVersion> getJavaVersion() {
         return getJavaLauncher().map(launcher -> {
             int javaLanguageVersion = launcher

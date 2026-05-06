@@ -24,13 +24,12 @@ import org.gradle.api.resources.TextResource;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Configuration options for the PMD plugin.
@@ -59,7 +58,7 @@ public abstract class PmdExtension extends CodeQualityExtension {
      *     ruleSets = ["category/java/errorprone.xml", "category/java/bestpractices.xml"]
      * </pre>
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getRuleSets"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getRuleSets"))
     public abstract ListProperty<String> getRuleSets();
 
     /**
@@ -174,7 +173,7 @@ public abstract class PmdExtension extends CodeQualityExtension {
      *     ruleSetFiles = files("config/pmd/myRuleSet.xml")
      * </pre>
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getRuleSetFiles"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getRuleSetFiles"))
     public abstract ConfigurableFileCollection getRuleSetFiles();
 
     /**
@@ -205,7 +204,7 @@ public abstract class PmdExtension extends CodeQualityExtension {
     /**
      * Whether or not to write PMD results to {@code System.out}.
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isConsoleOutput", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isConsoleOutput", originalType = boolean.class))
     public abstract Property<Boolean> getConsoleOutput();
 
     /**

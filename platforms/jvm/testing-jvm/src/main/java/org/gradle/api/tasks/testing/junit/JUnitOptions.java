@@ -20,11 +20,10 @@ import org.gradle.api.provider.SetProperty;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.testing.TestFrameworkOptions;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 
 import java.util.Set;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * The JUnit specific test options.
@@ -54,7 +53,7 @@ public abstract class JUnitOptions extends TestFrameworkOptions {
      * The set of categories to run.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getIncludeCategories"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getIncludeCategories"))
     public abstract SetProperty<String> getIncludeCategories();
 
     /**
@@ -68,7 +67,7 @@ public abstract class JUnitOptions extends TestFrameworkOptions {
      * The set of categories to exclude.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getExcludeCategories"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getExcludeCategories"))
     public abstract SetProperty<String> getExcludeCategories();
 
     /**

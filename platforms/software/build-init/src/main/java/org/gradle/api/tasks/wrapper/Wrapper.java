@@ -39,7 +39,7 @@ import org.gradle.api.tasks.wrapper.internal.WrapperGenerator;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.deprecation.DeprecationLogger;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.util.GradleVersion;
 import org.gradle.util.internal.GUtil;
 import org.gradle.util.internal.WrapperDistributionUrlConverter;
@@ -59,7 +59,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * <p>Generates scripts (for *nix and windows) which allow you to build your project with Gradle, without having to
@@ -218,7 +217,7 @@ public abstract class Wrapper extends DefaultTask {
      * Returns the file to write the wrapper script to.
      */
     @OutputFile
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getScriptFile"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getScriptFile"))
     public abstract RegularFileProperty getScriptFile();
 
     /**
@@ -241,7 +240,7 @@ public abstract class Wrapper extends DefaultTask {
      * Returns the file to write the wrapper batch script to.
      */
     @OutputFile
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getBatchScript"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getBatchScript"))
     public Provider<RegularFile> getBatchScript() {
         // We return a RegularFileProperty, since Provider<RegularFile>
         // doesn't track task dependencies, see: https://github.com/gradle/gradle/issues/29335
@@ -252,7 +251,7 @@ public abstract class Wrapper extends DefaultTask {
      * Returns the file to write the wrapper jar file to.
      */
     @OutputFile
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getJarFile"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getJarFile"))
     public abstract RegularFileProperty getJarFile();
 
     /**
@@ -275,7 +274,7 @@ public abstract class Wrapper extends DefaultTask {
      * Returns the file to write the wrapper properties to.
      */
     @OutputFile
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getPropertiesFile"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getPropertiesFile"))
     public Provider<RegularFile> getPropertiesFile() {
         // We return a RegularFileProperty, since Provider<RegularFile>
         // doesn't track task dependencies, see: https://github.com/gradle/gradle/issues/29335
@@ -287,7 +286,7 @@ public abstract class Wrapper extends DefaultTask {
      * distribution base directory
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDistributionPath"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getDistributionPath"))
     public abstract Property<String> getDistributionPath();
 
     /**
@@ -310,7 +309,7 @@ public abstract class Wrapper extends DefaultTask {
     @Input
     @Option(option = "gradle-version", description = "The version of the Gradle distribution required by the wrapper. " +
         "The following labels are allowed: latest, release-candidate, release-milestone, release-nightly, and nightly.")
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getGradleVersion"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getGradleVersion"))
     public abstract Property<String> getGradleVersion();
 
     /**
@@ -326,7 +325,7 @@ public abstract class Wrapper extends DefaultTask {
      */
     @Input
     @Option(option = "distribution-type", description = "The type of the Gradle distribution to be used by the wrapper.")
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDistributionType"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getDistributionType"))
     public abstract Property<DistributionType> getDistributionType();
 
     /**
@@ -370,7 +369,7 @@ public abstract class Wrapper extends DefaultTask {
      */
     @Input
     @Option(option = "gradle-distribution-url", description = "The URL to download the Gradle distribution from.")
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDistributionUrl"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getDistributionUrl"))
     public abstract Property<String> getDistributionUrl();
 
     /**
@@ -394,7 +393,7 @@ public abstract class Wrapper extends DefaultTask {
     @Input
     @Optional
     @Option(option = "gradle-distribution-sha256-sum", description = "The SHA-256 hash sum of the gradle distribution.")
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDistributionSha256Sum"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getDistributionSha256Sum"))
     public abstract Property<String> getDistributionSha256Sum();
 
     /**
@@ -417,7 +416,7 @@ public abstract class Wrapper extends DefaultTask {
      * the gradle user home dir.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDistributionBase"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getDistributionBase"))
     public abstract Property<PathBase> getDistributionBase();
 
     /**
@@ -433,7 +432,7 @@ public abstract class Wrapper extends DefaultTask {
      * relative to the archive base directory.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getArchivePath"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getArchivePath"))
     public abstract Property<String> getArchivePath();
 
     /**
@@ -449,7 +448,7 @@ public abstract class Wrapper extends DefaultTask {
      * gradle user home dir.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getArchiveBase"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getArchiveBase"))
     public abstract Property<PathBase> getArchiveBase();
 
     /**

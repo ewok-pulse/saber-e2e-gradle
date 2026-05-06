@@ -29,14 +29,13 @@ import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.scala.IncrementalCompileOptions;
 import org.gradle.api.tasks.scala.ScalaForkOptions;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.jspecify.annotations.Nullable;
 
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.List;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Options for Scala platform compilation.
@@ -66,7 +65,7 @@ public abstract class BaseScalaCompileOptions implements Serializable {
      * Fail the build on compilation errors.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isFailOnError", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isFailOnError", originalType = boolean.class))
     public abstract Property<Boolean> getFailOnError();
 
     /** Eager forwarder; see {@link #getFailOnError()}. */
@@ -83,7 +82,7 @@ public abstract class BaseScalaCompileOptions implements Serializable {
      * Generate deprecation information.
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isDeprecation", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isDeprecation", originalType = boolean.class))
     public abstract Property<Boolean> getDeprecation();
 
     /** Eager forwarder; see {@link #getDeprecation()}. */
@@ -100,7 +99,7 @@ public abstract class BaseScalaCompileOptions implements Serializable {
      * Generate unchecked information.
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isUnchecked", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isUnchecked", originalType = boolean.class))
     public abstract Property<Boolean> getUnchecked();
 
     /** Eager forwarder; see {@link #getUnchecked()}. */
@@ -119,7 +118,7 @@ public abstract class BaseScalaCompileOptions implements Serializable {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDebugLevel"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getDebugLevel"))
     public abstract Property<String> getDebugLevel();
 
     /** Eager forwarder; see {@link #getDebugLevel()}. */
@@ -131,7 +130,7 @@ public abstract class BaseScalaCompileOptions implements Serializable {
      * Run optimizations.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isOptimize", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isOptimize", originalType = boolean.class))
     public abstract Property<Boolean> getOptimize();
 
     /** Eager forwarder; see {@link #getOptimize()}. */
@@ -149,7 +148,7 @@ public abstract class BaseScalaCompileOptions implements Serializable {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getEncoding"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getEncoding"))
     public abstract Property<String> getEncoding();
 
     /** Eager forwarder; see {@link #getEncoding()}. */
@@ -164,7 +163,7 @@ public abstract class BaseScalaCompileOptions implements Serializable {
      * - true (always recompile all files)
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isForce", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isForce", originalType = boolean.class))
     public abstract Property<Boolean> getForce();
 
     /** Eager forwarder; see {@link #getForce()}. */
@@ -185,7 +184,7 @@ public abstract class BaseScalaCompileOptions implements Serializable {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getAdditionalParameters"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getAdditionalParameters"))
     public abstract ListProperty<String> getAdditionalParameters();
 
     /**
@@ -203,7 +202,7 @@ public abstract class BaseScalaCompileOptions implements Serializable {
      * List files to be compiled.
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isListFiles", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isListFiles", originalType = boolean.class))
     public abstract Property<Boolean> getListFiles();
 
     /** Eager forwarder; see {@link #getListFiles()}. */
@@ -221,7 +220,7 @@ public abstract class BaseScalaCompileOptions implements Serializable {
      * Legal values:  none, verbose, debug
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getLoggingLevel"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getLoggingLevel"))
     public abstract Property<String> getLoggingLevel();
 
     /** Eager forwarder; see {@link #getLoggingLevel()}. */
@@ -235,7 +234,7 @@ public abstract class BaseScalaCompileOptions implements Serializable {
      * lambdalift, flatten, constructors, mixin, icode, jvm, terminal.
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getLoggingPhases"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getLoggingPhases"))
     public abstract ListProperty<String> getLoggingPhases();
 
     /** Eager forwarder; see {@link #getLoggingPhases()}. */

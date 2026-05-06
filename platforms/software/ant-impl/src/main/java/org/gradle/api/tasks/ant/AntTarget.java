@@ -23,14 +23,13 @@ import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.work.DisableCachingByDefault;
 import org.jspecify.annotations.Nullable;
 
 import java.io.File;
 
 import static org.gradle.api.internal.ConfigurationCacheDegradation.requireDegradation;
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * A task which executes an Ant target.
@@ -59,7 +58,7 @@ public abstract class AntTarget extends ConventionTask {
      * Returns the Ant target to execute.
      */
     @Internal
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getTarget"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getTarget"))
     public abstract Property<Target> getTarget();
 
     /**
@@ -73,7 +72,7 @@ public abstract class AntTarget extends ConventionTask {
      * Returns the Ant project base directory to use when executing the target.
      */
     @Internal
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getBaseDir"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getBaseDir"))
     public abstract DirectoryProperty getBaseDir();
 
     /**

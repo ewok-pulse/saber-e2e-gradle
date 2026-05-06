@@ -32,7 +32,7 @@ import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.OutputFile;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.internal.nativeintegration.filesystem.FileSystem;
 import org.gradle.internal.reflect.Instantiator;
 import org.gradle.util.internal.GUtil;
@@ -42,7 +42,6 @@ import org.jspecify.annotations.Nullable;
 import javax.inject.Inject;
 
 import static org.gradle.api.internal.lambdas.SerializableLambdas.transformer;
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * {@code AbstractArchiveTask} is the base class for all archive tasks.
@@ -249,7 +248,7 @@ public abstract class AbstractArchiveTask extends AbstractCopyTask {
      * @since 3.4
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isPreserveFileTimestamps", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isPreserveFileTimestamps", originalType = boolean.class))
     public abstract Property<Boolean> getPreserveFileTimestamps();
 
     /**
@@ -285,7 +284,7 @@ public abstract class AbstractArchiveTask extends AbstractCopyTask {
      * @since 3.4
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isReproducibleFileOrder", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isReproducibleFileOrder", originalType = boolean.class))
     public abstract Property<Boolean> getReproducibleFileOrder();
 
     /**

@@ -33,7 +33,7 @@ import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -42,7 +42,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Compilation options to be passed to the Groovy compiler.
@@ -69,7 +68,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Tells whether the compilation task should fail if compile errors occurred. Defaults to {@code true}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isFailOnError", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isFailOnError", originalType = boolean.class))
     public abstract Property<Boolean> getFailOnError();
 
     /**
@@ -88,7 +87,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Tells whether to turn on verbose output. Defaults to {@code false}.
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isVerbose", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isVerbose", originalType = boolean.class))
     public abstract Property<Boolean> getVerbose();
 
     /**
@@ -107,7 +106,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Tells whether to print which source files are to be compiled. Defaults to {@code false}.
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isListFiles", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isListFiles", originalType = boolean.class))
     public abstract Property<Boolean> getListFiles();
 
     /**
@@ -126,7 +125,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Tells the source encoding. Defaults to {@code UTF-8}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getEncoding"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getEncoding"))
     public abstract Property<String> getEncoding();
 
     /**
@@ -140,7 +139,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Tells whether to run the Groovy compiler in a separate process. Defaults to {@code true}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isFork", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isFork", originalType = boolean.class))
     public abstract Property<Boolean> getFork();
 
     /**
@@ -196,7 +195,7 @@ public abstract class GroovyCompileOptions implements Serializable {
     @Optional
     @PathSensitive(PathSensitivity.NONE)
     @InputFile
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getConfigurationScript"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getConfigurationScript"))
     public abstract RegularFileProperty getConfigurationScript();
 
     /**
@@ -221,7 +220,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * No annotation processing will be performed regardless, on Java or Groovy source.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isJavaAnnotationProcessing", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isJavaAnnotationProcessing", originalType = boolean.class))
     public abstract Property<Boolean> getJavaAnnotationProcessing();
 
     /**
@@ -244,7 +243,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * @since 6.1
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isParameters", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isParameters", originalType = boolean.class))
     public abstract Property<Boolean> getParameters();
 
     /**
@@ -295,7 +294,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      */
     @Input
     @Optional
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getOptimizationOptions"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getOptimizationOptions"))
     public abstract MapProperty<String, Boolean> getOptimizationOptions();
 
     /**
@@ -321,7 +320,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      */
     @Internal
     // TOOD:LPTR Should be just a relative path
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getStubDir"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getStubDir"))
     public abstract DirectoryProperty getStubDir();
 
     /**
@@ -337,7 +336,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Groovy 1.7 or higher. Defaults to {@code ImmutableList.of("java", "groovy")}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getFileExtensions"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getFileExtensions"))
     public abstract ListProperty<String> getFileExtensions();
 
     /**
@@ -354,7 +353,7 @@ public abstract class GroovyCompileOptions implements Serializable {
      * Defaults to {@code false}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isKeepStubs", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isKeepStubs", originalType = boolean.class))
     public abstract Property<Boolean> getKeepStubs();
 
     /**

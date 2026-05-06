@@ -60,7 +60,7 @@ import org.gradle.buildinit.specs.BuildInitSpec;
 import org.gradle.buildinit.specs.internal.BuildInitSpecRegistry;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.internal.logging.text.TreeFormatter;
 import org.gradle.jvm.toolchain.JavaLanguageVersion;
 import org.gradle.util.GradleVersion;
@@ -79,7 +79,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Generates a Gradle project structure.
@@ -139,7 +138,7 @@ public abstract class InitBuild extends DefaultTask {
     @Input
     @Optional
     @Option(option = "type", description = "Set the type of project to generate.")
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getType"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getType"))
     public abstract Property<String> getType();
 
     /** Eager forwarder; see {@link #getType()}. */
@@ -168,7 +167,7 @@ public abstract class InitBuild extends DefaultTask {
     @Optional
     @Input
     @Option(option = "dsl", description = "Set the build script DSL to be used in generated scripts.")
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDsl"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getDsl"))
     public abstract Property<String> getDsl();
 
     /**
@@ -230,7 +229,7 @@ public abstract class InitBuild extends DefaultTask {
     @Input
     @Optional
     @Option(option = "project-name", description = "Set the project name.")
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getProjectName"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getProjectName"))
     public abstract Property<String> getProjectName();
 
     /**
@@ -250,7 +249,7 @@ public abstract class InitBuild extends DefaultTask {
     @Input
     @Optional
     @Option(option = "package", description = "Set the package for source files.")
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getPackageName"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getPackageName"))
     public abstract Property<String> getPackageName();
 
     /**
@@ -268,7 +267,7 @@ public abstract class InitBuild extends DefaultTask {
     @Input
     @Optional
     @Option(option = "test-framework", description = "Set the test framework to be used.")
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getTestFramework"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getTestFramework"))
     public abstract Property<String> getTestFramework();
 
     /**
@@ -649,7 +648,7 @@ public abstract class InitBuild extends DefaultTask {
     }
 
     @OptionValues("type")
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getAvailableBuildTypes"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getAvailableBuildTypes"))
     public Provider<List<String>> getAvailableBuildTypes() {
         return availableBuildTypes;
     }
@@ -660,7 +659,7 @@ public abstract class InitBuild extends DefaultTask {
      * @since 4.5
      */
     @OptionValues("dsl")
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getAvailableDSLs"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getAvailableDSLs"))
     public Provider<List<String>> getAvailableDSLs() {
         return availableDSLs;
     }
@@ -669,7 +668,7 @@ public abstract class InitBuild extends DefaultTask {
      * Available test frameworks.
      */
     @OptionValues("test-framework")
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getAvailableTestFrameworks"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getAvailableTestFrameworks"))
     public Provider<List<String>> getAvailableTestFrameworks() {
         return availableTestFrameworks;
     }

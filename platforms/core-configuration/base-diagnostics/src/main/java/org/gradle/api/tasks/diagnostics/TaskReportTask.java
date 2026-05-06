@@ -40,7 +40,7 @@ import org.gradle.api.tasks.diagnostics.internal.TaskReportModel;
 import org.gradle.api.tasks.diagnostics.internal.TaskReportRenderer;
 import org.gradle.api.tasks.options.Option;
 import org.gradle.internal.Try;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 import org.gradle.internal.serialization.Cached;
 import org.gradle.util.Path;
@@ -55,7 +55,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * <p>Displays a list of tasks in the project. An instance of this type is used when you execute the {@code tasks} task
@@ -90,7 +89,7 @@ public abstract class TaskReportTask extends ConventionReportTask {
      */
     @Input
     @Option(option = "all", description = "Show additional tasks and detail.")
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = ReplacedAccessor.AccessorType.GETTER, name = "isDetail", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isDetail", originalType = boolean.class))
     public abstract Property<Boolean> getShowDetail();
 
     /**
@@ -113,7 +112,7 @@ public abstract class TaskReportTask extends ConventionReportTask {
      */
     @Console
     @Option(option = "group", description = "Show tasks for a specific group.")
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDisplayGroup"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getDisplayGroup"))
     public abstract Property<String> getDisplayGroup();
 
     /**

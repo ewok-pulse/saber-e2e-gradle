@@ -46,7 +46,7 @@ import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.Describables;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.internal.nativeintegration.console.ConsoleDetector;
 import org.gradle.internal.nativeintegration.console.ConsoleMetaData;
@@ -58,7 +58,6 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Runs a set of static code analysis rules on Java source code files and generates a report of problems found.
@@ -185,7 +184,7 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
      * The class path containing the PMD library to be used.
      */
     @Classpath
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getPmdClasspath"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getPmdClasspath"))
     public abstract ConfigurableFileCollection getPmdClasspath();
 
     /**
@@ -203,7 +202,7 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
      * </pre>
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getRuleSets"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getRuleSets"))
     public abstract ListProperty<String> getRuleSets();
 
     /**
@@ -221,7 +220,7 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
      * The target JDK to use with PMD.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getTargetJdk"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getTargetJdk"))
     public abstract Property<TargetJdk> getTargetJdk();
 
     /**
@@ -274,7 +273,7 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
      */
     @InputFiles
     @PathSensitive(PathSensitivity.NONE)
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getRuleSetFiles"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getRuleSetFiles"))
     public abstract ConfigurableFileCollection getRuleSetFiles();
 
     /**
@@ -325,7 +324,7 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
      * @since 2.1
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isConsoleOutput", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isConsoleOutput", originalType = boolean.class))
     public abstract Property<Boolean> getConsoleOutput();
 
     /**
@@ -353,7 +352,7 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
      */
     @Optional
     @Classpath
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getClasspath"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getClasspath"))
     public abstract ConfigurableFileCollection getClasspath();
 
     /**
@@ -385,7 +384,7 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
      * @since 5.6
      */
     @LocalState
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getIncrementalCacheFile"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getIncrementalCacheFile"))
     public Provider<RegularFile> getIncrementalCacheFile() {
         return incrementalCacheFile;
     }

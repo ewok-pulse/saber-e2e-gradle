@@ -22,13 +22,12 @@ import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.List;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Options for the ScalaDoc tool.
@@ -45,7 +44,7 @@ public abstract class ScalaDocOptions implements Serializable {
      * Tells whether to generate deprecation information.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isDeprecation", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isDeprecation", originalType = boolean.class))
     public abstract Property<Boolean> getDeprecation();
 
     /**
@@ -64,7 +63,7 @@ public abstract class ScalaDocOptions implements Serializable {
      * Tells whether to generate unchecked information.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isUnchecked", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isUnchecked", originalType = boolean.class))
     public abstract Property<Boolean> getUnchecked();
 
     /**
@@ -84,7 +83,7 @@ public abstract class ScalaDocOptions implements Serializable {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getWindowTitle"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getWindowTitle"))
     public abstract Property<String> getWindowTitle();
 
     /**
@@ -99,7 +98,7 @@ public abstract class ScalaDocOptions implements Serializable {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getDocTitle"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getDocTitle"))
     public abstract Property<String> getDocTitle();
 
     /**
@@ -114,7 +113,7 @@ public abstract class ScalaDocOptions implements Serializable {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getHeader"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getHeader"))
     public abstract Property<String> getHeader();
 
     /**
@@ -129,7 +128,7 @@ public abstract class ScalaDocOptions implements Serializable {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getFooter"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getFooter"))
     public abstract Property<String> getFooter();
 
     /**
@@ -144,7 +143,7 @@ public abstract class ScalaDocOptions implements Serializable {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getTop"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getTop"))
     public abstract Property<String> getTop();
 
     /**
@@ -159,7 +158,7 @@ public abstract class ScalaDocOptions implements Serializable {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getBottom"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getBottom"))
     public abstract Property<String> getBottom();
 
     /**
@@ -175,7 +174,7 @@ public abstract class ScalaDocOptions implements Serializable {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getAdditionalParameters"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getAdditionalParameters"))
     public abstract ListProperty<String> getAdditionalParameters();
 
     /**

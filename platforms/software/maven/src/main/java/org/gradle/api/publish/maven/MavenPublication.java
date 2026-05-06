@@ -24,9 +24,8 @@ import org.gradle.api.publish.VersionMappingStrategy;
 import org.gradle.api.tasks.Nested;
 import org.gradle.internal.HasInternalProtocol;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * A {@code MavenPublication} is the representation/configuration of how Gradle should publish something in Maven format.
@@ -276,7 +275,7 @@ public interface MavenPublication extends Publication {
     /**
      * GroupId for this publication.
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getGroupId"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getGroupId"))
     Property<String> getGroupId();
 
     /**
@@ -289,7 +288,7 @@ public interface MavenPublication extends Publication {
     /**
      * ArtifactId for this publication.
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getArtifactId"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getArtifactId"))
     Property<String> getArtifactId();
 
     /**
@@ -302,7 +301,7 @@ public interface MavenPublication extends Publication {
     /**
      * Version for this publication.
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getVersion"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getVersion"))
     Property<String> getVersion();
 
     /**

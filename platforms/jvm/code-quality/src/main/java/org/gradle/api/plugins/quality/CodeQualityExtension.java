@@ -20,12 +20,11 @@ import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.SourceSet;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 
 import java.io.File;
 import java.util.Collection;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Base Code Quality Extension.
@@ -39,7 +38,7 @@ public abstract class CodeQualityExtension {
     /**
      * The version of the code quality tool to be used.
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getToolVersion"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getToolVersion"))
     public abstract Property<String> getToolVersion();
 
     /**
@@ -52,7 +51,7 @@ public abstract class CodeQualityExtension {
     /**
      * The source sets to be analyzed as part of the <code>check</code> and <code>build</code> tasks.
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getSourceSets", originalType = Collection.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getSourceSets", originalType = Collection.class))
     public abstract ListProperty<SourceSet> getSourceSets();
 
     /**
@@ -67,7 +66,7 @@ public abstract class CodeQualityExtension {
      *
      * Example: ignoreFailures = true
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isIgnoreFailures", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isIgnoreFailures", originalType = boolean.class))
     public abstract Property<Boolean> getIgnoreFailures();
 
     /**
@@ -86,7 +85,7 @@ public abstract class CodeQualityExtension {
     /**
      * The directory where reports will be generated.
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getReportsDir"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getReportsDir"))
     public abstract DirectoryProperty getReportsDir();
 
     /**

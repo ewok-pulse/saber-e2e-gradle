@@ -19,9 +19,8 @@ package org.gradle.caching.configuration;
 import org.gradle.api.model.ReplacedBy;
 import org.gradle.api.provider.Property;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Configuration object for a build cache.
@@ -35,7 +34,7 @@ public interface BuildCache {
      *
      * Added for Kotlin source compatibility.
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isEnabled", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isEnabled", originalType = boolean.class))
     Property<Boolean> getEnabled();
 
     /**
@@ -56,7 +55,7 @@ public interface BuildCache {
     /**
      * Controls whether a given build can store outputs in the build cache.
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isPush", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isPush", originalType = boolean.class))
     Property<Boolean> getPush();
 
     /**

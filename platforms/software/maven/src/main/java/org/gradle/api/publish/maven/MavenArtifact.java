@@ -19,9 +19,8 @@ import org.gradle.api.provider.Property;
 import org.gradle.api.publish.PublicationArtifact;
 import org.gradle.api.tasks.Optional;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * An artifact published as part of a {@link MavenPublication}.
@@ -31,7 +30,7 @@ public interface MavenArtifact extends PublicationArtifact {
      * The extension used to publish the artifact file.
      * For an artifact without an extension, this value will be an empty String.
      */
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getExtension"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getExtension"))
     Property<String> getExtension();
 
     /**
@@ -47,7 +46,7 @@ public interface MavenArtifact extends PublicationArtifact {
      * An absent value (the default) indicates that this artifact will be published without a classifier.
      */
     @Optional
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getClassifier"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getClassifier"))
     Property<String> getClassifier();
 
     /**

@@ -38,7 +38,7 @@ import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedDeprecation;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedDeprecation.RemovedIn;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
@@ -50,7 +50,6 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Main options for Java compilation.
@@ -75,7 +74,7 @@ public abstract class CompileOptions implements Serializable {
      * Sets whether to fail the build when compilation fails. Defaults to {@code true}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isFailOnError", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isFailOnError", originalType = boolean.class))
     public abstract Property<Boolean> getFailOnError();
 
     /**
@@ -94,7 +93,7 @@ public abstract class CompileOptions implements Serializable {
      * Tells whether to produce verbose output. Defaults to {@code false}.
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isVerbose", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isVerbose", originalType = boolean.class))
     public abstract Property<Boolean> getVerbose();
 
     /**
@@ -113,7 +112,7 @@ public abstract class CompileOptions implements Serializable {
      * Tells whether to log the files to be compiled. Defaults to {@code false}.
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isListFiles", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isListFiles", originalType = boolean.class))
     public abstract Property<Boolean> getListFiles();
 
     /**
@@ -132,7 +131,7 @@ public abstract class CompileOptions implements Serializable {
      * Tells whether to log details of usage of deprecated members or classes. Defaults to {@code false}.
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isDeprecation", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isDeprecation", originalType = boolean.class))
     public abstract Property<Boolean> getDeprecation();
 
     /**
@@ -154,7 +153,7 @@ public abstract class CompileOptions implements Serializable {
      * Tells whether to log warning messages. The default is {@code true}.
      */
     @Console
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isWarnings", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isWarnings", originalType = boolean.class))
     public abstract Property<Boolean> getWarnings();
 
     /**
@@ -178,7 +177,7 @@ public abstract class CompileOptions implements Serializable {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getEncoding"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getEncoding"))
     public abstract Property<String> getEncoding();
 
     /**
@@ -194,7 +193,7 @@ public abstract class CompileOptions implements Serializable {
      * to {@code true}. See {@link DebugOptions#getDebugLevel()} for which debugging information will be generated.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isDebug", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isDebug", originalType = boolean.class))
     public abstract Property<Boolean> getDebug();
 
     /**
@@ -235,7 +234,7 @@ public abstract class CompileOptions implements Serializable {
      * Defaults to {@code false}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isFork", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isFork", originalType = boolean.class))
     public abstract Property<Boolean> getFork();
 
     /**
@@ -279,7 +278,7 @@ public abstract class CompileOptions implements Serializable {
      */
     @Optional
     @CompileClasspath
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getBootstrapClasspath"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getBootstrapClasspath"))
     public abstract ConfigurableFileCollection getBootstrapClasspath();
 
     /**
@@ -296,7 +295,7 @@ public abstract class CompileOptions implements Serializable {
      */
     @Optional
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getExtensionDirs"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getExtensionDirs"))
     public abstract Property<String> getExtensionDirs();
 
     /**
@@ -319,7 +318,7 @@ public abstract class CompileOptions implements Serializable {
      * are ignored.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getCompilerArgs"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getCompilerArgs"))
     public abstract ListProperty<String> getCompilerArgs();
 
     /**
@@ -336,7 +335,7 @@ public abstract class CompileOptions implements Serializable {
      * @since 4.5
      */
     @Internal
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getAllCompilerArgs"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getAllCompilerArgs"))
     public Provider<List<String>> getAllCompilerArgs() {
         return getCompilerArgs().zip(getCompilerArgumentProviders(), (args, argProviders) -> {
             ImmutableList.Builder<String> builder = ImmutableList.builder();
@@ -354,7 +353,7 @@ public abstract class CompileOptions implements Serializable {
      * @since 4.5
      */
     @Nested
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getCompilerArgumentProviders"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getCompilerArgumentProviders"))
     public abstract ListProperty<CommandLineArgumentProvider> getCompilerArgumentProviders();
 
     /** Eager forwarder; see {@link #getCompilerArgumentProviders()}. */
@@ -367,7 +366,7 @@ public abstract class CompileOptions implements Serializable {
      *
      */
     @Internal
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isIncremental", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isIncremental", originalType = boolean.class))
     public abstract Property<Boolean> getIncremental();
 
     /**
@@ -419,7 +418,7 @@ public abstract class CompileOptions implements Serializable {
     @IgnoreEmptyDirectories
     @PathSensitive(PathSensitivity.RELATIVE)
     @InputFiles
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getSourcepath"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getSourcepath"))
     public abstract ConfigurableFileCollection getSourcepath();
 
     /**
@@ -439,7 +438,7 @@ public abstract class CompileOptions implements Serializable {
      */
     @Optional
     @Classpath
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getAnnotationProcessorPath"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getAnnotationProcessorPath"))
     public abstract ConfigurableFileCollection getAnnotationProcessorPath();
 
     /**
@@ -492,7 +491,7 @@ public abstract class CompileOptions implements Serializable {
      */
     @Optional
     @OutputDirectory
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getAnnotationProcessorGeneratedSourcesDirectory"), deprecation = @ReplacedDeprecation(removedIn = RemovedIn.GRADLE9))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getAnnotationProcessorGeneratedSourcesDirectory"), deprecation = @ReplacedDeprecation(removedIn = RemovedIn.GRADLE9))
     public abstract DirectoryProperty getGeneratedSourceOutputDirectory();
 
     /**

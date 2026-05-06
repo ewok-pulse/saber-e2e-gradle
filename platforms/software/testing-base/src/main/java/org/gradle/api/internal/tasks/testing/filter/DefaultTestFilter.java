@@ -21,14 +21,13 @@ import org.gradle.api.provider.SetProperty;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.testing.TestFilter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty.BinaryCompatibility;
 import org.gradle.internal.scan.UsedByScanPlugin;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 @UsedByScanPlugin("test-retry")
 public abstract class DefaultTestFilter implements TestFilter {
@@ -88,7 +87,7 @@ public abstract class DefaultTestFilter implements TestFilter {
     @Input
     @ReplacesEagerProperty(// Kept, since internal classes are not reported in binary checks
         // so the upgrade check reports an error that original methods was not removed
-        binaryCompatibility = BinaryCompatibility.ACCESSORS_KEPT, replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getCommandLineIncludePatterns"))
+        binaryCompatibility = BinaryCompatibility.ACCESSORS_KEPT, replacedGetters = @ReplacedGetter(name = "getCommandLineIncludePatterns"))
     public abstract SetProperty<String> getCommandLineIncludePatterns();
 
     /**

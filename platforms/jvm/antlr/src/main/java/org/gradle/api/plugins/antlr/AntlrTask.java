@@ -47,7 +47,7 @@ import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.file.Deleter;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
+import org.gradle.internal.instrumentation.api.annotations.ReplacedGetter;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.process.internal.JavaExecHandleBuilder;
 import org.gradle.process.internal.worker.MultiRequestClient;
@@ -67,7 +67,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType.GETTER;
 
 /**
  * Generates parsers from Antlr grammars.
@@ -89,7 +88,7 @@ public abstract class AntlrTask extends SourceTask {
      * Specifies that all rules call {@code traceIn}/{@code traceOut}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isTrace", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isTrace", originalType = boolean.class))
     public abstract Property<Boolean> getTrace();
 
     /** Eager forwarder; see {@link #getTrace()}. */
@@ -106,7 +105,7 @@ public abstract class AntlrTask extends SourceTask {
      * Specifies that all lexer rules call {@code traceIn}/{@code traceOut}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isTraceLexer", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isTraceLexer", originalType = boolean.class))
     public abstract Property<Boolean> getTraceLexer();
 
     /** Eager forwarder; see {@link #getTraceLexer()}. */
@@ -123,7 +122,7 @@ public abstract class AntlrTask extends SourceTask {
      * Specifies that all parser rules call {@code traceIn}/{@code traceOut}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isTraceParser", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isTraceParser", originalType = boolean.class))
     public abstract Property<Boolean> getTraceParser();
 
     /** Eager forwarder; see {@link #getTraceParser()}. */
@@ -140,7 +139,7 @@ public abstract class AntlrTask extends SourceTask {
      * Specifies that all tree walker rules call {@code traceIn}/{@code traceOut}.
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "isTraceTreeWalker", originalType = boolean.class))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "isTraceTreeWalker", originalType = boolean.class))
     public abstract Property<Boolean> getTraceTreeWalker();
 
     /** Eager forwarder; see {@link #getTraceTreeWalker()}. */
@@ -157,7 +156,7 @@ public abstract class AntlrTask extends SourceTask {
      * The maximum heap size for the forked antlr process (ex: '1g').
      */
     @Internal
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getMaxHeapSize"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getMaxHeapSize"))
     public abstract Property<String> getMaxHeapSize();
 
     /** Eager forwarder; see {@link #getMaxHeapSize()}. */
@@ -171,7 +170,7 @@ public abstract class AntlrTask extends SourceTask {
      * @return The antlr command-line arguments
      */
     @Input
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getArguments"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getArguments"))
     public abstract ListProperty<String> getArguments();
 
     /**
@@ -190,7 +189,7 @@ public abstract class AntlrTask extends SourceTask {
      * @return The output directory.
      */
     @OutputDirectory
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getOutputDirectory"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getOutputDirectory"))
     public abstract DirectoryProperty getOutputDirectory();
 
     /**
@@ -208,7 +207,7 @@ public abstract class AntlrTask extends SourceTask {
      * @return The Ant task implementation classpath.
      */
     @Classpath
-    @ReplacesEagerProperty(replacedAccessors = @ReplacedAccessor(value = GETTER, name = "getAntlrClasspath"))
+    @ReplacesEagerProperty(replacedGetters = @ReplacedGetter(name = "getAntlrClasspath"))
     public abstract ConfigurableFileCollection getAntlrClasspath();
 
     /**

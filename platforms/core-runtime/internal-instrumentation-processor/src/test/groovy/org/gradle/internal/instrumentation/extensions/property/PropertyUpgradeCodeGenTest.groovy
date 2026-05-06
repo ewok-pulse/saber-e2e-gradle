@@ -209,7 +209,6 @@ class PropertyUpgradeCodeGenTest extends InstrumentationCodeGenTest {
             import org.gradle.api.file.*;
             import org.gradle.internal.instrumentation.api.annotations.VisitForInstrumentation;
             import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
-            import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor;
 
             public abstract class Task {
                 @ReplacesEagerProperty(${setOriginalType ? "originalType = ${originalType}.class" : ""})
@@ -347,15 +346,12 @@ class PropertyUpgradeCodeGenTest extends InstrumentationCodeGenTest {
             import org.gradle.api.provider.*;
             import org.gradle.api.file.*;
             import org.gradle.internal.instrumentation.api.annotations.*;
-            import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType;
             import java.io.File;
 
             public abstract class Task {
-                @ReplacesEagerProperty(replacedAccessors = {
-                    @ReplacedAccessor(value = AccessorType.GETTER, name = "getDestinationDir"),
-                    @ReplacedAccessor(value = AccessorType.GETTER, name = "addDestinationDir"),
-                    @ReplacedAccessor(value = AccessorType.SETTER, name = "setDestinationDir"),
-                    @ReplacedAccessor(value = AccessorType.SETTER, name = "destinationDir", originalType = File.class)
+                @ReplacesEagerProperty(replacedGetters = {
+                    @ReplacedGetter(name = "getDestinationDir"),
+                    @ReplacedGetter(name = "addDestinationDir")
                 })
                 public abstract DirectoryProperty getDestinationDirectory();
             }
@@ -465,14 +461,12 @@ class PropertyUpgradeCodeGenTest extends InstrumentationCodeGenTest {
             import org.gradle.api.provider.*;
             import org.gradle.api.file.*;
             import org.gradle.internal.instrumentation.api.annotations.*;
-            import org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType;
             import java.io.File;
 
             public abstract class Task {
                 @ReplacesEagerProperty(
-                    replacedAccessors = {
-                        @ReplacedAccessor(value = AccessorType.GETTER, name = "getDestinationDir"),
-                        @ReplacedAccessor(value = AccessorType.SETTER, name = "setDestinationDir")
+                    replacedGetters = {
+                        @ReplacedGetter(name = "getDestinationDir")
                     },
                     deprecation = @ReplacedDeprecation(removedIn = ReplacedDeprecation.RemovedIn.GRADLE9)
                 )
